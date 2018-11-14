@@ -1,0 +1,42 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              	<h3 class="box-title">提现申请</h3>
+		              	<!-- <div class="pull-right">
+			              	<a href="{:url('order/add')}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;添加文章</a>
+			          	</div> -->
+		            </div>
+		            <div class="panel-body">
+				  		
+					</div>
+		            <div id="data_list_info"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+	<script type="text/javascript">
+
+
+		function getData(p){
+			if(p==undefined || p<1)
+				p = 1;
+
+			$.post("{:url('bank_card/get_bank_card_list')}",{page:p},function(res){
+				if(res.code == 1){
+					$("#data_list_info").html('').html(res.data);
+				}
+			},'json');
+		}
+		$(function(){
+			getData();
+		});
+	</script>
+{/block}

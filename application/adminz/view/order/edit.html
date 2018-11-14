@@ -1,0 +1,71 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">订单详情</h3>
+                        <div class="pull-right">
+                            <a href="{:url('order/index')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <table class="layui-table" >
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">ID</th>
+                                <th style="text-align: center;">订单ID</th>
+                                <th style="text-align: center;">投注内容</th>
+                                <th style="text-align: center;">投注金额</th>
+                                <th style="text-align: center;">中奖赔率</th>
+                                <th style="text-align: center;">中奖彩果</th>
+                                <th style="text-align: center;">中奖金额(投注金额*倍率)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name='data' id='item'}
+                            <tr>
+                                <td style="text-align: center;">{$item.order_info_id}</td>
+                                <td style="text-align: center;">{$item.order_id}</td>
+                                <td style="text-align: center;">{$item.tz_result}</td>
+                                <td style="text-align: center;">{$item.tz_money}</td>
+                                <td style="text-align: center;">{$item.odds}</td>
+                                <td style="text-align: center;">{$item.win_result}</td>
+                                <td style="text-align: center;">{$item.win_money}</td>
+                            </tr>
+                            {/volist}
+                            {if condition="empty($data)"}
+                            <tr><td colspan="7" style="text-align: center;">空空如也~</td></tr>
+                            {/if}
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+    });
+    laydate.render({
+        elem: '#date1'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+</script>
+{/block}
+
+

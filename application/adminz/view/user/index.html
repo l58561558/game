@@ -1,0 +1,92 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content-header">
+		<!-- <h1>
+			广告图片列表
+			<small></small>
+		</h1> -->
+		<!-- <ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li class="active">Dashboard</li>
+		</ol> -->
+	</div>
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+                      <h3 class="box-title pull-left">用户列表</h3>
+		              <h3 class="box-title pull-right">点击量: {$click}</h3>
+		            </div>
+		            <div class="box-header with-border">
+                        <div class="pull-left">
+                            <input type="text" placeholder="用戶ID (选填)" class="yhid">
+                            <input type="text" placeholder="手机号码 (选填)" class="Sjhm">
+                            <input type="text" placeholder="上级用户手机号码 (选填)" class="pid">
+                            <input type="text" class="add_time" placeholder="注册时间(开始) (选填)" id="date">
+                        	<input type="text" class="end_time" placeholder="注册时间(结束) (选填)" id="date1">
+                            <button class="layui-btn" style="height: 27px;padding: 0 10px;line-height: 16px;">搜索</button>              
+                        </div>
+                    </div>
+		            <div id="data_list_info"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+$(".layui-btn").click(function(){
+    getData();
+})
+	function getData(p){
+		if(p==undefined || p<1)
+			p = 1;
+    	var yhid = $(".yhid").val();
+    	var Sjhm = $(".Sjhm").val();
+    	var pid = $(".pid").val();
+    	var add_time = $(".add_time").val();
+    	var end_time = $(".end_time").val();
+    	var result = {
+    		yhid:yhid,
+    		Sjhm:Sjhm,
+            pid:pid,
+            add_time:add_time,
+            end_time:end_time
+    	}
+		$.post("{:url('user/get_user_list')}",{page:p,result:result},function(res){
+			if(res.code == 1){
+				$("#data_list_info").html('').html(res.data);
+			}
+		},'json');
+	}
+	$(function(){
+		getData();
+	});
+</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}

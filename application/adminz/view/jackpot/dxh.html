@@ -1,0 +1,107 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">本期奖池 -- 大小和</h3>
+                        <div class="pull-right">
+                            <a href="{:url('history/dxh')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="{:url('jackpot/save_status',['status'=>1,'game_id'=>1])}" class="layui-btn" id="normal">正常模式</a>
+                            
+                            <a href="{:url('jackpot/save_status',['status'=>2,'game_id'=>1])}" class="layui-btn" id="min">最小数模式</a>
+                            
+                            <h3 class="box-title" style="margin: 0px 40px 0px 40px">当前模式 : {if condition="$status eq 1"}正常模式{else if condition="$status eq 2"}最小数模式{/if}</h3>
+                        </div>
+                    </div>
+                    <table class="layui-table" >
+                        {if condition="empty($_list)"}
+                        <tr><td colspan="22" style="text-align: center; font-size: 20px; color: orange;">游戏未开始~~</td></tr>
+                        {else /}
+                        <thead>
+                            <tr>
+                                <th colspan="1" style="text-align: center;">开奖倒计时</th>
+                                <th colspan="7" style="text-align: center;">开奖期编号</th>
+                                <th colspan="7" style="text-align: center;">本期开始时间</th>
+                                <th colspan="7" style="text-align: center;">开奖时间</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="1" id="Kjdjs" style="text-align: center; color: red">{$_list.Kjdjs|default='-'}</td>
+                                <td colspan="7" style="text-align: center;">{$_list.kjid|default='-'}</td>
+                                <td colspan="7" style="text-align: center;">{$_list.add_time|date='Y-m-d H:i:s',###|default='-'}</td>
+                                <td colspan="7" style="text-align: center;">{$_list.Kjsj|date='Y-m-d H:i:s',###|default='-'}</td>                               
+                            </tr>
+                        </tbody>
+                        
+                        <thead>
+                            <tr>
+                                {volist name='_list.tz' id='item'}
+                                <th style="text-align: center;">{$item.desc}</th>
+                                {/volist}
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                {volist name='_list.tz' id='item'}
+                                <td style="text-align: center;">{$item.tz_money|default='-'}</td>
+                                {/volist}
+                            </tr>
+                        </tbody>
+                        {/if}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+<script type="text/javascript">
+var Kjdjs = "{$_list.Kjdjs}";
+var interval = setInterval(function() { 
+    settime();
+},1000)
+function settime(){
+    if(Kjdjs < 0){
+        clearInterval(interval);
+        window.location.reload();
+    }else{
+        if(Kjdjs >= 40 && Kjdjs%3 == 0){
+            window.location.reload();
+        }
+        $("#Kjdjs").text(Kjdjs);
+        Kjdjs--;
+    }
+}
+</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+    });
+    laydate.render({
+        elem: '#date1'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}
+
+
+

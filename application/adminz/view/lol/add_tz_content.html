@@ -1,0 +1,91 @@
+{extend name="public/base" /}
+{block name='css'}
+
+{/block}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">增加投注选项</h3>
+                        <div class="pull-right">
+                            <a href="{:url('lol/index')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-id="tab_base"><a href="javascript:;">基础信息</a></li>
+                    </ul>
+                    <div style="padding: 20px; background-color: #F2F2F2;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md12">
+                                <div class="layui-card">
+                                    <div class="layui-card-body">比赛名称 ： {$data.game_name}</div>
+                                    <div class="layui-card-body">队伍1 ： {$data.team1}</div>
+                                    <div class="layui-card-body">队伍2 ： {$data.team2}</div>
+                                    <div class="layui-card-body">开始时间 ： {$data.start_time|date='Y-m-d H:i:s',###}</div>
+                                    <div class="layui-card-body">视频地址 ： <a href="{$data.url}" target="_blank">{$data.url|default='-'}</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                     
+                    <form id="form_submit" enctype="multipart/form-data" class="layui-form layui-form-pane" action="" method="post">
+                        <div class="box-body" id="tab_base">
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">投注内容</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" value="" class="layui-input" placeholder="例: (一血 , 一塔 , 胜利.....)" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">队伍1赔率</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="team1_odds" value="" class="layui-input" placeholder="队伍1赔率" >
+                                </div>
+                            </div>
+                            <!-- <div class="layui-form-item">
+                                <label class="layui-form-label">队伍2赔率</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="team2_odds" value="" class="layui-input" placeholder="队伍2赔率" >
+                                </div>
+                            </div> -->
+                            <input type="hidden" name="game_id" value="{$data.id}">
+                        </div></div>
+                        <div class="layui-input-block">
+                            <button type="submit" class="layui-btn">添加</button>
+                            <label for="jump_list" style="margin-left: 15px;"><input type="checkbox" data-url="{:url('lol/index')}" id="jump_list" value="1" >返回列表页</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}
+
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{$site.seo_title}</title>
+  <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css">
+  <link rel="stylesheet" href="__ADMIN__/css/admin.css">
+  <link rel="stylesheet" href="__ADMIN__/layui/layer/theme/default/layer.css">
+  <link href="__PLUGINS__/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+  <link href="__PLUGINS__/adminlte/css/AdminLTE.min.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="__PLUGINS__/fonts/css/font-awesome.min.css">
+  <link rel="stylesheet" href="__PLUGINS__/fonts/css/ionicons.min.css">
+  <link rel="stylesheet" href="__PLUGINS__/adminlte/css/skins/_all-skins.min.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo" style="font-size: 22px">{$site.admin_title}</div>
+
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-right">
+
+      <li class="layui-nav-item"><a href="{:url('/')}" target="_blank"><span class="fa fa-reply"></span>回首页</a></li>
+      <li class="layui-nav-item"><a href="javascript:;" class="dropdown-toggle btn-cache "><span class="fa fa-refresh"></span>清除缓存</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <span class="hidden-xs"><i class="fa fa-user"></i>管理员</span>
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a onclick="this.innerHTML='正在退出...';$.post('{:url('login/logout')}',function(data){location.reload();},'json');" href="javascript:;">退出登录</a></dd>
+        </dl>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black"> 
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+      	{volist name="menu_list|default=array()" id="vo"}
+      		{if condition="$vo.is_menu eq 1"}
+	        <li  class="layui-nav-item {if in_array($names['controllerName'],$vo['controllers'])}layui-nav-itemed{/if} ">
+	          <a class="" href="javascript:;">
+              <span>{$vo.node_name}</span>
+              {if condition="isset($vo.count)"}
+              <img src="__ADMIN__/images/red.png">
+              <span style="position: relative;right: 18px;">{$vo.count}</span>
+              {/if}
+            </a>
+	          <dl class="layui-nav-child">
+	          	{volist name="vo.menu_list" id="vo2"}
+                
+                {if $vo2.is_menu eq 1} 
+	            	<dd class="{if $names.controllerName == $vo2['controller'] and $names.actionName == $vo2['action']}layui-this{/if}">
+                  <a href="{:url($vo2['url'])}">
+                  {$vo2.node_name}
+                  {if condition="isset($vo.count)"}
+                  <img src="__ADMIN__/images/red.png">
+                  <span style="position: relative;right: 18px;">{$vo.count}</span>
+                  {/if}
+                  </a>
+                </dd>
+	            	{/if}
+	            {/volist}
+	          </dl>
+	        </li>
+	        {/if}
+        {/volist}
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body">
+    {block name="content"}
+		<!-- 加载页面内容 -->
+	{/block}
+  </div>
+
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+  <?php
+  	$url = strtolower(request()->action());
+  	if($url == 'index'){
+  ?>
+    <!-- <strong>Copyright © 2017-2018 <a href="/">故乡人网络技术支持</a>.</strong> -->
+   <?php } ?>
+  </div>
+
+</div>
+
+</body>
+
+<script src="__PLUGINS__/jquery/js/jquery-2.2.3.min.js" type="text/javascript"></script>
+<script src="__PLUGINS__/jquery/js/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="__PLUGINS__/jquery/js/jquery.form.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PLUGINS__/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="__PLUGINS__/bootstrap/js/bootstrap-notify.js"></script>
+<script type="text/javascript" src="__PLUGINS__/adminlte/js/app.js"></script>
+<script type="text/javascript" src="__PLUGINS__/adminlte/js/demo.js"></script>
+<script type="text/javascript" src="__PLUGINS__/validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript" src="__ADMIN__/js/tips.js"></script>
+<script type="text/javascript" src="__ADMIN__/js/admin.js"></script>
+<script type="text/javascript" src="__ADMIN__/layui/layui.js"></script>
+<script type="text/javascript" src="__ADMIN__/layui/layui.all.js"></script>
+<script type="text/javascript" src="__ADMIN__/layui/layer/layer.js"></script>
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+</script>
+{block name='js'}
+
+{/block}
+</html>

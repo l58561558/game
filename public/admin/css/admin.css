@@ -1,0 +1,190 @@
+.skin-blue .sidebar-menu>li.header{
+  color: #fff;
+}
+
+.sidebar-menu .treeview-menu>li>a{
+  padding: 5px 5px 5px 32px;
+}
+
+.box-header .box-title{
+  padding-top: 7px;
+}
+
+.table img{
+  width: 150px;
+  height: 50px;
+}
+
+.table tbody > tr > th,
+.table tbody > tr > td{
+  text-align: center;
+}
+table.line-height tbody > tr > td{
+  line-height: 50px;
+}
+table.line-height18 tbody > tr > td{
+  line-height: 18px;
+}
+
+.table tbody > tr > td i.fa-check{
+  color: #14a444;
+} 
+.table tbody > tr > td i.fa-close{
+  color: red;
+}
+
+table.line-height28 tbody > tr > td,
+table.line-height28 tbody > tr > th{
+  line-height: 28px;
+}
+table.line-height28 tbody > tr > th{
+  
+}
+table.line-height28 tbody > tr > td{
+  font-weight:400;
+  color:#999;
+}
+
+.popover{
+  max-width: 820px;
+}
+
+.popover img{
+  max-width: 790px;
+}
+
+label.error{
+  color: red;
+}
+
+.inputs {
+  min-width: 50px;
+  max-width:100px;
+  height: 20px; 
+  text-align: center;
+  line-height: 20px;
+  border:1px solid #ccc;
+}
+
+.form-group label font{
+  color:red;
+}
+
+span.note{
+  color : #f39c12;
+  font-size: 14px;
+}
+
+.form-group{
+  margin-bottom: 9px;
+}
+
+/*多级表格*/
+.treegrid{
+  font-size:18px;
+  padding-right:3px;
+  cursor:pointer;
+}
+
+/*select2*/
+.select2-selection__choice{
+  color:#000 !important;
+}
+/*end select2*/
+
+textarea{
+  resize: none;
+}
+
+.nav-tabs{
+  margin-left:10px;
+  margin-top:10px;
+}
+
+
+.alert-success{
+  background: #008d4c !important; 
+  position: fixed; 
+  z-index: 9999; 
+  min-width: 30%;
+  top:10px;
+}
+.alert-warning{
+  background: #db8b0b !important; 
+  position: fixed; 
+  z-index: 9999; 
+  min-width: 30%; 
+  max-width: 70%; 
+  top:10px; 
+}
+.alert-danger{
+  background: #d33724 !important; 
+  position: fixed; 
+  z-index: 9999; 
+  min-width: 30%; 
+  max-width: 70%; 
+  top:10px;
+}
+.alert-info{
+  background: #00a7d0 !important; 
+  position: fixed; 
+  z-index: 9999; 
+  min-width: 30%; 
+  max-width: 70%; 
+  top:10px;
+}
+
+.imgs-body{
+  border: 1px solid #ccc;
+  width: 106px; 
+  height: 175px; 
+  padding:2px; 
+  float: left; 
+  margin:5px; 
+  overflow:hidden;
+}
+
+.imgs-body img{
+  width: 100px; 
+  max-height:100px;
+  margin-bottom: 2px; 
+  margin-top: 2px
+}
+.imgs-body input{
+  width:100px;
+}
+
+
+/*==========以下部分是Validform必须的===========*/
+.Validform_checktip{
+  float: right;
+  line-height:20px;
+  height:20px;
+  overflow:hidden;
+  color:#999;
+  font-size:12px;
+}
+.Validform_right{
+  color:#71b83d;
+  padding-left:20px;
+  background:url(../images/right.png) no-repeat left center;
+}
+.Validform_wrong{
+  color:red;
+  padding-left:20px;
+  white-space:nowrap;
+  background:url(../images/error.png) no-repeat left center;
+}
+.Validform_loading{
+  padding-left:20px;
+  background:url(../images/onLoad.gif) no-repeat left center;
+}
+.Validform_error{
+  background-color:#ffe7e7;
+}
+#Validform_msg{color:#7d8289; font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif; width:280px; -webkit-box-shadow:2px 2px 3px #aaa; -moz-box-shadow:2px 2px 3px #aaa; background:#fff; position:absolute; top:0px; right:50px; z-index:99999; display:none;filter: progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#999999');}
+#Validform_msg .iframe{position:absolute; left:0px; top:-1px; z-index:-1;}
+#Validform_msg .Validform_title{line-height:25px; height:25px; text-align:left; font-weight:bold; padding:0 8px; color:#fff; position:relative; background-color:#000;}
+#Validform_msg a.Validform_close:link,#Validform_msg a.Validform_close:visited{line-height:22px; position:absolute; right:8px; top:0px; color:#fff; text-decoration:none;}
+#Validform_msg a.Validform_close:hover{color:#cc0;}
+#Validform_msg .Validform_info{padding:8px;border:1px solid #000; border-top:none; text-align:left;}

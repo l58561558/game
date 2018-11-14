@@ -1,0 +1,124 @@
+{extend name="public/base" /}
+{block name='css'}
+
+{/block}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">编辑</h3>
+                        <div class="pull-right">
+                            <a href="{:url('nba/index')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-id="tab_base"><a href="javascript:;">基础信息</a></li>
+                    </ul>
+                    <form id="form_submit" enctype="multipart/form-data" class="layui-form layui-form-pane" action="" method="post">
+                        <div class="box-body" id="tab_base">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">比赛编号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="game_no" value="{$data.game_no}" lay-verify="required" class="layui-input" placeholder="比赛名称" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">比赛名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="game_name" value="{$data.game_name}" class="layui-input" placeholder="比赛名称" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">主队</label>
+                                <div class="layui-input-block">
+                                    <select lay-filter="home_team" name='home_team'>
+                                        <option>请选择</option>
+                                        {volist name='team' id='item'}
+                                        <option value="{$item.team_id}" {if condition="$item.team_id eq $data.home_team"}selected{/if}>{$item.team_name}</option>
+                                        {/volist}
+                                    </select>
+                                    <!-- <input type="text" name="home_team" value="{$data.home_team}" class="layui-input" placeholder="主队" > -->
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">主队分数</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="home_score" value="{$data.home_score}" placeholder="主队分数" lay-verify="required" class="layui-input" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">客队</label>
+                                <div class="layui-input-block">
+                                    <select lay-filter="road_team" name='road_team'>
+                                        <option>请选择</option>
+                                        {volist name='team' id='item'}
+                                        <option value="{$item.team_id}" {if condition="$item.team_id eq $data.road_team"}selected{/if}>{$item.team_name}</option>
+                                        {/volist}
+                                    </select>
+                                    <!-- <input type="text" name="road_team" value="{$data.road_team}" class="layui-input" placeholder="客队" > -->
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">客队分数</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="road_score" value="{$data.road_score}" placeholder="客队分数" lay-verify="required" class="layui-input" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">总分</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="total_score" value="{$data.total_score}" placeholder="总分" lay-verify="required" class="layui-input" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">让分数</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="let_score" value="{$data.let_score}" placeholder="“-”主胜“+”客胜" lay-verify="required" class="layui-input" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">投注截止时间</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="date" name="end_time" value="{if condition="!empty($data['end_time'])"}{$data.end_time|date='Y-m-d H:i:s',###}{/if}" class="layui-input" placeholder="比赛结束时间" >
+                                </div>
+                            </div>                            
+                        </div></div>
+                        <div class="layui-input-block">
+                            <button type="submit" class="layui-btn">保存</button>
+                            <label for="jump_list" style="margin-left: 15px;"><input type="checkbox" data-url="{:url('nba/index')}" id="jump_list" value="1" >返回列表页</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}
+
+

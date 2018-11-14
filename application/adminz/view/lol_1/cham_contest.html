@@ -1,0 +1,92 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              	<h3 class="box-title">冠军竞猜</h3>
+		              	<div class="pull-right">
+							<a href="{:url('lol/champion_over')}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;结算</a>
+						</div>
+		            </div>
+		            <div id="data_list_info">
+						<table class="layui-table table">
+							<colgroup>
+								<col width="150">
+								<col width="200">
+								<col>
+							</colgroup>
+							<thead>
+								<tr >
+									<th style="text-align: center;" style="width: 10px">#</th>
+									<th style="text-align: center;">队伍名称</th>
+									<th style="text-align: center;">队伍赔率</th>
+									<th style="text-align: center;">投注总额</th>
+									<th style="text-align: center;">状态</th>
+									<th style="text-align: center;">操作</th>
+								</tr> 
+							</thead>
+							<tbody>
+								{volist name="_list" id="info" key='key'}
+								<tr>
+									<td style="text-align: center;">{$key}</td>
+									<td style="text-align: center;">{$info.team_name}</td>
+									<td style="text-align: center;">{$info.team_odds}
+										<!-- <input style="text-align: center;" class="inputs" data-id="{$info.id}" data-url="{:url('lol/cham_edit_field')}" name="team_odds" type="text" value="{$info.team_odds}" > -->
+										<!-- <a href="javascript:;" id="save">点击开始修改</a> -->
+									</td>
+									<td style="text-align: center;">{$info.tz_money|default='-'}</td>
+									<td style="text-align: center;">
+										{if condition="$info.status eq 1"}
+										<font style="color: green">正常</font>
+										{else /}
+										<font style="color: grey">已淘汰</font>
+										{/if}
+									</td>
+									<td><a href="{:url('lol/cham_contest_edit')}?id={$info.id}">编辑</a></td>
+								</tr>
+								{/volist}
+							</tbody>
+						</table>
+		            </div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+	// $("#save").click(function(){
+	// 	var save = $(this).prev().attr('disabled');
+	// 	if(save !== undefined) {
+	// 		$(this).prev().removeAttr('disabled');
+	// 	}
+	// })
+</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}\

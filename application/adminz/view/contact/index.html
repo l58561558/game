@@ -1,0 +1,142 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content-header">
+        <!-- <h1>
+            焦点图片列表
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol> -->
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">联系我们</h3>
+                        <!-- <div class="pull-right">
+                            <a href="{:url('focus/lists')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div> -->
+                    </div>
+                    <form id="form_submit" enctype="multipart/form-data" class="layui-form layui-form-pane" action="{:url('contact/edit')}" method="post">
+                        <div class="box-body">
+                            {volist name="list" id="item"}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">公司名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" value="{$item.name}" lay-verify="required" placeholder="公司名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">地址</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="address" value="{$item.address}" lay-verify="required" placeholder="地址" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <!-- <div class="layui-form-item">
+                                <label class="layui-form-label">手机</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="phone" value="{$item.phone}" lay-verify="required" placeholder="手机" autocomplete="off" class="layui-input">
+                                </div>
+                            </div> -->
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">热线</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="service_tel" value="{$item.service_tel}" lay-verify="required" placeholder="热线" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">电话</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="tel" value="{$item.tel}" lay-verify="required" placeholder="电话" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <!-- <div class="layui-form-item">
+                                <label class="layui-form-label">联系人</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="linkman" value="{$item.linkman}" lay-verify="required" placeholder="联系人" autocomplete="off" class="layui-input">
+                                </div>
+                            </div> -->
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">传真</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="fax" value="{$item.fax}" lay-verify="required" placeholder="传真" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <!-- <div class="layui-form-item">
+                                <label class="layui-form-label">综合业务电话</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="intserv_tel" value="{$item.intserv_tel}" lay-verify="required" placeholder="综合业务电话" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">业务服务外包</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="business_tel" value="{$item.business_tel}" lay-verify="required" placeholder="业务服务外包" autocomplete="off" class="layui-input">
+                                </div>
+                            </div> -->
+                            
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">邮箱</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="email" value="{$item.email}" lay-verify="required" placeholder="邮箱" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">网址</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="web" value="{$item.web}" lay-verify="required" placeholder="网址" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <!-- <div class="layui-form-item">
+                                <label class="layui-form-label">邮编</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="pc" value="{$item.pc}" lay-verify="required" placeholder="邮编" autocomplete="off" class="layui-input">
+                                </div>
+                            </div> -->
+                            <!-- <div class="layui-form-item">
+                                <label class="layui-form-label">QQ</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="qq" value="{$item.qq}" lay-verify="required" placeholder="QQ" autocomplete="off" class="layui-input">
+                                </div>
+                            </div> -->
+                            <!-- <div class="layui-form-item">
+                                <label  class="layui-form-label" for="inputFile">微信二维码</label>
+                                <div class="layui-input-block">
+                                    <input type="file" name="qr_cord" class="layui-input" style="padding-top: 5px;">
+                                    <if condition=" $item.qr_cord neq null ">
+                                        <img style=" background-color: #ccc;" src="__UPLOADS__/contact/{$item.qr_cord}" />
+                                    </if>
+                                </div>
+                            </div> -->
+                            <!-- <div class="layui-form-item">
+                                <label  class="layui-form-label" for="inputFile">微信服务号</label>
+                                <div class="layui-input-block">
+                                    <input type="file" name="wx_service" class="layui-input" style="padding-top: 5px;">
+                                    <if condition=" $item.wx_service neq null ">
+                                        <img style=" background-color: #ccc;" src="__UPLOADS__/contact/{$item.wx_service}" />
+                                    </if>
+                                </div>
+                            </div> -->
+                            {/volist}
+                        </div>
+                        <div class="layui-input-block">
+                          <button class="layui-btn" lay-submit=""  lay-filter="demo1">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+    <script>
+        $(function(){
+            
+        });
+    </script>
+{/block}
+
+

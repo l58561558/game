@@ -1,0 +1,66 @@
+<table class="layui-table table">
+	<!-- <colgroup>
+		<col width="150">
+		<col width="200">
+		<col>
+	</colgroup> -->
+	<thead>
+		<tr >
+			<th style="text-align: center;" style="width: 10px">#</th>
+			<th style="text-align: center;" style="width: 10px">编号</th>
+			<th style="text-align: center;">赛事名称</th>
+			<th style="text-align: center;">主队</th>
+			<th style="text-align: center;">客队</th>
+			<th style="text-align: center;">上半场比分</th>
+			<th style="text-align: center;">最终比分</th>
+			<th style="text-align: center;">总球数</th>
+			<th style="text-align: center;">停止投注时间</th>
+			<th style="text-align: center;">投注状态</th>
+			<th style="text-align: center;">获胜队伍</th>
+			<th style="text-align: center;" style="width: 100px">操作</th>
+		</tr> 
+	</thead>
+	<tbody>
+		{volist name="_list" id="info" key='key'}
+		<tr>
+			<td style="text-align: center;">{$key}</td>
+			<td style="text-align: center;">{$info.game_no|default='-'}</td>
+			<td style="text-align: center;">{$info.game_name|default='-'}</td>
+			<td style="text-align: center;">{$info.home_team|default='-'}</td>
+			<td style="text-align: center;">{$info.road_team|default='-'}</td>
+			<td style="text-align: center;">
+				<!-- {$info.top_score|default='-'} -->
+				<input style="text-align: center;" class="inputs" data-id="{$info.id}" data-url="{:url('football/edit_field')}" name="top_score" type="text" value="{$info.top_score}" >
+			</td>
+			<td style="text-align: center;">
+				<!-- {$info.down_score|default='-'} -->
+				<input style="text-align: center;" class="inputs" data-id="{$info.id}" data-url="{:url('football/edit_field')}" name="down_score" type="text" value="{$info.down_score}" >
+			</td>
+			<td style="text-align: center;">{$info.total_score|default='-'}</td>
+			<td style="text-align: center;">{$info.end_time|date='Y-m-d H:i:s',###|default='-'}</td>
+			<!-- {if condition="$info.status eq 1"}<td style="text-align: center;color: red">停止投注</td>{/if}
+			{if condition="$info.status eq 2"}<td style="text-align: center;color: green">可以投注</td>{/if} -->
+			<td style="text-align: center;color: red">{$info.tz_status}</td>
+			<th style="text-align: center;">{$info.win_team|default='-'}</th>
+			<td style="text-align: center;">
+				<!-- <a href="javascript:void(0);" class="over" data="{$info.id}" style="color: red">结算</a>&nbsp;&nbsp;&nbsp; -->
+				{if condition="$info.status neq 0"}
+				{if condition="$info.end_time <= time()"}
+				<a href="{:url('football/fb_over')}?id={$info.id}" style="color: red">结算</a>&nbsp;&nbsp;&nbsp;
+				{/if}
+				{/if}
+				<a href="{:url('football/edit')}?id={$info.id}">编辑</a>&nbsp;&nbsp;&nbsp;
+				<a href="{:url('football/look')}?id={$info.id}">查看</a>
+			</td>
+		</tr>
+		{/volist}
+		{empty name='_list'}
+		<tr>
+			<td colspan="15">空空如也~</td>
+		</tr>
+		{/empty}
+	</tbody>
+</table>
+<div class="box-footer clearfix">
+    <ul class="pagination pull-right">{$page}</ul>
+</div> 

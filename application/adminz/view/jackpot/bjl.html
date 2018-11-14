@@ -1,0 +1,171 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">本期奖池 -- 百家乐</h3>
+                        <div class="pull-right">
+                            <a href="{:url('history/bjl')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                        <div class="pull-right">
+                            <span style="color: red">请在倒计时15秒之前更换</span>
+                            
+                            <!-- <a href="{:url('jackpot/save_status',['status'=>1,'game_id'=>5])}" class="layui-btn" id="min">正常模式</a> -->
+
+                            <a href="javascript:;" class="layui-btn" id="the_card">换牌</a>
+
+                            <!-- <input type="text" name="money" placeholder="请输入必杀限额!">
+                            <a title="**开启该模式后,当用户投注时判断该堆投注金额是否大于1500,如果大于触发必杀**" href="javascript:;" class="layui-btn" id="kill">必杀</a>
+                            
+                            <h3 class="box-title" style="margin: 0px 40px 0px 40px">
+                                当前模式 : 
+                                {if condition="$status eq 1"}
+                                正常模式
+                                {elseif condition="$status.status eq 3"}
+                                必杀模式--{$status.money}
+                                {/if}
+                            </h3> -->
+                        </div>
+                    </div>
+                    <table class="layui-table" >
+                        {if condition="empty($_list)"}
+                        <tr><td colspan="27" style="text-align: center; font-size: 20px; color: orange;">游戏未开始~~</td></tr>
+                        
+                        {else /}
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">开奖倒计时</th>   
+                                <th style="text-align: center;">开奖期编号</th>
+                                <th style="text-align: center;">本期开始时间</th>
+                                <th style="text-align: center;">开奖时间</th>                                                            
+                                <th style="text-align: center;">开奖结果</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="Kjdjs" style="text-align: center; color: red">{$_list.Kjdjs|default='-'}</td>
+                                <td style="text-align: center;">{$_list.kjid|default='-'}</td>
+                                <td style="text-align: center;">{$_list.add_time|date='Y-m-d H:i:s',###|default='-'}</td>
+                                <td style="text-align: center;">{$_list.win_time|date='Y-m-d H:i:s',###|default='-'}</td>                                
+                                <td style="text-align: center; color: red">{$_list.win_result|default='-'}</td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">位置</th>
+                                <th style="text-align: center;">左牌</th>
+                                <th style="text-align: center;">右牌</th>
+                                <th style="text-align: center;">补牌</th>
+                                <th style="text-align: center;">点数</th>   
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;">庄家</td>
+                                <td style="text-align: center;">{$_list.banker_left|default='-'}</td>
+                                <td style="text-align: center;">{$_list.banker_right|default='-'}</td>
+                                <td style="text-align: center;">{$_list.banker_three|default='-'}</td>
+                                <td style="text-align: center;">{$_list.banker_result|default='-'}</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;">闲家</td>
+                                <td style="text-align: center;">{$_list.player_left|default='-'}</td>
+                                <td style="text-align: center;">{$_list.player_right|default='-'}</td>
+                                <td style="text-align: center;">{$_list.player_three|default='-'}</td>
+                                <td style="text-align: center;">{$_list.player_result|default='-'}</td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">投注选项</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name='tz_money' id='info'}
+                            <tr>
+                                <td style="text-align: center;">{$info.desc|default='-'}</td>
+                                <td style="text-align: center;">{$info.odds|default='-'}</td>
+                                <td style="text-align: center;">{$info.tz_money|default='-'}</td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                        {/if}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+<script type="text/javascript">
+$("#kill").click(function(){
+    var status = 3;
+    var game_id = 3;
+    var money = $("input[name='money']").val();
+    window.location.href = "{:url('jackpot/save_status')}?status=3&game_id=3&money="+money;
+})
+$("#the_card").click(function(){
+    var kjid = "{$_list.kjid}";
+    $.ajax({
+        url:"{:url('bjl/game/the_card')}",
+        type:'get',
+        data:{kjid:kjid},
+        success:function(res){
+            if(res.code==1){
+                // alert(res.msg);
+                window.location.reload();
+            }
+        }
+    })
+})
+        
+var Kjdjs = "{$_list.Kjdjs}";
+var interval = setInterval(function() { 
+    settime();
+},1000)
+function settime(){
+    if(Kjdjs < 0){
+        clearInterval(interval);
+        window.location.reload();
+    }else{
+        if(Kjdjs >= 15 && Kjdjs%5 == 0){
+            window.location.reload();
+        }
+        if(Kjdjs <= 20){
+            $("#the_card").css('display','none')
+        }
+        $("#Kjdjs").text(Kjdjs);
+        Kjdjs--;
+    }
+}
+</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+    });
+    laydate.render({
+        elem: '#date1'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}
+
+
+

@@ -1,0 +1,133 @@
+{extend name="public/base" /}
+{block name='css'}
+
+{/block}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">比赛详情</h3>
+                        <div class="pull-right">
+                            <a href="{:url('lol/index')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-id="tab_base"><a href="javascript:;">基础信息</a></li>
+                    </ul>
+                    <div style="padding: 20px; background-color: #F2F2F2;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md12">
+                                <div class="layui-card">
+                                    <div class="layui-card-body">比赛名称 ： {$data.game_name}</div>
+                                    <div class="layui-card-body">赛事状态 ： 
+                                        <font style="color: red">
+                                        {if condition="$data.status eq 0"}未开始{/if}
+                                        {if condition="$data.status eq 1"}竞猜中{/if}
+                                        {if condition="$data.status eq 2"}封盘{/if}
+                                        {if condition="$data.status eq 3"}游戏结束{/if}
+                                        </font>
+                                    </div>
+                                    <div class="layui-card-body">队伍1 ： {$data.team1}</div>
+                                    <div class="layui-card-body">队伍2 ： {$data.team2}</div>
+                                    <div class="layui-card-body">开始时间 ： {$data.start_time|date='Y-m-d H:i:s',###}</div>
+                                    <div class="layui-card-body">结束时间 ： {if condition="!empty($data['end_time'])"}{$data.end_time|date='Y-m-d H:i:s',###}{else /}-{/if}</div>
+                                    <div class="layui-card-body">获胜队伍 ： {$data.win_team|default='-'}</div>
+                                    <div class="layui-card-body">视频地址 ： <a href="{$data.url}" target="_blank">{$data.url|default='-'}</a></div>
+                                </div>
+                            </div>
+                            {volist name="data.cate" id="info" key='key'}
+                            <div class="layui-col-md3">
+                                <div class="layui-card">
+                                    <div class="layui-card-header" style="color: #7e7cc5;font-size: 20px">
+                                        {$info.name}
+                                        
+                                    </div>
+                                    <div class="layui-card-body">队伍1初始赔率 ： {$info.team1_odds_old}</div>
+                                    <div class="layui-card-body">队伍2初始赔率 ： {$info.team2_odds_old}</div>
+                                    <div class="layui-card-body">队伍1当前赔率 ： {$info.team1_odds}</div>
+                                    <div class="layui-card-body">队伍2当前赔率 ： {$info.team2_odds}</div>
+                                    <div class="layui-card-body">队伍1投注总额 ： {$info.team1_money}</div>
+                                    <div class="layui-card-body">队伍2投注总额 ： {$info.team2_money}</div>
+                                    <div class="layui-card-body">
+                                        <div class="pull-right">
+                                            {if condition="$data.status neq 3"}
+                                            <!-- <a href="javascript:;" data-container='body' data-placement="left" data-html='true' data-trigger="focus" data-title="删除提示" data-content='<p>您确定要删除吗?</p><button type="button" onclick="delete_data(this);" data-id="{$info.id}" data-url="{:url('lol/lol_tz_delete')}" class="btn btn-danger btn-sm">删除</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm">取消</button>' name="delete" style="color:red;" onclick="win_delete(this);">删除</a> -->
+                                            <a href="{:url('lol/lol_tz_delete')}?id={$info.id}" class="btn btn-danger btn-sm"><i class="fa fa-plus"></i>&nbsp;删除</a>
+                                            <a class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;编辑结果</a>
+                                            {/if}
+                                        </div>
+                                        开奖结果 ： 
+                                        <span>{if condition="!empty($info['win_res'])"}队伍{$info.win_res}{/if}</span>
+                                        <span style="display: none">
+                                            <input type="text" class="win_res" name="win_res" placeholder=" '1' 或者 '2' ">
+                                            <input type="hidden" name="id" value="{$info.id}">
+                                            <a class="edit" href="javascript:;">修改</a>
+                                        </span>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            {/volist}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+<script type="text/javascript">
+    $(".btn-success").click(function(){
+        $(this).css('display','none');
+        // $(this).parent().next().css('display','none');
+        $(this).parent().next().next().css('display','block');
+        $(this).parent().next().next().find('.edit').click(function(){
+            var win_res = $(this).prev().prev().val();
+            var id = $(this).prev().val();
+            $.ajax({
+                url:"{:url('lol/edit_win_res')}",
+                type:'post',
+                data:{id:id,win_res:win_res},
+                success:function(res){
+                    if(res.code == 1){
+                        layer.msg(res.msg);
+                        setInterval(function(){
+                            window.location.reload();
+                        },2000)
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                }
+            })            
+        })
+    })
+
+</script>
+{/block}
+
+

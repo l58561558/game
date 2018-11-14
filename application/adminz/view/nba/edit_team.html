@@ -1,0 +1,74 @@
+{extend name="public/base" /}
+{block name='css'}
+
+{/block}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">添加队伍</h3>
+                        <div class="pull-right">
+                            <a href="{:url('nba/team')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-id="tab_base"><a href="javascript:;">基础信息</a></li>
+                    </ul>
+                    <form id="form_submit" enctype="multipart/form-data" class="layui-form layui-form-pane" action="" method="post">
+                        <div class="box-body" id="tab_base">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">队伍名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="team_name" value="{$data.team_name}" lay-verify="required" class="layui-input" placeholder="比赛名称" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">栏目图片</label>
+                                <div class="layui-input-block">
+                                    <input type="file" name="logo" id="logo" class="form-control" style="padding-bottom: 30px;">
+                                </div>
+                                <img style="width: 100px;height: 100px;border: 1px solid #000;" src="{$data.logo}">
+                            </div>
+                        </div></div>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="team_id" value="{$data.team_id}">
+                            <button type="submit" class="layui-btn">修改</button>
+                            <label for="jump_list" style="margin-left: 15px;">
+                                <input type="checkbox" data-url="{:url('nba/team')}" id="jump_list" value="1" checked>返回列表页
+                            </label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}
+
+

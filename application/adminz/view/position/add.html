@@ -1,0 +1,63 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">添加广告位置</h3>
+                        <div class="pull-right">
+                            <a href="{:url('position/index')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-id="tab_base"><a href="javascript:;">基础信息</a></li>
+                    </ul>
+                    <form id="form_submit" enctype="multipart/form-data" class="layui-form layui-form-pane" action="" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">位置名称</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="position_name" lay-verify="required" placeholder="位置名称" autocomplete="off" class="layui-input">
+                            </div>
+                          </div>
+                          <div class="layui-form-item">
+                            <label class="layui-form-label">说明</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="info"  lay-verify="required" placeholder="说明" autocomplete="off" class="layui-input">
+                            </div>
+                          </div>
+                      </div>
+                          <div class="layui-input-block">
+                              <button class="layui-btn" lay-submit=""  lay-filter="demo1">添加</button>
+                              <label for="jump_list" style="margin-left: 15px;"><input type="checkbox" data-url="{:url('position/index')}" id="jump_list" value="1" >返回列表页</label>
+                            </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function(){
+  var form = layui.form
+  ,layer = layui.layer
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate;
+  
+  //日期
+  laydate.render({
+    elem: '#date'
+  });
+  laydate.render({
+    elem: '#date1'
+  }); 
+});
+        $(function(){
+            
+        });
+    </script>
+{/block}
+
+

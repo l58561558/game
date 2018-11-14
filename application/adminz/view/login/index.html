@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta content="" name="description" />
+<meta content="" name="keywords" />
+<title></title>
+<link href="__ADMIN__/css/base.css" rel="stylesheet" type="text/css" />
+<!--[if IE 6]>
+<script src="js/DD_belatedPNG.js"></script>
+<script>
+  DD_belatedPNG.fix('.logo img');
+</script>
+<![endif]--> 
+</head>
+
+<body>
+    <div class="warp">
+        <div class="logo"><!-- <img src="__ADMIN__/images/logo.png" /> --></div>
+        <div class="main" style="padding-top:10px;">
+        	<form class="login-form"  method="post">	
+	            <table width="270" border="0" align="center" cellpadding="0" cellspacing="0" >
+	                <tr>
+	                    <td height="50" colspan="2"><input name="username" value="{$remember|default=''}" type="text" / class="name_input" placeholder="用户名"></td>
+	                </tr>
+	                <tr>
+	                    <td height="50" colspan="2"><input name="password" type="password" / class="password_input" placeholder="密码"></td>
+	                </tr>
+	                <!-- <tr>
+	                    <td width="122" height="50"><input type="text" name="textfield" class="yzm_input" placeholder="验证码"></td>
+	                    <td width="156" >	                    	
+	                    		<img id="verifycode_img" title="点击更换" src="{:captcha_src()}" onclick="this.src='{:captcha_src()}?seed='+Math.random()">	                    	
+	                    </td>
+	                </tr> -->
+	                <tr>
+	                    <td colspan="2" align="center"><input name="" type="button" / class="login_bnt" value=""></td>
+	                    </tr>
+	                <tr>
+	                    <td height="30" colspan="2">
+	                        <span class="fxk"><input type="checkbox" name="checkbox" {if condition="$remember"}checked="checked"{/if}  />记住用户名</span>
+	                        <span class="tx_1"></span>
+	                    </td>
+	                </tr>
+	            </table>
+	        </form>
+        </div>
+        <!-- <div class="notice">
+            <div class="text_ms">尊敬的客户欢迎登陆贵公司企业网站后台，若您在操作上遇到麻烦，请联系您在故乡人网络的专属客服</div>
+            <div class="contact">
+                <h1>后台操作是件容易的事</h1>
+                <P class="tx"><img src="__ADMIN__/images/icon_2.gif" />您在故乡人的专属客服是：</P>
+                <p class="lx">
+                    <span style="margin-top:0px!important; *margin-top:2px !important; *margin-top:0px;">王小姐</span>
+                    <em>|</em>
+                    <span><a href="tencent://message/?uin=1234567&Site=&menu=yes"><img src="__ADMIN__/images/qq_on.gif" /></a></span>
+                    <em>|</em>
+                    <span>15869584782</span>
+                </p>
+            </div>
+        </div> -->
+    </div>
+    <!-- <div class="footer">Copyright © 2013 - 2015 eit0571.com Inc. All Rights Reserved.故乡人版权所有 技术支持：<a href="">故乡人网络</a></div> -->
+</body>
+	
+	<script src="__PLUGINS__/jquery/js/jquery-2.2.3.min.js" type="text/javascript"></script>
+	<script src="__PLUGINS__/jquery/js/jquery.form.js" type="text/javascript"></script>
+	<script>
+		$(function(){
+			$("body").keydown(function(){
+				if(event.keyCode ==13){
+				    $(".login_bnt").click();
+				}								
+			})
+			$(".login_bnt").click(function(){
+				// alert(21)
+				var username = $(".login-form input[name='username']").val();
+				// alert(username)
+				var password = $(".login-form input[name='password']").val();
+				var yzm = $(".login-form input[name='textfield']").val();
+				var checkbox = $(":checked").val();
+				if (username == '') {
+
+					$(".tx_1").html('<img src="__ADMIN__/images/icon_1.jpg" />账号不能为空!');
+					return false;
+				}
+				if (password == '') {
+					$(".tx_1").html('<img src="__ADMIN__/images/icon_1.jpg" />密码不能为空！');
+					return false;
+				}
+				if (yzm == '') {
+					$(".tx_1").html('<img src="__ADMIN__/images/icon_1.jpg" />验证码不能为空！');
+					return false;
+				}
+				$(".tx_1").html('<img src="__ADMIN__/images/icon_1.jpg" />登录中...');	
+				$.post("{:url('login/login')}",{username:username,password:password,yzm:yzm,checkbox:checkbox},function(data){
+					if(data.status == 1){
+						$(".tx_1").html('<img src="__ADMIN__/images/icon_1.jpg" />'+data.info);
+						setTimeout(function(){
+							location.href = "{:url('index/index')}";
+						},1500);
+					}else{
+						$(".tx_1").html('<img src="__ADMIN__/images/icon_1.jpg" />'+data.info);
+					}
+
+				},'json');
+			})
+		})
+	</script>
+</html>

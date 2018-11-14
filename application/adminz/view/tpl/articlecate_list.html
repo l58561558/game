@@ -1,0 +1,154 @@
+<table class="layui-table table">
+  <colgroup>
+    <col width="150">
+    <col width="200">
+    <col>
+  </colgroup>
+  <thead>
+    <tr >
+		<th style="text-align: left;width: 30%;">分类名称</th>
+		<th style="text-align: center;width: 30%;">分类描述</th>
+		<th style="text-align: center;width: 10%;">显示</th>
+		<th style="text-align: center;width: 20%;">排序值</th>
+		<th style="text-align: center;width: 10%;">操作</th>
+    </tr> 
+  </thead>
+    <tbody>
+  	{volist name="_list" id="info" key='key'}
+	    <tr>
+	      <td style="text-align: left;">
+			{notempty name="info.child"}
+				<i class="fa fa-caret-right treegrid" data-nodeid="{$info.cate_id}"></i>
+			{/notempty}
+			{$info.cate_name|default=''}
+	      </td>
+	      <td style="text-align: center;">{$info.cate_desc|default=''}</td>
+		  <td style="text-align: center;">
+			{if $info.is_show eq 1}
+				<a class='btn-field' name='is_show' href='javascript:;' title='点击更改状态' data-status='0' data-id='{$info.cate_id}'' data-url="{:url('articlecate/articlecate_edit_field')}"><i class='fa fa-check'></i></a>
+			{else /}
+				<a class='btn-field' name='is_show' href='javascript:;' title='点击更改状态' data-status='1' data-id='{$info.cate_id}' data-url="{:url('articlecate/articlecate_edit_field')}"><i class='fa fa-close'></i></a>
+			{/if}
+		  </td>
+	      <td style="text-align: center;"><input style="text-align: center;" class="inputs" data-id="{$info.cate_id}" data-url="{:url('articlecate/articlecate_edit_field')}" name="sort_order" type="text" value="{$info.sort_order}" >
+	      </td>
+	      <td style="text-align: center;">
+	      	<div class="btn-group btn-group-sm">
+				<a href="javascript:;" data-container='body' data-placement="left" data-html='true' data-trigger="focus" data-title="删除提示" data-content='<p>您确定要删除吗?</p><button type="button" onclick="delete_data(this);" data-id="{$info.cate_id}" data-url="{:url('articlecate/articlecate_delete')}" class="btn btn-danger btn-sm">删除</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm">取消</button>' name="delete" style="color:red;" onclick="win_delete(this);">删除</a>&nbsp;&nbsp;&nbsp;
+				<a href="{:url('articlecate/edit')}?cate_id={$info.cate_id}">编辑</a>
+			</div>
+		</td>
+	    </tr>
+    <?php
+        if(isset($info['child'])){
+    ?> 
+	   	{volist name="info.child" id="child" key='key'}
+			<tr  class="treegrid-{$child.cate_id} treegrid-parent-{$child.parent_id}" style="background-color: #e9f0f5;display: none;">
+				<td style="padding-left:35px;text-align: left;">
+				{notempty name="child.child"}
+					<i class="fa fa-caret-right treegrid" data-nodeid="{$child.cate_id}"></i>
+				{/notempty}			
+				{$child.cate_name|default=''}
+				</td>
+				<td>
+					{$child.cate_desc}
+				</td>
+				<td>
+					{if $child.is_show eq 1}
+						<a class='btn-field' name='is_show' href='javascript:;' title='点击更改状态' data-status='0' data-id='{$child.cate_id}'' data-url="{:url('articlecate/articlecate_edit_field')}"><i class='fa fa-check'></i></a>
+					{else /}
+						<a class='btn-field' name='is_show' href='javascript:;' title='点击更改状态' data-status='1' data-id='{$child.cate_id}' data-url="{:url('articlecate/articlecate_edit_field')}"><i class='fa fa-close'></i></a>
+					{/if}
+				</td>
+				<td>
+					<input class="inputs" data-id="{$child.cate_id}" data-url="{:url('articlecate/articlecate_edit_field')}" name="sort_order" type="text" value="{$child.sort_order}" >
+				</td>
+				<td>
+					<div class="btn-group btn-group-sm">
+						<a href="javascript:;" data-container='body' data-placement="left" data-html='true' data-trigger="focus" data-title="删除提示" data-content='<p>您确定要删除吗222?</p><button type="button" onclick="delete_data(this);" data-id="{$child.cate_id}" data-url="{:url('articlecate/articlecate_delete')}" class="btn btn-danger btn-sm">删除</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm">取消</button>' name="delete" style="color:red;" onclick="win_delete(this);">删除</a>&nbsp;&nbsp;&nbsp;
+						<a href="{:url('articlecate/edit')}?cate_id={$child.cate_id}">编辑</a>
+					</div>
+				</td>
+			</tr>
+        <?php
+        if(isset($child['child'])){
+        ?>  
+		   	{volist name="child.child" id="childs" key='key'}
+				<tr  class="treegrid-{$childs.cate_id} treegrid-parent-{$childs.parent_id}" style="background-color: #e9f0f5;display: none;">
+					<td style="padding-left:65px;text-align: left;">
+						{notempty name="childs.child"}
+							<i class="fa fa-caret-right treegrid" data-nodeid="{$childs.cate_id}"></i>
+						{/notempty}
+						{$childs.cate_name|default=''}
+					</td>
+					<td>
+						{$childs.cate_desc}
+					</td>
+					<td>
+						{if $childs.is_show eq 1}
+							<a class='btn-field' name='is_show' href='javascript:;' title='点击更改状态' data-status='0' data-id='{$childs.cate_id}'' data-url="{:url('articlecate/articlecate_edit_field')}"><i class='fa fa-check'></i></a>
+						{else /}
+							<a class='btn-field' name='is_show' href='javascript:;' title='点击更改状态' data-status='1' data-id='{$childs.cate_id}' data-url="{:url('articlecate/articlecate_edit_field')}"><i class='fa fa-close'></i></a>
+						{/if}
+					</td>
+					<td>
+						<input class="inputs" data-id="{$childs.cate_id}" data-url="{:url('articlecate/articlecate_edit_field')}" name="sort_order" type="text" value="{$childs.sort_order}" >
+					</td>
+					<td>
+						<div class="btn-group btn-group-sm">
+							<a href="javascript:;" data-container='body' data-placement="left" data-html='true' data-trigger="focus" data-title="删除提示" data-content='<p>您确定要删除吗222?</p><button type="button" onclick="delete_data(this);" data-id="{$childs.cate_id}" data-url="{:url('articlecate/articlecate_delete')}" class="btn btn-danger btn-sm">删除</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm">取消</button>' name="delete" style="color:red;" onclick="win_delete(this);">删除</a>&nbsp;&nbsp;&nbsp;
+							<a href="{:url('articlecate/edit')}?cate_id={$childs.cate_id}">编辑</a>
+						</div>
+					</td>
+				</tr>
+	        <?php
+	        if(isset($childs['child'])){
+	        ?> 
+		        {volist name="childs.child" id="childss" key='key'}
+					<tr  class="treegrid-{$childss.cate_id} treegrid-parent-{$childss.parent_id}" style="background-color: #e9f0f5;display: none;">
+						<td style="padding-left:95px;text-align: left;">
+							{$childss.cate_name|default=''}
+						</td>
+						<td>
+							{$childss.cate_desc}
+						</td>
+						<td>
+							{if $childss.is_show eq 1}
+								<a class='btn-field' name='is_show' href='javascript:;' title='点击更改状态' data-status='0' data-id='{$childss.cate_id}'' data-url="{:url('articlecate/articlecate_edit_field')}"><i class='fa fa-check'></i></a>
+							{else /}
+								<a class='btn-field' name='is_show' href='javascript:;' title='点击更改状态' data-status='1' data-id='{$childss.cate_id}' data-url="{:url('articlecate/articlecate_edit_field')}"><i class='fa fa-close'></i></a>
+							{/if}
+						</td>
+						<td>
+							<input class="inputs" data-id="{$childss.cate_id}" data-url="{:url('articlecate/articlecate_edit_field')}" name="sort_order" type="text" value="{$childss.sort_order}" >
+						</td>
+						<td>
+							<div class="btn-group btn-group-sm">
+								<a href="javascript:;" data-container='body' data-placement="left" data-html='true' data-trigger="focus" data-title="删除提示" data-content='<p>您确定要删除吗222?</p><button type="button" onclick="delete_data(this);" data-id="{$childss.cate_id}" data-url="{:url('articlecate/articlecate_delete')}" class="btn btn-danger btn-sm">删除</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm">取消</button>' name="delete" style="color:red;" onclick="win_delete(this);">删除</a>&nbsp;&nbsp;&nbsp;
+								<a href="{:url('articlecate/edit')}?cate_id={$childss.cate_id}">编辑</a>
+							</div>
+						</td>
+					</tr>
+				{/volist}
+
+			<?php }?>
+
+			{/volist}
+
+		<?php }?>
+
+		{/volist}
+
+	<?php }?>
+
+   {/volist}
+	{empty name='_list'}
+	<tr>
+		<td colspan="15">空空如也~</td>
+	</tr>
+	{/empty}
+  </tbody>
+</table>
+<!-- <div class="box-footer clearfix">
+  <ul class="pagination pull-right"></ul>
+</div> -->

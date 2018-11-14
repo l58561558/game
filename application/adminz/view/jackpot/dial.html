@@ -1,0 +1,185 @@
+{extend name="public/base" /}
+{block name="content"}
+<style type="text/css">
+.layui-table-cell {
+            height: auto;
+            line-height: 28px;
+}
+</style>
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">本期奖池 -- 大转盘</h3>
+                        <div class="pull-right">
+                            <a href="{:url('history/dial')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="{:url('jackpot/save_status',['status'=>1,'game_id'=>4])}" class="layui-btn" id="normal">正常模式</a>
+                            
+                            <a href="{:url('jackpot/save_status',['status'=>2,'game_id'=>4])}" class="layui-btn" id="min">最小数模式</a>
+                            
+                            <h3 class="box-title" style="margin: 0px 40px 0px 40px">当前模式 : {if condition="$status eq 1"}正常模式{else if condition="$status eq 2"}最小数模式{/if}</h3>
+                        </div>
+                    </div>
+                    <table class="layui-table" >
+                        {if condition="empty($_list.new)"}
+                        <tr><td colspan="27" style="text-align: center; font-size: 20px; color: orange;">游戏未开始~~</td></tr>
+                        
+                        {else /}
+                        <thead>
+                            <tr>
+                                <th colspan="4" style="text-align: center;">开奖期编号</th>
+                                <th colspan="4" style="text-align: center;">本期开始时间</th>
+                                <th colspan="4" style="text-align: center;">开奖时间</th>
+                                <th colspan="4" style="text-align: center;">开奖倒计时</th>                                
+                                <!-- <th style="text-align: center;">开奖结果</th>                                 -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" style="text-align: center;">{$_list.new.kjid|default='-'}</td>
+                                <td colspan="4" style="text-align: center;">{$_list.new.add_time|date='Y-m-d H:i:s',###|default='-'}</td>
+                                <td colspan="4" style="text-align: center;">{$_list.new.Kjsj|date='Y-m-d H:i:s',###|default='-'}</td>
+                                <td colspan="4" id="Kjdjs" style="text-align: center; color: red">{$_list.new.Kjdjs|default='-'}</td>
+                                <!-- <td id="Kjdjs" style="text-align: center; color: red">{$_list.result_status|default='-'}</td> -->
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">ID</th>
+                                <th style="text-align: center;">組合</th>
+
+                                <th style="text-align: center;">乾坤</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">六行</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">十二生肖</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">特殊</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">投注总金额</th>
+                                <th style="text-align: center;">预计中奖金额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name='_list.data' id='item'}
+                            <tr>
+                                <td style="text-align: center;">{$item.arr_id|default='-'}</td>
+                                <td style="text-align: center;">{$item.arr_name|default='-'}</td>
+
+                                <td style="text-align: center; color: orange">{$item.two}</td>
+                                <td style="text-align: center; color: green">{$item.two_odds}</td>
+                                <td style="text-align: center; color: red" class="two_money">{$item.two_money}</td>
+
+                                <td style="text-align: center; color: orange">{$item.six}</td>
+                                <td style="text-align: center; color: green">{$item.six_odds}</td>
+                                <td style="text-align: center; color: red" class="six_money">{$item.six_money}</td>
+
+                                <td style="text-align: center; color: orange">{$item.twelve}</td>
+                                <td style="text-align: center; color: green">{$item.twelve_odds}</td>
+                                <td style="text-align: center; color: red" class="twelve_money">{$item.twelve_money}</td>
+
+                                <td style="text-align: center; color: orange">{$item.special}</td>
+                                <td style="text-align: center; color: green">{$item.special_odds}</td>
+                                <td style="text-align: center; color: red" class="special_money">{$item.special_money}</td>
+
+                                <td style="text-align: center; color: green" class="tz_money">{$item.tz_money|default='-'}</td>
+                                <td style="text-align: center; color: red" class="win_money">{$item.win_money|default='-'}</td>
+                            </tr>  
+                            {/volist} 
+                        </tbody>
+                        {/if}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+<script type="text/javascript">
+var Kjdjs = "{$_list.new.Kjdjs}";
+var interval = setInterval(function() { 
+    settime();
+},1000)
+function settime(){
+    if(Kjdjs < 1){
+        clearInterval(interval);
+        window.location.reload();
+    }else{
+        $("#Kjdjs").text(Kjdjs);
+        Kjdjs--;
+    }
+    
+}
+
+// setInterval(function(){
+//     getDate();
+// },1000)
+
+// function getDate(){
+//     var kjid = "{$_list.new.kjid}";
+//     if(kjid == "" || kjid == null || kjid == undefined){ // "",null,undefined
+//         window.location.reload();
+//     }else{
+//         $.ajax({
+//             url:"{:url('jackpot/get_dial_data')}",
+//             type:'post',
+//             data:{kjid:kjid},
+//             success:function(res){
+//                 if(res.code==1){
+//                 //console.log(res.data);
+//                     if(res.data.kjsjzt == undefined){
+//                         window.location.reload();
+//                     }
+//                     if(res.data.kjsjzt == 0){
+//                         window.location.reload();
+//                     }else{
+//                         var obj = res.data.data;
+//                         $("#Kjdjs").text(res.data.Kjdjs);
+//                         $.each(obj,function(key,value) {
+//                             $(".tz_money").eq(key).text(obj.tz_money);
+//                             $(".win_money").eq(key).text(obj.win_money);
+//                         });
+//                     }
+//                 }
+//             }
+//         })
+//     }
+// }
+</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+    });
+    laydate.render({
+        elem: '#date1'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}
+
+
+

@@ -1,0 +1,83 @@
+{extend name="public/base" /}
+{block name='css'}
+
+{/block}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">编辑</h3>
+                        <div class="pull-right">
+                            <a href="{:url('lol/cham_contest')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-id="tab_base"><a href="javascript:;">基础信息</a></li>
+                    </ul>
+                    <form id="form_submit" enctype="multipart/form-data" class="layui-form layui-form-pane" action="" method="post">
+                        <div class="box-body" id="tab_base">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">队伍名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="team_name" value="{$data.team_name}" class="layui-input" placeholder="队伍名称" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">赔率</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="team_odds" value="{$data.team_odds}" class="layui-input" placeholder="赔率" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">投注总额</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="tz_money" disabled style="background-color: #FBFBF4;" value="{$data.tz_money}" class="layui-input" placeholder="投注总额" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item" pane="">
+                                <label class="layui-form-label">单选框</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="status" value="1" title="正常" {if condition="$data.status eq 1"}checked{/if}>
+                                    <input type="radio" name="status" value="2" title="已淘汰" {if condition="$data.status eq 2"}checked{/if}>
+                                </div>
+                            </div>
+                        </div></div>
+                        <div class="layui-input-block">
+                            <button type="submit" class="layui-btn">保存</button>
+                            <label for="jump_list" style="margin-left: 15px;"><input type="checkbox" data-url="{:url('lol/cham_contest')}" id="jump_list" value="1" >返回列表页</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}
+
+

@@ -1,0 +1,30 @@
+/* CSS Document */
+ul,li,img,a,td,p{ margin:0px; padding:0px; border:none; text-decoration:none;}
+body{ background:#d6dee0 url(../images/body_bj.jpg) repeat-x; margin:0px; padding:0px; font-size:12px;}
+.warp{ width:960px; margin:0px auto; padding:0px; background:url(../images/mian_bj.jpg) no-repeat top; height:auto; overflow:hidden; clear:both;}
+.logo{ height:85px; width:300px; margin:0px auto; padding-top:30px; clear:both;}
+.main{ width:436px; height:250px; background:#fff; padding:0px; margin-left:257px; margin-top:16px;}
+.name_input{ width:239px; height:28px; background:url(../images/name_input.jpg) no-repeat; border:none; padding:1px 1px 1px 30px; font:12px/28px "宋体"; color:#999999; text-indent:10px;}
+.password_input{ width:239px; height:28px; background:url(../images/password_input.jpg) no-repeat; border:none; padding:1px 1px 1px 30px; font:12px/28px "宋体"; color:#999999; text-indent:10px;}
+.yzm_input{width:122px; height:28px; background:url(../images/yzm_input.jpg) no-repeat; border:none; padding:1px 1px 1px 30px; font:12px/28px "宋体"; color:#999999; text-indent:10px;}
+.yzm{ border:#d9d9d9 1px solid; height:25px; text-align:center; padding-top:3px; width:105px; float:right;}
+.login_bnt{ width:270px; height:45px; border:none; background:url(../images/login_bnt.jpg) no-repeat; margin-left:8px; margin-top:10px; cursor:pointer;}
+.fxk{ color:#666666; line-height:30px; float:left; height:30px;}
+.fxk input{ margin-top:8px !important; *margin-top:3px !important; *margin-top:3px; float:left; margin-left:35px; }
+.tx_1{ color:#FF0000; float:left; margin-left:20px; line-height:30px; height:30px; _margin-top:8px;}
+.tx_1 img{ margin-right:3px;}
+.notice{ width:570px; height:75px; background:url(../images/contant_bj.jpg) no-repeat; margin:0px auto; margin-top:165px; padding:20px 15px;}
+.notice .text_ms{ float:left; width:330px; line-height:22px; color:#666666; padding-right:20px;}
+.notice .contact{ width:205px; float:right;}
+.notice .contact h1{ margin:0px; padding:0px; font:14px/16px "微软雅黑"; color:#1d5b94;}
+.notice .contact p{ margin:0px; padding:0px; display:block; clear:both;}
+.notice .contact .tx{ color:#666;  line-height:17px; height:17px; overflow:hidden; margin-top:10px;}
+.notice .contact .tx img{ float:left;}
+.notice .contact .lx{ font-family:"Microsoft Sans Serif"; padding-left:35px; line-height:18px; margin-top:3px;}
+.notice .contact .lx span{ float:left;}
+.notice .contact .lx em{ float:left; color:#999999; margin:0px 5px;}
+.notice .contact .lx span img{ margin-top:0px;}
+
+.footer{ width:960px; color:#666666; font:12px/30px "Microsoft Sans Serif"; text-align:center;  padding-top:30px; padding-bottom:10px; margin:0px auto;}
+.footer a{ color:#666666;}
+

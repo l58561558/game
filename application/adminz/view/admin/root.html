@@ -1,0 +1,75 @@
+{extend name="public/base" /}
+{block name="css"}
+	<style type="text/css">
+		.popover-content > img{
+  			background-color: #ccc;
+		}
+	</style>
+{/block}
+{block name="content"}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              <h3 class="box-title">权限列表</h3>
+		              <div class="pull-right">
+			              <a href="{:url('admin/add_root',['role_id'=>$role_id])}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;添加权限</a>
+			          </div>
+		            </div>
+		            <div id="data_list_info">
+						<div class="box-body">
+						  	<table class="layui-table table">
+						        <tbody>
+						            <tr style="background-color: #f5f5f5;">
+										<th>权限名称</th>
+										<th>权限编码</th>
+										<th>是否启用</th>
+										<th>排序</th>
+										<th style="width: 100px">操作</th>
+						            </tr>
+						            {volist name="_list" id="info" key='key'}
+										<tr class="treegrid-{$info.role_node_id}">
+											<td>
+												{notempty name="info.child"}
+													<i class="fa fa-caret-right treegrid" data-nodeid="{$info.role_node_id}"></i>
+												{/notempty}
+												{$info.authority_name|default=''}
+											</td>
+											<td>{$info.authority_code}</td>
+											<td>
+												{if $info.is_enable eq 1}
+													<a class='btn-field' name='is_enable' href='javascript:;' title='点击更改状态' data-status='0' data-id='{$info.role_node_id}'' data-url="{:url('admin/root_edit_field')}"><i class='fa fa-check'></i></a>
+												{else /}
+													<a class='btn-field' name='is_enable' href='javascript:;' title='点击更改状态' data-status='1' data-id='{$info.role_node_id}' data-url="{:url('admin/root_edit_field')}"><i class='fa fa-close'></i></a>
+												{/if}
+											</td>
+											<td>
+												<input class="inputs" data-id="{$info.role_node_id}" data-url="{:url('admin/root_edit_field')}" name="sort_order" type="text" value="{$info.sort_order}" >
+											</td>
+											<td>
+												<div class="btn-group btn-group-sm">
+													<!-- <a href="javascript:;" data-container='body' data-placement="left" data-html='true' data-trigger="focus" data-title="删除提示" data-content='<p>您确定要删除吗?</p><button type="button" onclick="delete_data(this);" data-id="{$info.role_node_id}" data-url="{:url('admin/root_delete')}" class="btn btn-danger btn-sm">删除</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm">取消</button>' name="delete" style="color:red;" onclick="win_delete(this);">删除</a>&nbsp;&nbsp;&nbsp; -->
+													<a class="btn btn-danger btn-sm" href="{:url('admin/root_delete')}?role_node_id={$info.role_node_id}">删除</a>
+												</div>
+											</td>
+										</tr>
+									{/volist}
+									{empty name='_list'}
+										<tr>
+											<td colspan="15">空空如也~</td>
+										</tr>
+									{/empty}
+						      	</tbody>
+						  	</table>
+						</div>	            	
+		            </div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+
+{/block}

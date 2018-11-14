@@ -1,0 +1,47 @@
+<table class="layui-table table">
+	<colgroup>
+		<col width="150">
+		<col width="200">
+		<col>
+	</colgroup>
+	<thead>
+		<tr >
+			<th style="text-align: center;" style="width: 10px">#</th>
+			<th style="text-align: center;">用户ID</th>
+			<th style="text-align: center;">倍数</th>
+			<th style="text-align: center;">注数</th>
+			<th style="text-align: center;">串法</th>
+			<th style="text-align: center;">订单金额</th>
+			<th style="text-align: center;">中奖金额</th>
+			<th style="text-align: center;">中奖结果</th>
+			<th style="text-align: center;">订单创建时间</th>
+			<th style="text-align: center;">操作</th>
+		</tr> 
+	</thead>
+	<tbody>
+		{volist name="_list" id="info" key='key'}
+		<tr>
+			<td style="text-align: center;">{$key}</td>
+			<td style="text-align: center;">{$info.user_id}</td>
+			<td style="text-align: center;">{$info.multiple|default='-'}</td>
+			<td style="text-align: center;">{$info.tz_num|default='-'}</td>
+			<td style="text-align: center;">{$info.chuan|default='-'}</td>
+			<td style="text-align: center;">{$info.order_money|default='-'}</td>
+			<td style="text-align: center;">{$info.win_money|default='-'}</td>
+			{if condition="$info.is_win eq 0"}<td style="text-align: center;color: #ce6a14">未开奖</td>{/if}
+			{if condition="$info.is_win eq 1"}<td style="text-align: center;color: red">中奖</td>{/if}
+			{if condition="$info.is_win eq 2"}<td style="text-align: center;color: green">未中奖</td>{/if}
+			<td style="text-align: center;">{$info.add_time|date='Y-m-d H:i:s',###|default='-'}</td>
+			<td style="text-align: center;"><a href="{:url('nba/order_info')}?order_id={$info.order_id}">查看明细</a></td>
+		</tr>
+		{/volist}
+		{empty name='_list'}
+		<tr>
+			<td colspan="15">空空如也~</td>
+		</tr>
+		{/empty}
+	</tbody>
+</table>
+<div class="box-footer clearfix">
+  	<ul class="pagination pull-right">{$page}</ul>
+</div>

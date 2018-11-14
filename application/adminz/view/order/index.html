@@ -1,0 +1,95 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              	<h3 class="box-title">订单列表</h3>
+		            </div>
+		            <div class="pull-left">
+						<label style="margin-left: 10px;font-size: 18px" class="labels">游戏分类:</label>
+				  		<select style="height: 24px;margin-right: 50px" id="cate">
+				  			<option value="0">全部</option>
+				  			{volist name='cate' id='item'}
+				  			<option value="{$item.game_id}">{$item.game_name}</option>
+                           	{/volist}
+						</select>
+
+						<label style="margin-left: 10px;font-size: 18px" class="labels">日期搜索:</label>
+                        <input type="text" class="kjid" placeholder="开奖期号(选填)">
+                        <input type="text" class="yhid" placeholder="用户ID(选填)">
+                        <input type="text" class="add_time" placeholder="开始时间(选填)" id="date">
+                        <input type="text" class="end_time" placeholder="结束时间(选填)" id="date1">
+                        <button class="layui-btn" style="height: 27px;padding: 0 10px;line-height: 16px;">搜索</button>
+                    </div>
+		            <div class="panel-body">
+				  		
+					</div>
+		            <div id="data_list_info"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+	<script type="text/javascript">
+		$("#cate").change(function(){
+			getData();
+		})
+		function getData(p){
+			if(p==undefined || p<1)
+				p = 1;
+			var cate = $("#cate").val();
+			var kjid = $(".kjid").val();
+			var yhid = $(".yhid").val();
+			var add_time = $(".add_time").val();
+	    	var end_time = $(".end_time").val();
+	    	
+			result = {
+				page:p,
+				cate:cate,
+				kjid:kjid,
+				add_time:add_time,
+				end_time:end_time,
+				yhid:yhid
+			}
+			$.post("{:url('order/get_order_list')}",{page:p,result:result},function(res){
+				if(res.code == 1){
+					$("#data_list_info").html('').html(res.data);
+				}
+			},'json');
+		}
+		$(function(){
+			getData();
+			$(".layui-btn").click(function(){
+				getData();
+			})
+		});
+	</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}

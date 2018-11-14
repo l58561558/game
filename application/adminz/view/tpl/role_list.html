@@ -1,0 +1,41 @@
+<div class="box-body">
+  	<table class="layui-table table">
+        <tbody>
+            <tr style="background-color: #f5f5f5;">
+				<th style="width: 10px">#</th>
+				<th>角色名称</th>
+				<th>启用</th>
+				<th style="width: 100px">操作</th>
+            </tr>
+            {volist name="_list" id="info" key='key'}
+				<tr>
+					<td>{$key}</td>
+					<td>{$info.role_name|default='-'}</td>
+					<td>
+						{if $info.is_enable eq 1}
+							<a class='btn-field' name='is_enable' href='javascript:;' title='点击更改状态' data-status='0' data-id='{$info.role_id}'' data-url="{:url('role/role_edit_field')}"><i class='fa fa-check'></i></a>
+						{else /}
+							<a class='btn-field' name='is_enable' href='javascript:;' title='点击更改状态' data-status='1' data-id='{$info.role_id}' data-url="{:url('role/role_edit_field')}"><i class='fa fa-close'></i></a>
+						{/if}
+					</td>
+					<td>
+						<div class="btn-group btn-group-sm">
+							{if $info.role_id neq 1}
+								<a href="javascript:;" data-container='body' data-placement="left" data-html='true' data-trigger="focus" data-title="删除提示" data-content='<p>您确定要删除吗?</p><button type="button" onclick="delete_data(this);" data-id="{$info.role_id}" data-url="{:url('role/role_delete')}" class="btn btn-danger btn-sm">删除</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm">取消</button>' name="delete" style="color:red;" onclick="win_delete(this);">删除</a>&nbsp;&nbsp;&nbsp;
+							{/if}
+							<a href="{:url('role/edit')}?role_id={$info.role_id}">编辑</a>
+						</div>
+					</td>
+				</tr>
+			{/volist}
+			{empty name='_list'}
+				<tr>
+					<td colspan="15">空空如也~</td>
+				</tr>
+			{/empty}
+      	</tbody>
+  	</table>
+</div>
+<div class="box-footer clearfix">
+	<ul class="pagination pull-right">{$page}</ul>
+</div>

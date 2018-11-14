@@ -1,0 +1,70 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content-header">
+        <!-- <h1>
+            焦点图片列表
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol> -->
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">赔率设置</h3>
+                        <!-- <div class="pull-right">
+                            <a href="{:url('focus/lists')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div> -->
+                    </div>
+                    <form id="form_submit" method='post' action="{:url('system/conf')}" enctype="multipart/form-data">
+                        <div class="box-body">
+                            <!-- <div class="form-group">
+                                <label>中奖赔率--大</label>
+                                <input type="text" name="big_odds" lay-verify="required" class="layui-input" value="{$data.big_odds}">
+                            </div>
+                            <div class="form-group">
+                                <label>中奖赔率--小</label>
+                                <input type="text" name="small_odds" lay-verify="required" class="layui-input" value="{$data.small_odds}">
+                            </div>                            
+                            <div class="form-group">
+                                <label>中奖赔率--和</label>
+                                <input type="text" name="equal_odds" lay-verify="required" class="layui-input" value="{$data.equal_odds}">
+                            </div> -->
+                            <div class="form-group">
+                                <label>分红比例--基值</label>
+                                <input type="text" name="ratio" lay-verify="required" class="layui-input" value="{$data.ratio}">
+                            </div>                            
+                            <div class="form-group">
+                                <label>分红比例--幂函数</label>
+                                <input type="text" name="power" lay-verify="required" class="layui-input" value="{$data.power}">
+                            </div>
+							<!-- <div class="form-group">
+                                <label>大小和开奖概率模式</label>
+                                <select name="status">
+                                    <option value="1" {if condition="$data.status eq 1"}selected{/if}>532</option>
+                                    <option value="2" {if condition="$data.status eq 2"}selected{/if}>自定</option>
+                                </select>
+                            </div> -->
+                        </div>
+                        <div class="box-footer form-action">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+    <script>
+        $(function(){
+            
+        });
+    </script>
+{/block}
+
+

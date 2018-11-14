@@ -1,0 +1,115 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">往期列表 -- 百家乐</h3>
+                        <div class="pull-right">
+                            <a href="{:url('history/bjl')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <div class="box-header with-border">
+                        <div class="pull-left">
+                            <input type="text" placeholder="期号 : BJLxxxxxxxxx" name="kjid" class="kjid">
+                            <input type="text" class="add_time" placeholder="开始时间" id="date">
+                            <input type="text" class="end_time" placeholder="结束时间" id="date1">
+                            <button class="layui-btn" style="height: 27px;padding: 0 10px;line-height: 16px;">搜索</button>
+                            
+                        </div>
+                    </div>
+                    <div id="data_list_info">
+                        <table class="layui-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">开奖期编号</th>
+                                    <th style="text-align: center;">本期开始时间</th>
+                                    <th style="text-align: center;">开奖时间</th>
+                                    <th style="text-align: center;">开奖时间状态</th>
+                                    <th style="text-align: center;">庄家点数</th>
+                                    <th style="text-align: center;">闲家点数</th>
+                                    <th style="text-align: center;">开奖彩果</th>
+                                    <th style="text-align: center;">投注总金额</th>
+                                    <th style="text-align: center;">中奖总金额</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name='_list' key='k' id='item'}
+                                <tr>
+                                    <td style="text-align: center;">{$item.kjid}</td>
+                                    <td style="text-align: center;">{$item.add_time|date='Y-m-d H:i:s',###|default='-'}</td>
+                                    <td style="text-align: center;">{$item.win_time|date='Y-m-d H:i:s',###|default='-'}</td>
+                                    <td style="text-align: center;">{$item.win_status|default='-'}</td>
+                                    <td style="text-align: center;">{$item.banker_result|default='-'}</td>
+                                    <td style="text-align: center;">{$item.player_result|default='-'}</td>
+                                    <td style="text-align: center;">{$item.win_result|default='-'}</td>
+                                    <td style="text-align: center;">{$item.tz_money|default='-'}</td>
+                                    <td style="text-align: center;">{$item.win_money|default='-'}</td>
+                                </tr>
+                                {/volist}
+                                {if condition="empty($_list)"}
+                                <tr><td colspan="7" style="text-align: center;">空空如也~</td></tr>
+                                {/if}
+                            </tbody>
+                        </table>
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pull-right">{$page}</ul>
+                        </div>                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+<script type="text/javascript">
+    $(".layui-btn").click(function(){
+        getData();
+    })
+    function getData(p){
+        var kjid = $(".kjid").val();
+        var add_time = $(".add_time").val();
+        var end_time = $(".end_time").val();
+        var result = {
+            kjid : kjid,
+            add_time : add_time,
+            end_time : end_time
+        };
+        if(p==undefined || p<1)
+            p = 1;
+        $.post("{:url('history/get_bjl_list')}",{page:p,result:result},function(res){
+            if(res.code == 1){
+                $("#data_list_info").html('').html(res.data);
+            }
+        },'json');
+    }
+</script>
+{/block}
+
+

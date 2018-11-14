@@ -1,0 +1,124 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">编辑用户</h3>
+                        <div class="pull-right">
+                            <a href="{:url('admin/index')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-id="tab_base"><a href="javascript:;">基础信息</a></li>
+                    </ul>
+                    <form id="form_submit" enctype="multipart/form-data" class="layui-form layui-form-pane" action="" method="post">
+                        <div class="box-body" id="tab_base">
+                            <style type="text/css">
+                                .layui-form-pane .layui-form-label{
+                                    width: 15%;
+                                }
+                                .layui-form-pane .layui-input-block{
+                                    margin-left: 15%;
+                                }
+                            </style>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">用户编号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" style="background-color: #FBFBFB" readonly="readonly" value="{$user.yhid}" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">手机号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" style="background-color: #FBFBFB" readonly="readonly" value="{$user.Sjhm}" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上级用户编号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" style="background-color: #FBFBFB" readonly="readonly" value="{$user.Sfby}" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">用户名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" style="background-color: #FBFBFB" readonly="readonly" value="{$user.yhk.username}" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">银行卡号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" style="background-color: #FBFBFB" readonly="readonly" value="{$user.yhk.Yhkh}" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">密码</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="Mm" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">状态</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" id="status_yes" name="status" value="0" title="正常玩家" {if condition="$user.status eq 0"}checked{/if}>
+                                    <div class="layui-unselect layui-form-radio layui-form-radioed">
+                                        <i class="layui-anim layui-icon layui-anim-scaleSpring"></i>
+                                        <div>启用</div>
+                                    </div>
+                                    <input type="radio" id="status_no" name="status" value="1" title="内部账号" {if condition="$user.status eq 1"}checked{/if}>
+                                    <div class="layui-unselect layui-form-radio">
+                                        <i class="layui-anim layui-icon"></i>
+                                        <div>禁用</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div></div>
+                        <div class="layui-input-block">
+                            <button type="submit" class="layui-btn">保存</button>
+                            <label for="jump_list" style="margin-left: 15px;"><input type="checkbox" data-url="{:url('user/index')}" id="jump_list" value="1" >返回列表页</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function(){
+          var form = layui.form
+          ,layer = layui.layer
+          ,layedit = layui.layedit
+          ,laydate = layui.laydate;
+          
+          //日期
+          laydate.render({
+            elem: '#date'
+          });
+          laydate.render({
+            elem: '#date1'
+          }); 
+        });
+        // $(function(){
+        //     //初始化载入编辑器
+        //     var editor; //定义局部顶部变量
+        //     editorCreate();
+        //     function editorCreate(){
+        //         editor = KindEditor.create('textarea[name="remarks"]',{
+        //             afterCreate:function(){
+        //                 if(editor.isEmpty()){ //跟自动保存的条件相对应
+        //                     //editorAutorestore();
+        //                 }
+        //             },
+        //             afterBlur: function(){this.sync()},
+        //             uploadJson:"{:url('base/editorUpload')}"
+        //         });
+        //     };
+        // });
+    </script>
+{/block}
+
+

@@ -1,0 +1,94 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              	<h3 class="box-title">队伍列表</h3>		              	
+						<div class="pull-right">
+							<a href="{:url('nba/add_team')}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;添加队伍</a>
+						</div>
+		            </div>
+		            <div id="data_list_info">
+						<table class="layui-table table">
+							<thead>
+								<tr >
+									<th style="text-align: center;" style="width: 10px">#</th>
+									<th style="text-align: center;">队伍名称</th>
+									<th style="text-align: center;">队伍logo</th>
+									<th style="text-align: center;" style="width: 100px">操作</th>
+								</tr> 
+							</thead>
+							<tbody>
+								{volist name="data" id="info" key='key'}
+								<tr>
+									<td style="text-align: center;">{$key}</td>
+									<td style="text-align: center;">{$info.team_name|default='-'}</td>
+									<td style="text-align: center;">
+										<img style="border: 1px solid #000;margin-left: 20px;width: 70px;height: 70px;" src="{$info.logo}">
+									</td>
+									<td style="text-align: center;">
+										<a href="{:url('nba/edit_team')}?team_id={$info.team_id}">编辑</a>&nbsp;&nbsp;&nbsp;
+										<a class="drop" team_id="{$info.team_id}" href="{:url('nba/drop_team')}?team_id={$info.team_id}">删除</a>
+									</td>
+								</tr>
+								{/volist}
+								{empty name='_list'}
+								<tr>
+									<td colspan="15">空空如也~</td>
+								</tr>
+								{/empty}
+							</tbody>
+						</table>
+		            </div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+<script type="text/javascript">
+	$(".drop").click(function(){
+		var team_id = $(this).attr('team_id');
+		$.ajax({
+			url:"{:url('nba/drop_team')}",
+			type:'get',
+			data:{team_id:team_id},
+			success:function(res){
+				if(res.code == 1){
+					layer.msg(res.msg);
+					window.location.reload();
+				}else{
+					layer.msg(res.msg);
+				}
+			}
+		})
+	})
+</script>
+{/block}

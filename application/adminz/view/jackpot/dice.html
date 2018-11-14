@@ -1,0 +1,211 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">本期奖池 -- 骰子</h3>
+                        <div class="pull-right">
+                            <a href="{:url('history/dice')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="{:url('jackpot/save_status',['status'=>1,'game_id'=>2])}" class="layui-btn" id="normal">正常模式</a>
+                            
+                            <a href="{:url('jackpot/save_status',['status'=>2,'game_id'=>2])}" class="layui-btn" id="min">最小数模式</a>
+                            
+                            <h3 class="box-title" style="margin: 0px 40px 0px 40px">当前模式 : {if condition="$status eq 1"}正常模式{else if condition="$status eq 2"}最小数模式{/if}</h3>
+                        </div>
+                    </div>
+
+                    <table class="layui-table" >
+                        {if condition="empty($_list.new)"}
+                        <tr><td colspan="27" style="text-align: center; font-size: 20px; color: orange;">游戏未开始~~</td></tr>
+                        {else /}
+                        <thead>
+                            <tr>
+                                <th colspan="5">开奖期编号 : {$_list.new.kjid}</th>
+                                <th colspan="4">开奖倒计时 : <span id="Kjdjs">{$_list.new.Kjdjs}</span></th>
+                                <th colspan="5">本期开始时间 : {$_list.new.add_time|date='Y-m-d H:i:s',###|default='-'}</th>
+                                <th colspan="7">开奖时间 : {$_list.new.Kjsj|date='Y-m-d H:i:s',###|default='-'}</th>
+                                <th colspan="7">预计开奖彩果 : <span id="win_result" style="color: red">{$_list.new.win_result}</span></th>
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;">骰子組合</th>
+
+                                <th style="text-align: center;">和的单双数</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">大小</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">两个骰子和</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <!-- <th style="text-align: center;">出现的一个数字(左)</th> -->
+                                <th style="text-align: center;">出现的一个数字</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <!-- <th style="text-align: center;">出现的一个数字(右)</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th> -->
+
+                                <th style="text-align: center;">左边骰子</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">右边骰子</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">两个骰子的点数</th>
+                                <th style="text-align: center;">赔率</th>
+                                <th style="text-align: center;">投注金额</th>
+
+                                <th style="text-align: center;">投注总金额</th>
+                                <th style="text-align: center;">预计中奖金额</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name='_list.data' id='item'}
+                            <tr>
+                                <td style="text-align: center;">{$item.arr_id|default='-'}</td>
+
+                                <td style="text-align: center; color: orange">{$item.sum_numbers}</td>
+                                <td style="text-align: center; color: green">{$item.sum_numbers_odds}</td>
+                                <td style="text-align: center; color: red" class="sum_numbers_money">{$item.sum_numbers_money}</td>
+
+                                <td style="text-align: center; color: orange">{$item.dx}</td>
+                                <td style="text-align: center; color: green">{$item.dx_odds}</td>
+                                <td style="text-align: center; color: red" class="dx_money">{$item.dx_money}</td>
+
+                                <td style="text-align: center; color: orange">{$item.sum}</td>
+                                <td style="text-align: center; color: green">{$item.sum_odds}</td>
+                                <td style="text-align: center; color: red" class="sum_money">{$item.sum_money}</td>
+
+                                <td style="text-align: center; color: orange">{$item.num1_left}</td>
+                                <td style="text-align: center; color: green">{$item.num1_left_odds}</td>
+                                <td style="text-align: center; color: red" class="num1_left_money">{$item.num1_left_money}</td>
+
+                                <!-- <td style="text-align: center; color: orange">{$item.num1_right}</td>
+                                <td style="text-align: center; color: green">{$item.num1_right_odds}</td>
+                                <td style="text-align: center; color: red" class="num1_right_money">{$item.num1_right_money}</td> -->
+
+                                <td style="text-align: center; color: orange">{$item.l_dice}</td>
+                                <td style="text-align: center; color: green">{$item.l_dice_odds}</td>
+                                <td style="text-align: center; color: red" class="l_dice_money">{$item.l_dice_money}</td>
+
+                                <td style="text-align: center; color: orange">{$item.r_dice}</td>
+                                <td style="text-align: center; color: green">{$item.r_dice_odds}</td>
+                                <td style="text-align: center; color: red" class="r_dice_money">{$item.r_dice_money}</td>
+
+                                <td style="text-align: center; color: orange">{$item.two_dice}</td>
+                                <td style="text-align: center; color: green">{$item.two_dice_odds}</td>
+                                <td style="text-align: center; color: red" class="two_dice_money">{$item.two_dice_money}</td>
+
+                                <td style="text-align: center; color: green" class="tz_money">{$item.tz_money|default='-'}</td>
+                                <td style="text-align: center; color: red" class="win_money">{$item.win_money|default='-'}</td>
+                            </tr>  
+                            {/volist}                          
+                        </tbody>
+                        {/if}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+<script type="text/javascript">
+var Kjdjs = "{$_list.new.Kjdjs}";
+var interval = setInterval(function() { 
+    settime() 
+},1000)
+function settime(){
+    if(Kjdjs < 1){
+        clearInterval(interval);
+        window.location.reload();
+    }else{
+        $("#Kjdjs").text(Kjdjs);
+        Kjdjs--;
+    }
+    
+}
+    //     setInterval(function(){
+    //         getDate();
+    //     },1000)
+
+    // function getDate(){
+    //     var kjid = "{$_list.new.kjid}";
+    //     $.ajax({
+    //         url:"{:url('jackpot/get_dice_data')}",
+    //         type:'post',
+    //         data:{kjid:kjid},
+    //         success:function(res){
+    //             if(res.code==1){
+    //                 // console.log(res.data);
+    //                 if(res.data.kjsjzt == undefined){
+    //                     window.location.reload();
+    //                 }
+    //                 if(res.data.kjsjzt == 0){
+    //                     window.location.reload()
+    //                 }else{
+    //                     $("#win_result").text(res.data.win_result);
+    //                     var obj = res.data.data;
+    //                     // console.log(obj);
+    //                     // if(res.data.Kjdjs < 0){
+    //                     //     window.location.reload()
+    //                     // }
+    //                     $("#Kjdjs").text(res.data.Kjdjs);
+    //                     $.each(obj,function(key,value) {
+    //                         $(".sum_numbers_money").eq(key).text(obj.sum_numbers_money);
+    //                         $(".dx_money").eq(key).text(obj.dx_money);
+    //                         $(".sum_money").eq(key).text(obj.sum_money);
+    //                         $(".num1_left_money").eq(key).text(obj.num1_left_money);
+    //                         // $(".num1_right_money").eq(key).text(obj.num1_right_money);
+    //                         $(".l_dice_money").eq(key).text(obj.l_dice_money);
+    //                         $(".r_dice_money").eq(key).text(obj.r_dice_money);
+    //                         $(".two_dice_money").eq(key).text(obj.two_dice_money);
+    //                         $(".tz_money").eq(key).text(obj.tz_money);
+    //                         $(".win_money").eq(key).text(obj.win_money);
+    //                     });
+    //                     // getDate();
+    //                 }
+    //             }else{
+    //                 window.location.reload()
+    //             }
+    //         }
+    //     })
+    // }
+</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+    });
+    laydate.render({
+        elem: '#date1'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}
+
+
+

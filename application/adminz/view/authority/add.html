@@ -1,0 +1,84 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">添加节点信息</h3>
+                        <div class="pull-right">
+                            <a href="{:url('authority/index')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active" data-id="tab_base"><a href="javascript:;">基础信息</a></li>
+                    </ul>
+                    <form id="form_submit" enctype="multipart/form-data" class="layui-form layui-form-pane" action="" method="post">
+                        <div class="box-body" id="tab_base">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">父权限</label>
+                                <div class="layui-input-block">
+                                    <select name="pid" class="form-control">
+                                        <option value="0">顶级权限</option>
+                                        {volist name="authority_list|default=array()" id="vo"}
+                                            <option value="{$vo.authority_id}">{$vo.name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">权限名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" lay-verify="required" class="layui-input" placeholder="权限名称" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">权限编码(英文)</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="code" lay-verify="required" class="layui-input" placeholder="权限编码(英文)" value="" >
+                                </div>
+                            </div>
+                            
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">排序</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="sort_order" lay-verify="required" class="layui-input" placeholder="排序" value="50" >
+                                </div>
+                            </div></div>
+                        </div>
+                        <div class="form-group" style="margin-left:10px;">
+                            <label>附加选项</label>
+                            <label for="enable_yes" style="padding-left:10px;">
+                                <input checked type="checkbox" id="enable_yes" name="is_enable" value="1"  /> 启用
+                            </label>
+                        </div>
+                        <div class="box-footer form-action" >
+                            <button type="submit" class="layui-btn">添加</button>
+                            <label for="jump_list" style="margin-left: 15px;"><input type="checkbox" data-url="{:url('authority/index')}" id="jump_list" value="1" >返回列表页</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function(){
+          var form = layui.form
+          ,layer = layui.layer
+          ,layedit = layui.layedit
+          ,laydate = layui.laydate;
+          
+          //日期
+          laydate.render({
+            elem: '#date'
+          });
+          laydate.render({
+            elem: '#date1'
+          }); 
+        });
+    </script>
+{/block}
+
+

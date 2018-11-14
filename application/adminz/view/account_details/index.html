@@ -1,0 +1,148 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              	<h3 class="box-title">明细列表</h3>
+		            </div>
+		            <div class="pull-left">
+                    	<label style="margin-left: 10px;font-size: 18px" class="labels">交易类型:</label>
+				  		<select style="height: 24px;margin-right: 10px" id="cate">
+				  			<option value="0">全部</option>
+				  			<option value="1">账号充值</option>
+                           	<option value="2">提现申请</option>
+                           	<option value="3">用户下注</option>
+                           	<option value="4">中奖金额</option>
+                           	<option value="5">分销收益</option>
+                           	<option value="6">下注流水奖励</option>
+                           	<option value="7">上分</option>
+						</select>
+
+						<label style="margin-left: 10px;font-size: 18px" class="labels">日期搜索:</label>
+                        <input type="text" class="yhid" placeholder="用户ID(选填)">
+                        <input type="text" class="Sjhm" placeholder="手机号码(选填)">
+                        <input type="text" class="add_time" placeholder="开始时间(选填)" id="date">
+                        <input type="text" class="end_time" placeholder="结束时间(选填)" id="date1">
+                        <button class="layui-btn" style="height: 27px;padding: 0 10px;line-height: 16px;">搜索</button>
+                    </div>
+                    <div class="pull-left" style="display: none;width: 100%;padding-left: 92px;">
+                    	<select style="height: 24px;margin-right: 50px;" id="tx_cate">
+				  			<option value="0">全部</option>
+				  			<option value="3">提现成功</option>
+						</select>
+                    </div>
+                    <div class="pull-left" style="display: none;width: 100%;padding-left: 92px;">
+                    	<select style="height: 24px;margin-right: 50px;" id="pay_cate">
+				  			<option value="0">全部</option>
+				  			<option value="1">已支付</option>
+                           	<option value="2">未支付</option>
+						</select>
+                    </div>
+		            <div class="panel-body">
+				  		
+					</div>
+		            <div id="data_list_info"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+	var id = "{$id}";
+	var result;
+	$("#cate").change(function(){
+		var cate = $("#cate").val();
+		if(cate == 1){
+			$("#pay_cate").parent().css('display','block');
+		}else{
+			$("#pay_cate").parent().css('display','none');
+		}
+		if(cate == 2){
+			$("#tx_cate").parent().css('display','block');
+		}else{
+			$("#tx_cate").parent().css('display','none');
+		}
+		getData();
+	})
+	$("#pay_cate").change(function(){
+		getData();
+	})
+	$("#tx_cate").change(function(){
+		getData();
+	})
+    $(".layui-btn").click(function(){
+        getData();
+    })		
+	function getData(p){
+		if(p==undefined || p<1)
+			p = 1;
+		var cate = $("#cate").val();
+		var pay_cate = $("#pay_cate").val();
+		var tx_cate = $("#tx_cate").val();
+		var add_time = $(".add_time").val();
+    	var end_time = $(".end_time").val();
+    	var yhid = $(".yhid").val();
+    	var Sjhm = $(".Sjhm").val();
+		if(id!=undefined){
+			result = {
+				page:p,
+				id:id,
+				cate:cate,
+				pay_cate:pay_cate,
+				tx_cate:tx_cate,
+				add_time:add_time,
+				end_time:end_time,
+				yhid:yhid,
+				Sjhm:Sjhm
+			}
+		}else{
+			result = {
+				page:p,
+				cate:cate,
+				pay_cate:pay_cate,
+				tx_cate:tx_cate,
+				add_time:add_time,
+				end_time:end_time,
+				yhid:yhid,
+				Sjhm:Sjhm
+			}			
+		}
+		$.post("{:url('account_details/get_account_details_list')}",result,function(res){
+			if(res.code == 1){
+				$("#data_list_info").html('').html(res.data);
+			}
+		},'json');
+	}
+	$(function(){
+		getData();
+	});
+</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}

@@ -1,0 +1,50 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content-header">
+		<!-- <h1>
+			广告图片列表
+			<small></small>
+		</h1> -->
+		<!-- <ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li class="active">Dashboard</li>
+		</ol> -->
+	</div>
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              <h3 class="box-title">广告列表</h3>
+		              <div class="pull-right">
+			              <a href="{:url('ads/add')}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;添加广告</a>
+			          </div>
+		            </div>
+		            <div id="data_list_info"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+	<script type="text/javascript">
+		function getData(p){
+			if(p==undefined || p<1)
+				p = 1;
+			var position_id = '{$position_id}';
+			$.post("{:url('ads/get_ads_list')}",{page:p,position_id:position_id},function(res){
+				if(res.code == 1){
+					$("#data_list_info").html('').html(res.data);
+				}
+			},'json');
+		}
+		$(function(){
+			getData();
+			$("#position_id").change(function(){
+				getData();
+			});
+		});
+	</script>
+{/block}

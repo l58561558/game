@@ -1,0 +1,87 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              <h3 class="box-title">文章列表</h3>
+		              <div class="pull-right">
+			              <a href="{:url('article/add')}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;添加文章</a>
+			          </div>
+		            </div>
+		            <div class="panel-body">
+				  		<div class="pull-left">
+					  		<label class="labels">分类:</label>
+					  		<select id="cate_id" name="cate_id">
+					  			<option value="0">全部分类</option>
+								{volist name="cate_list|default=array()" id="vo"}
+	                                <option value="{$vo.cate_id}">{$vo.cate_name}</option>
+	                                <?php
+	                                if(isset($vo['child'])){
+	                                ?>                                
+	                                {volist name='vo.child' id='val'}
+	                                    <option value="{$val.cate_id}">
+	                                      ——{$val.cate_name}
+	                                    </option>
+	                                    <?php
+	                                    if(isset($val['child'])){
+	                                    ?>
+	                                      {volist name='val.child' id='v'}
+	                                        <option value="{$v.cate_id}">
+	                                          ————{$v.cate_name}
+	                                        </option>
+	                                        <?php
+	                                        if(isset($v['child'])){
+	                                        ?>
+	                                          {volist name='v.child' id='item'}
+	                                            <option value="{$item.cate_id}">
+	                                              ——————{$item.cate_name}
+	                                            </option>
+	                                            <?php
+	                                            if(isset($item['child'])){
+	                                            ?>
+	                                              {volist name='item.child' id='itemm'}
+	                                                <option value="{$itemm.cate_id}">
+	                                                  ————————{$itemm.cate_name}
+	                                                </option>
+	                                              {/volist}
+	                                            <?php }?>
+	                                          {/volist}
+	                                        <?php }?>
+	                                      {/volist}
+	                                    <?php }?>
+	                                {/volist}
+	                                <?php }?>
+	                            {/volist}
+							</select>
+						</div>
+					</div>
+		            <div id="data_list_info"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+	<script type="text/javascript">
+		function getData(p){
+			if(p==undefined || p<1)
+				p = 1;
+			var cate_id = $("#cate_id").val();
+			$.post("{:url('article/get_article_list')}",{page:p,cate_id:cate_id},function(res){
+				if(res.code == 1){
+					$("#data_list_info").html('').html(res.data);
+				}
+			},'json');
+		}
+		$(function(){
+			getData();
+			$("#cate_id").change(function(){
+				getData();
+			});
+		});
+	</script>
+{/block}

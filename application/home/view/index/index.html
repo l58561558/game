@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PayAPI PHP Demo Index</title>
+</head>
+<body>
+
+    <form>
+        <img src="http://www.202252.com/game/home/login/getcode" alt="点击更新验证码" onclick="reloadcode(this)" />
+        <p><input id="code" type="text" name="code" class="form-control" required></p>
+        <input type="button" id="SUB" value="Sub">
+        <p><input id="phone" type="text" name="phone" class="form-control" placeholder="请输入手机号码" required></p>
+        <p><input id="inputprice" type="text" name="inputprice" class="form-control" placeholder="请输入金额" required></p>
+                
+        <div class="radio">
+            <label>            
+                <p><input type="radio" name="demo1" id="demo1-alipay" value="option1" checked="">
+                    支付宝支付</p>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <p><input type="radio" name="demo1" id="demo1-weixin" value="option2">
+                微信支付</p>
+            </label>
+        </div>
+        <button type="button" id="demoBtn1">确认购买</button>    
+            
+    </form>
+
+
+    <form style='display:none;' id='formpay' name='formpay' method='post' action='https://bell.eysj.net/pay'>
+        <input name='goodsname' id='goodsname' type='text' value='' />
+        <input name='istype' id='istype' type='text' value='' />
+        <input name='key' id='key' type='text' value=''/>
+        <input name='notify_url' id='notify_url' type='text' value=''/>
+        <input name='orderid' id='orderid' type='text' value=''/>
+        <input name='orderuid' id='orderuid' type='text' value=''/>
+        <input name='price' id='price' type='text' value=''/>
+        <input name='return_url' id='return_url' type='text' value=''/>
+        <input name='uid' id='uid' type='text' value=''/>
+        <input type='submit' id='submitdemo1'>
+    </form>
+
+<!-- Jquery files -->
+<script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $("#SUB").click(function(){
+        var code = $("#code").val();
+        var result = {
+            phone : 15394244605,
+            password : 123456,
+            zpassword : 123456,
+            code : code
+        };
+        $.ajax({
+            url:"{:url('home/login/reg')}",
+            type:'post',
+            data:result,
+            success:function(res){
+                console.log(res);
+            }
+        })        
+    })
+
+
+function reloadcode(obj) {
+    obj.src='http://www.202252.com/game/home/login/getcode';
+}
+
+$().ready(function(){
+    function getistype(){
+        return ($("#demo1-alipay").is(':checked') ? "1" : "2" ); 
+    }
+
+    $("#demoBtn1").click(function(){
+        $.post(
+            "{:url('home/pay/pay')}",
+            {
+                phone : $("#phone").val(),
+                price : $("#inputprice").val(), 
+                istype : getistype(),
+
+            },
+            function(data){ 
+                console.log(data);
+                if (data.code > 0){
+                    
+                    $("#goodsname").val(data.data.goodsname);
+                    $("#istype").val(data.data.istype);
+                    $('#key').val(data.data.key);
+                    $('#notify_url').val(data.data.notify_url);
+                    $('#orderid').val(data.data.orderid);
+                    $('#orderuid').val(data.data.orderuid);
+                    $('#price').val(data.data.price);
+                    $('#return_url').val(data.data.return_url);
+                    $('#uid').val(data.data.uid);
+                    $('#submitdemo1').click();
+
+                } else {
+                    alert(data.msg);
+                }
+            }, "json"
+        );
+    });
+});
+function curl_post($url='',$postdata='',$options=array()){
+    $ch=curl_init($url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_POST,1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    if(!empty($options)){
+        curl_setopt_array($ch, $options);
+    }
+    $data=curl_exec($ch);
+    curl_close($ch);
+    return $data;
+}
+</script>    
+
+
+</body>
+</html>

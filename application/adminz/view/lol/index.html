@@ -1,0 +1,195 @@
+{extend name="public/base" /}
+
+{block name="content"}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+		              	<h3 class="box-title">赛事列表</h3>
+		              	
+						<div class="pull-right">
+							<a href="{:url('lol/add')}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;添加赛事</a>
+						</div>
+		            </div>
+		            <div class="box-header with-border">
+			            <div class="pull-left">
+							<label style="margin-left: 10px;font-size: 18px" class="labels">状态:</label>
+					  		<select style="height: 24px;margin-right: 50px" id="cate">
+					  			<option value="0" {if condition="$status eq 0"}selected{/if}>全部</option>
+					  			<option value="1" {if condition="$status eq 1"}selected{/if}>未结束</option>
+					  			<option value="2" {if condition="$status eq 2"}selected{/if}>已结束</option>
+							</select>
+	                    </div>
+	                </div>
+		            <div id="data_list_info">
+						<table class="layui-table table">
+							<colgroup>
+								<col width="150">
+								<col width="200">
+								<col>
+							</colgroup>
+							<thead>
+								<tr >
+									<th style="text-align: center;" style="width: 10px">#</th>
+									<th style="text-align: center;">比赛名称</th>
+									<th style="text-align: center;">队伍1</th>
+									<th style="text-align: center;">队伍2</th>
+									<th style="text-align: center;">比赛场次</th>
+									<th style="text-align: center;">开始时间</th>
+									<th style="text-align: center;">赛事状态</th>
+									<th style="text-align: center;">获胜队伍</th>
+									<th style="text-align: center;">赛事链接地址</th>
+									<th style="text-align: center;" style="width: 100px">操作</th>
+								</tr> 
+							</thead>
+							<tbody>
+								{volist name="_list" id="info" key='key'}
+								<tr>
+									<td style="text-align: center;">{$key}</td>
+									<td style="text-align: center;">
+										{notempty name="info.child"}
+											<i class="fa fa-caret-right treegrid" data-nodeid="{$info.id}"></i>
+										{/notempty}
+										{$info.game_name}
+									</td>
+									<td style="text-align: center;">{$info.team1|default='-'}</td>
+									<td style="text-align: center;">{$info.team2|default='-'}</td>
+									<td style="text-align: center;">BO-<?php echo $info['bo']==0?1:$info['bo'];?></td>
+									<td style="text-align: center;">{$info.start_time|date='Y-m-d H:i:s',###|default='-'}</td>
+									<td style="text-align: center;color: red">
+										{if condition="$info.status eq 0"}未开始{/if}
+										{if condition="$info.status eq 1"}竞猜中{/if}
+										{if condition="$info.status eq 2"}封盘{/if}
+										{if condition="$info.status eq 3"}游戏结束{/if}
+									</td>
+									<th style="text-align: center;">{$info.win_team|default='-'}</th>
+									<td style="text-align: center;"><a href="{$info.url}" target="_blank">点我直通车</a></td>
+									<td style="text-align: center;">
+										{if condition="$info.bo neq 0"}
+										<div class="btn-group btn-group-sm">
+											{if condition="$info.status eq 0"}
+											<a href="{:url('lol/lol_edit_field')}?id={$info.id}&status=1" style="color: green">开始</a>&nbsp;&nbsp;&nbsp;
+											{/if}
+											{if condition="$info.status eq 1"}
+											<a href="{:url('lol/lol_edit_field')}?id={$info.id}&status=2" style="color: grey">封盘</a>&nbsp;&nbsp;&nbsp;
+											{/if}
+											{if condition="$info.status eq 2"}
+											<a href="{:url('lol/lol_edit_field')}?id={$info.id}&status=1" style="color: green">开始</a>&nbsp;&nbsp;&nbsp;
+											<a href="{:url('lol/lol_over')}?id={$info.id}" style="color: red">结束</a>&nbsp;&nbsp;&nbsp;
+											{/if}
+											{if condition="$info.status neq 3"}
+											<a href="{:url('lol/add_game')}?id={$info.id}" style="color: #ce6a14">添加比赛</a>&nbsp;&nbsp;&nbsp;					
+											{/if}
+
+											<a href="{:url('lol/edit')}?id={$info.id}">编辑</a>&nbsp;&nbsp;&nbsp;
+											<a href="{:url('lol/look')}?id={$info.id}">查看</a>&nbsp;&nbsp;&nbsp;
+										</div>
+										{else /}
+										<div class="btn-group btn-group-sm">
+											{if condition="$info.status eq 0"}
+											<a href="{:url('lol/lol_edit_field')}?id={$info.id}&status=1" style="color: green">开始竞猜</a>&nbsp;&nbsp;&nbsp;
+											<a href="{:url('lol/lol_edit_field')}?id={$info.id}&status=2" style="color: grey">封盘</a>
+											{/if}
+											{if condition="$info.status eq 1"}
+											<a href="{:url('lol/lol_edit_field')}?id={$info.id}&status=2" style="color: grey">封盘</a>
+											{/if}
+											{if condition="$info.status eq 2"}
+											<a href="{:url('lol/lol_edit_field')}?id={$info.id}&status=1" style="color: green">开始竞猜</a>&nbsp;&nbsp;&nbsp;
+											<a href="{:url('lol/lol_over')}?id={$info.id}" style="color: red">结算</a>
+											{/if}
+											{if condition="$info.status neq 3"}
+											&nbsp;&nbsp;&nbsp;<a href="{:url('lol/add_tz_content')}?id={$info.id}" style="color: #ce6a14">添加投注选项</a>
+											{/if}
+											&nbsp;&nbsp;&nbsp;<a href="{:url('lol/edit')}?id={$info.id}">编辑</a>
+											&nbsp;&nbsp;&nbsp;<a href="{:url('lol/look')}?id={$info.id}">查看</a>
+										</div>
+										{/if}
+									</td>
+								</tr>
+									{if condition="$info.bo neq 0"}
+										{volist name="info.child" id="child" key='key'}
+											<tr  class="treegrid-{$child.id} treegrid-parent-{$child.pid}" style="background-color: #e9f0f5;display: none;">
+												<td style="text-align: center;">{$key}</td>
+												<td style="text-align: center;"><a href="{:url('lol/look')}?id={$child.id}">{$child.game_name}</a></td>
+												<td style="text-align: center;">{$child.team1|default='-'}</td>
+												<td style="text-align: center;">{$child.team2|default='-'}</td>
+												<td style="text-align: center;">-</td>
+												<td style="text-align: center;">{$child.start_time|date='Y-m-d H:i:s',###|default='-'}</td>
+												<td style="text-align: center;color: red">
+													{if condition="$child.status eq 0"}未开始{/if}
+													{if condition="$child.status eq 1"}竞猜中{/if}
+													{if condition="$child.status eq 2"}封盘{/if}
+													{if condition="$child.status eq 3"}游戏结束{/if}
+												</td>
+												<th style="text-align: center;">{$child.win_team|default='-'}</th>
+												<td style="text-align: center;"><a href="{$child.url}" target="_blank">点我直通车</a></td>
+												<td style="text-align: center;">
+													<div class="btn-group btn-group-sm">
+														{if condition="$child.status eq 0"}
+														<a href="{:url('lol/lol_edit_field')}?id={$child.id}&status=1" style="color: green">开始竞猜</a>&nbsp;&nbsp;&nbsp;
+														<a href="{:url('lol/lol_edit_field')}?id={$child.id}&status=2" style="color: grey">封盘</a>
+														{/if}
+														{if condition="$child.status eq 1"}
+														<a href="{:url('lol/lol_edit_field')}?id={$child.id}&status=2" style="color: grey">封盘</a>
+														{/if}
+														{if condition="$child.status eq 2"}
+														<a href="{:url('lol/lol_edit_field')}?id={$child.id}&status=1" style="color: green">开始竞猜</a>&nbsp;&nbsp;&nbsp;
+														<a href="{:url('lol/lol_over')}?id={$child.id}" style="color: red">结算</a>
+														{/if}
+														{if condition="$child.status neq 3"}
+														&nbsp;&nbsp;&nbsp;<a href="{:url('lol/add_tz_content')}?id={$child.id}" style="color: #ce6a14">添加投注选项</a>
+														{/if}
+														&nbsp;&nbsp;&nbsp;<a href="{:url('lol/edit')}?id={$child.id}">编辑</a>
+														&nbsp;&nbsp;&nbsp;<a href="{:url('lol/look')}?id={$child.id}">查看</a>
+													</div>
+												</td>
+											</tr>
+										{/volist}
+									{/if}
+								{/volist}
+								{empty name='_list'}
+								<tr>
+									<td colspan="15">空空如也~</td>
+								</tr>
+								{/empty}
+							</tbody>
+						</table>
+		            </div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+	$("#cate").change(function(){
+		var cate = $("#cate").val();
+		window.location.href = "{:url('lol/index')}?status="+cate;
+	})
+</script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#date1'
+        ,type: 'datetime'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+})
+</script>
+{/block}\

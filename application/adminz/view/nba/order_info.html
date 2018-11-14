@@ -1,0 +1,106 @@
+{extend name="public/base" /}
+{block name="content"}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">订单详情</h3>
+                        <div class="pull-right">
+                            <a href="{:url('nba/nba_order')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                        </div>
+                    </div>
+                    <table class="layui-table" >
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">订单编号</th>
+                                <th style="text-align: center;">订单创建时间</th>
+                                <th style="text-align: center;">订单金额</th>
+                                <th style="text-align: center;">中奖金额</th>
+                                <th style="text-align: center;">比赛场次</th>
+                                <th style="text-align: center;">串法</th>
+                                <th style="text-align: center;">倍数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;">{$data.order_no}</td>
+                                <td style="text-align: center;">{$data.add_time}</td>
+                                <td style="text-align: center;">{$data.order_money}</td>
+                                <td style="text-align: center;">{$data.win_money}</td>
+                                <td style="text-align: center;">{$data.game_num}</td>
+                                <td style="text-align: center;">{$data.chuan}</td>
+                                <td style="text-align: center;">{$data.multiple}</td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">场次</th>
+                                <th style="text-align: center;">星期</th>
+                                <th style="text-align: center;">主队VS客队</th>
+                                <th style="text-align: center;">主队VS客队(比分)</th>
+                                <th style="text-align: center;">投注内容</th>
+                                <th style="text-align: center;">彩果</th>
+                                <th style="text-align: center;">比赛状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name='data.order_info' id='item'}
+                            <tr>
+                                <td style="text-align: center;">{$item.game_no}</td>
+                                <td style="text-align: center;">{$item.week}</td>
+                                <td style="text-align: center;">{$item.home_team} VS {$item.road_team}</td>
+                                <td style="text-align: center;">{$item.home_score} : {$item.road_score}</td>
+                                <td style="text-align: center;">
+                                    {volist name='item.tz_result' id='info'}
+                                        {$info.cate_name}{$info.cate_odds}
+                                        {if condition="$info.is_win eq 0"}<span style="color: #ce6a14">(未开奖)</span>{/if}
+                                        {if condition="$info.is_win eq 1"}<span style="color: green">(正确)</span>{/if}
+                                        {if condition="$info.is_win eq 2"}<span style="color: red">(不正确)</span>{/if}
+                                    {/volist}
+                                </td>
+                                <td style="text-align: center;">
+                                    {volist name='item.win_game_result' id='cate'}
+                                        ({$cate.cate_name}{$cate.cate_odds})
+                                    {/volist}
+                                </td>
+                                <td style="text-align: center;">
+                                    {if condition="$item.status eq 0"}<span style="color: green">已结算</span>{else /}<span style="color: red">未结算</span>{/if}
+                                </td>
+                            </tr>
+                            {/volist}
+                            {if condition="empty($data)"}
+                            <tr><td colspan="7" style="text-align: center;">空空如也~</td></tr>
+                            {/if}
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+<script>
+layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+    var form = layui.form
+    ,layer = layui.layer
+    ,layedit = layui.layedit
+    ,laydate = layui.laydate
+    ,upload = layui.upload;
+
+    var table = layui.table; 
+    //日期
+    laydate.render({
+        elem: '#date'
+    });
+    laydate.render({
+        elem: '#date1'
+    }); 
+    laydate.render({
+        elem: '#cate_id'
+    });
+</script>
+{/block}
+
+
