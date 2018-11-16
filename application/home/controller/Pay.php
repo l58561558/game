@@ -157,7 +157,7 @@ class Pay extends Base
         $orderid = $_REQUEST["orderid"];
         $account_details = db('account_details')->where('orderid="'.$orderid.'"')->find();
         if($account_details['Zfywc'] == 1){
-            header("Location: https://www.202252.com/#/chomine");
+            $this->redirect('https://www.202252.com/#/chomine');
         }else{
             exit("交易失败");
         }
