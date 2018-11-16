@@ -199,7 +199,7 @@ class Football extends Base
         $data['game_num'] = count($order_info);
         // $data['chuan'] = db('fb_chuan')->where('chuan_id='.$order['chuan'])->value('chuan_name');
         $chuan = explode(',', $order['chuan']);
-        $chuann = '';
+        $chuann = [];
         for ($i=0; $i < count($chuan); $i++) { 
             $chuann[] = db('fb_chuan')->where('chuan_id='.$chuan[$i])->value('chuan_name');
         }
@@ -265,7 +265,7 @@ class Football extends Base
         $list->each(function($item,$key){
             $item['user_id'] = db('yh')->where('id='.$item['user_id'])->value('yhid');
             $chuan = explode(',', $item['chuan']);
-            $chuann = '';
+            $chuann = [];
             for ($i=0; $i < count($chuan); $i++) { 
                 $chuann[] = db('fb_chuan')->where('chuan_id='.$chuan[$i])->value('chuan_name');
             }
