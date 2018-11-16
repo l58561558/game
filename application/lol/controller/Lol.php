@@ -73,7 +73,7 @@ class Lol extends Base
     public function add_order()
     {
         $_data = $_REQUEST;
-
+        dump($_data);die;
         $data = json_decode($_data['tz_arr'],true);
         $order_money = 0;
         foreach ($data as $key => $value) {

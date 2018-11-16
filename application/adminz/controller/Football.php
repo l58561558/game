@@ -381,11 +381,13 @@ class Football extends Base
                     if(count($cate_id) > 1){
                         $win_result = implode(',', $cate_id);
                     }else{
-                        $win_result = $cate_id;
+                        $win_result = $cate_id[0];
                     }
                 }
             }else{
                 $tz_result = explode(',', $order_info_all[$key]['tz_result']);
+                // dump($tz_result);
+                // dump($cate_id_arr);
                 foreach ($tz_result as $ke => $val) {
                     if(in_array($tz_result[$ke], $cate_id_arr)){
                         if(!empty($tz_result[$ke])){
@@ -395,24 +397,33 @@ class Football extends Base
                         $cate_code = db('fb_game_cate')->where('cate_id='.$tz_result[$ke])->value('cate_code');
                         $pid = db('fb_code')->where('code="'.$cate_code.'"')->value('code_pid');
                         $code_arr = db('fb_code')->where('code_pid='.$pid)->column('code');
+
                         foreach ($code_arr as $k => $v) {
                             $cid = db('fb_game_cate')->where('game_id='.$id.' and is_win=1 and cate_code ="'.$v.'"')->value('cate_id');
                             if(!empty($cid)){
                                 $cate_id[] = $cid;
                             }
                         }
+                        
                         if(count($cate_id) > 1){
                             $win_result[] = implode(',', $cate_id);
                         }else{
-                            $win_result[] = $cate_id;
+                            $win_result[] = $cate_id[0];
                         }
+                        unset($cate_id);
+                        // dump($cate_id);
+                        // dump($cate_id);
+                        // dump($win_result);
                     }
                 }
-                $win_result = implode(',', $win_result);                
+                
+                
+                $win_result = implode(',', $win_result);   
+                // dump($win_result);             
             }
             db('fb_order_info')->where('order_info_id='.$order_info_all[$key]['order_info_id'])->update(array('win_result'=>$win_result,'game_status'=>1));
         }
-
+        // die;
         $order_ids = db('fb_order_info')->where('game_id='.$id)->column('order_id');
         foreach ($order_ids as $key => $value) {
             $fb_order_info = db('fb_order_info')->where('order_id='.$order_ids[$key])->select();

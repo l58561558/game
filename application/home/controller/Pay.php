@@ -15,7 +15,6 @@ class Pay extends Base
     public function pay()
     {
         $data = $_REQUEST;
-        // dump($data);die;
         
         $price = $data["price"];
         $istype = $data["istype"];
@@ -136,7 +135,7 @@ class Pay extends Base
                         }
                     }
                     $str = "交易成功1！订单号：".$orderid;
-                    $fp = @fopen("D:/phpstudy/WWW/game/success.txt", "a+");
+                    $fp = @fopen("/data/sites/game/backups/success.txt", "a+");
                     fwrite($fp, $str."\n");
                     fclose($fp);
                     exit("OK");   

@@ -381,7 +381,7 @@ class Football extends Base
             
             $data['order_info'][$key]['home_team'] = $game[$key]['home_team'];
             $data['order_info'][$key]['road_team'] = $game[$key]['road_team'];
-            $data['order_info'][$key]['win_result'] = '';
+            $data['order_info'][$key]['win_result'] = [];
 
             if(strpos($order_info[$key]['tz_result'] , ',') === false){
                 $data['order_info'][$key]['tz_result'][0] = db('fb_game_cate')->field('cate_name,cate_code,cate_odds,is_win')->where('cate_id='.$order_info[$key]['tz_result'])->find();

@@ -1,0 +1,1166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>
+    一直专注于互联网 - ITeye技术网站
+  </title>
+  <meta name="description" content="" />
+  <meta name="keywords" content=" onestopweb 一直专注于互联网" />
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+  <link rel="search" type="application/opensearchdescription+xml" href="/open_search.xml" title="ITeye" />
+  <link href="/rss" rel="alternate" title="一直专注于互联网" type="application/rss+xml" />
+  <link href="http://www.iteye.com/stylesheets/blog.css?1542281186" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://www.iteye.com/stylesheets/themes/blog/blue.css?1542180586" media="screen" rel="stylesheet" type="text/css" />
+  <script src="http://www.iteye.com/javascripts/application.js?1448702469" type="text/javascript"></script>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?e19a8b00cf63f716d774540875007664";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+
+
+        //自动推送工具代码
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+<style>
+/* 折叠效果 */
+.hide-main-content{
+    position: relative;
+}
+.hide-article-box {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    bottom: -1px;
+    width: 100%;
+    padding-top: 160px;
+    background-image: -webkit-gradient(linear,left top, left bottom,from(rgba(255,255,255,0)),color-stop(70%, #fff));
+    background-image: linear-gradient(-180deg,rgba(255,255,255,0) 0%,#fff 70%);
+}
+.hide-article-box #btn-readmore{
+    color: #ca0c16;
+    border: 1px solid #ca0c16;
+    margin: 10px auto;
+    padding: 0 8px;
+    display: block;
+    font-size: 14px;
+    border-radius: 4px;
+    text-align: center;
+    background-color: transparent;
+    height: 34px;
+    width: 74px;
+    line-height: 32px;
+    min-width: 72px;
+    cursor: pointer;
+}
+.hide-article-box #btn-readmore:hover{
+    background: #ca0c16;
+    color:#fff;
+    text-decoration: none;
+}
+</style>
+<!-- 因INS广告原因 需要提前引入jquery -->
+<script src="http://c.csdnimg.cn/public/common/libs/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">var jQuery = jQuery.noConflict();// 解决jq与prototype.js命名空间冲突的问题</script>
+<script src="https://g.csdnimg.cn/recommend/1.1.1/recommend.js"></script>
+<script src="https://g.csdnimg.cn/fixed-sidebar/1.1.0/fixed-sidebar.js" type="text/javascript"></script>
+
+    <!-- 请置于所有广告位代码之前 -->
+  <script src="http://dup.baidustatic.com/js/ds.js"></script>
+  <link ref="canonical" href="http://onestopweb.iteye.com/">
+  <script src="//msite.baidu.com/sdk/c.js?appid=1563894916825412"></script>
+</head>
+
+<body>
+  <div id="header">
+    <div id="blog_site_nav">
+  <a href="http://www.iteye.com/" class="homepage">首页</a>
+  <a href="http://www.iteye.com/news">资讯</a>
+  <a href="http://www.iteye.com/magazines">精华</a>
+  <a href="http://www.iteye.com/forums">论坛</a>
+  <a href="http://www.iteye.com/ask">问答</a>
+  <a href="http://www.iteye.com/blogs">博客</a>
+  <a href="http://www.iteye.com/blogs/subjects">专栏</a>
+  <a href="http://www.iteye.com/groups">群组</a>
+<!--  <a href="#" onclick="return false;" id="msna"><u>更多</u> <small>▼</small></a>-->
+<!--  <div class="quick_menu" style="display:none;">-->
+<!--    <a target="_blank" href="http://job.iteye.com/iteye">知识库</a>-->
+<!--    <a href="http:///search">搜索</a>-->
+<!--  </div>-->
+</div>
+
+    <div id="user_nav">
+
+      <a href="/login" class="welcome" title="登录">您还未登录 !</a>
+    <a href="/login">登录</a>
+    <!--<a href="/signup" class="nobg">注册</a>-->
+    <!--<a href="http://passport.csdn.net/account/mobileregister?from=http://www.iteye.com">注册</a>-->
+  </div>
+
+
+  </div>
+
+  <div id="page">
+<!--    <div id="branding" class="clearfix">-->
+<!--      <div id="blog_name">-->
+<!--        <h1><a href="/">-->
+<!--            </a></h1>-->
+<!--      </div>-->
+<!--      <div id='fd'></div>-->
+<!--      <div id="blog_navbar">-->
+<!--        <ul>-->
+          
+          
+          
+          
+          
+          
+<!--        </ul>-->
+
+<!--        <div class="search">-->
+<!--          <form action="/blog/search" method="get">-->
+<!--            <input class="search_text" id="query" name="query" style="margin-left: 10px;width: 110px;" type="text"-->
+<!--              value="" />-->
+<!--            <input class="submit_search" type="submit" value="" />-->
+<!--          </form>-->
+<!--        </div>-->
+<!--        <div id="fd"></div>-->
+<!--      </div>-->
+<!--    </div>-->
+    `
+    <div id="content" class="clearfix">
+      <div id="local">
+        <div class="local_top"></div>
+        <div id="blog_owner">
+  <div id="blog_owner_logo"><a href='http://onestopweb.iteye.com'><img alt="onestopweb的博客" class="logo" src="http://www.iteye.com/upload/logo/user/1228781/721e6384-c8a7-3185-8c8a-b17dcc8500bb.png?1486282239" title="onestopweb的博客: 一直专注于互联网" width="" /></a></div>
+  <div id="blog_owner_name">onestopweb</div>
+</div>
+
+        <div id="blog_actions">
+          <ul>
+            <li>浏览:
+              261589 次</li>
+            
+            
+            <li>
+              <img src='/images/status/offline.gif'/>
+            </li>
+            
+          </ul>
+        </div>
+
+        <div id="user_visits" class="clearfix">
+          <h5>最近访客 <span style='font-weight:normal;font-size:12px;padding-left:30px;'>
+              <a href="/blog/user_visits">更多访客&gt;&gt;</a></span></h5>
+          
+          <div class="user_visit">
+            <div class="logo"><a href='http://tiantianxiangmi.iteye.com' target='_blank'><img alt="tiantianxiangmi的博客" class="logo" src="http://www.iteye.com/upload/logo/user/804964/a68731a9-76f2-3bcb-9824-33a33a895755-thumb.jpg?1361024446" title="tiantianxiangmi的博客: " width="48px" /></a></div>
+            <div class="left">
+              <a href='http://tiantianxiangmi.iteye.com' target='_blank' title='tiantianxiangmi'>tiantianxiangmi</a>
+            </div>
+          </div>
+          
+          <div class="user_visit">
+            <div class="logo"><a href='http://zhouqinghao.iteye.com' target='_blank'><img alt="zhouqinghao的博客" class="logo" src="http://www.iteye.com/images/user-logo-thumb.gif?1448702469" title="zhouqinghao的博客: zhouqinghao" width="48px" /></a></div>
+            <div class="left">
+              <a href='http://zhouqinghao.iteye.com' target='_blank' title='zhouqinghao'>zhouqinghao</a>
+            </div>
+          </div>
+          
+          <div class="user_visit">
+            <div class="logo"><a href='http://u012363178.iteye.com' target='_blank'><img alt="u012363178的博客" class="logo" src="http://www.iteye.com/images/user-logo-thumb.gif?1448702469" title="u012363178的博客: " width="48px" /></a></div>
+            <div class="left">
+              <a href='http://u012363178.iteye.com' target='_blank' title='u012363178'>u012363178</a>
+            </div>
+          </div>
+          
+          <div class="user_visit">
+            <div class="logo"><a href='http://wd1282988143.iteye.com' target='_blank'><img alt="wd1282988143的博客" class="logo" src="http://www.iteye.com/images/user-logo-thumb.gif?1448702469" title="wd1282988143的博客: " width="48px" /></a></div>
+            <div class="left">
+              <a href='http://wd1282988143.iteye.com' target='_blank' title='wd1282988143'>wd1282988143</a>
+            </div>
+          </div>
+          
+        </div>
+
+        <div id="user_title_list" class="clearfix">
+          <h5>博主相关</h5>
+          <li>
+            <a href="http://onestopweb.iteye.com">博客</a>
+          </li>
+
+          <li>
+            <a href="/weibo">微博</a>
+          </li>
+
+          <li>
+            <a href="/album">相册</a>
+          </li>
+
+          <li>
+            <a href="/link">收藏</a>
+          </li>
+
+          <li>
+            <a href="/blog/guest_book">留言</a>
+          </li>
+
+          <li>
+            <a href="/blog/profile">关于我</a>
+          </li>
+        </div>
+
+        
+
+                <div id="blog_menu">
+          <h5>文章分类</h5>
+          <ul>
+            <li>
+              <a href="/">全部博客 (988)</a>
+            </li>
+            
+            <li>
+              <a href="/category/352880">境-AmUI (3)</a>
+              </li>
+              
+            <li>
+              <a href="/category/351197">境-Boots (6)</a>
+              </li>
+              
+            <li>
+              <a href="/category/374483">境-CentOS (5)</a>
+              </li>
+              
+            <li>
+              <a href="/category/344832">境-DEDE (82)</a>
+              </li>
+              
+            <li>
+              <a href="/category/345287">境-H5 (52)</a>
+              </li>
+              
+            <li>
+              <a href="/category/338833">境-HTML (25)</a>
+              </li>
+              
+            <li>
+              <a href="/category/338832">境-JS (225)</a>
+              </li>
+              
+            <li>
+              <a href="/category/337882">境-JSP (2)</a>
+              </li>
+              
+            <li>
+              <a href="/category/337883">境-MySql (24)</a>
+              </li>
+              
+            <li>
+              <a href="/category/337881">境-PHP (139)</a>
+              </li>
+              
+            <li>
+              <a href="/category/365392">境-PHP2 (10)</a>
+              </li>
+              
+            <li>
+              <a href="/category/370517">境-PHPTP (23)</a>
+              </li>
+              
+            <li>
+              <a href="/category/370516">境-VUE (1)</a>
+              </li>
+              
+            <li>
+              <a href="/category/344778">境-站长 (82)</a>
+              </li>
+              
+            <li>
+              <a href="/category/353299">阅-AmUI (43)</a>
+              </li>
+              
+            <li>
+              <a href="/category/351183">阅-Boots (26)</a>
+              </li>
+              
+            <li>
+              <a href="/category/343627">阅-H5 (40)</a>
+              </li>
+              
+            <li>
+              <a href="/category/349598">阅-H52 (35)</a>
+              </li>
+              
+            <li>
+              <a href="/category/342138">阅-JQ (33)</a>
+              </li>
+              
+            <li>
+              <a href="/category/355172">阅-JQ2 (11)</a>
+              </li>
+              
+            <li>
+              <a href="/category/355872">阅-JQ3 (43)</a>
+              </li>
+              
+            <li>
+              <a href="/category/337705">阅-PHP (20)</a>
+              </li>
+              
+            <li>
+              <a href="/category/363483">阅-PHP2 (6)</a>
+              </li>
+              
+            <li>
+              <a href="/category/370513">阅-VUE (0)</a>
+              </li>
+              
+            <li>
+              <a href="/category/361950">择-HBuilder (6)</a>
+              </li>
+              
+            <li>
+              <a href="/category/357582">择-Office (1)</a>
+              </li>
+              
+            <li>
+              <a href="/category/346488">择-PS (19)</a>
+              </li>
+              
+            <li>
+              <a href="/category/357583">择-SText (2)</a>
+              </li>
+              
+            <li>
+              <a href="/category/346249">择-艺术 (10)</a>
+              </li>
+              
+            <li>
+              <a href="/category/352138">择-整理 (14)</a>
+              </li>
+              
+          </ul>
+        </div>
+        <div id='month_blogs'>
+          <h5>社区版块</h5>
+          <ul>
+            <li>
+              <a href="/blog/news">我的资讯</a> (
+              0)</li>
+            <li>
+              <a href="/blog/post">我的论坛</a> (
+              0)
+            </li>
+            <li>
+              <a href="/blog/answered_problems">我的问答</a> (
+              0)</li>
+          </ul>
+        </div>
+        <div id="month_blogs">
+          <h5>存档分类</h5>
+          <ul>
+            
+            <li>
+              <a href="/blog/monthblog/2018-10">2018-10</a>
+              (
+              5)</li>
+            
+            <li>
+              <a href="/blog/monthblog/2018-07">2018-07</a>
+              (
+              2)</li>
+            
+            <li>
+              <a href="/blog/monthblog/2018-04">2018-04</a>
+              (
+              1)</li>
+            
+            <li>
+              <a href="/blog/monthblog_more">更多存档...</a>
+            </li>
+          </ul>
+        </div>
+        
+        
+
+        <div id="guest_books">
+          <h5>最新评论</h5>
+          <ul>
+            
+            <li>
+              <a href='http://onestopweb.iteye.com' target='_blank' title='onestopweb'>onestopweb</a>：
+              cs6641468 写道onestopweb 写道cs6641 ...<br />
+              <a href="/blog/2395524#bc2400971">JS Cookies的设置 读取 删除</a>
+            </li>
+            
+            <li>
+              <a href='http://cs6641468.iteye.com' target='_blank' title='cs6641468'>cs6641468</a>：
+              onestopweb 写道cs6641468 写道在HttpO ...<br />
+              <a href="/blog/2395524#bc2400936">JS Cookies的设置 读取 删除</a>
+            </li>
+            
+            <li>
+              <a href='http://onestopweb.iteye.com' target='_blank' title='onestopweb'>onestopweb</a>：
+              cs6641468 写道在HttpOnly cookie标配的 ...<br />
+              <a href="/blog/2395524#bc2400934">JS Cookies的设置 读取 删除</a>
+            </li>
+            
+            <li>
+              <a href='http://cs6641468.iteye.com' target='_blank' title='cs6641468'>cs6641468</a>：
+              在HttpOnly cookie标配的今天，知道js能操作co ...<br />
+              <a href="/blog/2395524#bc2400933">JS Cookies的设置 读取 删除</a>
+            </li>
+            
+            <li>
+              <a href='http://injavawetrust.iteye.com' target='_blank' title='InJavaWeTrust'>InJavaWeTrust</a>：
+               ...<br />
+              <a href="/blog/2379844#bc2398538">H5 仿阿里自适应页面</a>
+            </li>
+            
+          </ul>
+        </div>
+
+        <div class="local_bottom"></div>
+        
+      </div>
+      <div id="main">
+        
+
+
+
+        
+
+<div class="blog_main_title">
+  <a href="/rss" target="_blank" style="float:right; margin-left:10px;"><img alt="Rss" src="http://www.iteye.com/images/rss.png?1448702469" /></a>
+  
+  <span>文章列表</span> 
+  <div id="fd"></div>  
+</div>
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2405231'>[置顶] 2017年的总结 [匠心]</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/352138">择-整理</a></li> </ul>
+    <div class='news_tag'></div>
+  </div>
+  <div class="blog_content">
+    
+真正的创造是由内到外地肯定自己后，发展出的力量。贯穿 “SEM -&gt; SEO -&gt; 策划 -&gt; 美工 -&gt; 排版 -&gt; 编程 -&gt; 数据库 -&gt; 服务器 -&gt; 数据后台” 整个体系。
+ 
+SEM（搜索引擎营销）：就是根据用户使用搜索引擎的方式利用用户检索信息的机会尽可能将营销信息传递给目标用户。简单来说，就是“竞价排名”。通过付费的手段推广页面，提高页面的可见度，从而带来流量的网络营销活动。
+ 
+SEO（搜索引擎优化）：就是通过站内优化和站外优化，从而提高网站的网站关键词排名以及公司产品的曝光度。简单来说，就是“搜索优化”。站内优化大概 ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2017-12-20 17:21</li>
+      <li>浏览 955</li>
+      <li><a href='/blog/2405231#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/other">非技术</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2432900'>Win7 如何给C盘增加空间</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/344778">境-站长</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/%E6%89%A9%E5%B1%95%E5%8D%B7">扩展卷</a><a href="http://www.iteye.com/blogs/tag/C%E7%9B%98%E5%A2%9E%E5%8A%A0%E7%A9%BA%E9%97%B4">C盘增加空间</a><a href="http://www.iteye.com/blogs/tag/Windows">Windows</a></div>
+  </div>
+  <div class="blog_content">
+    
+在C盘的右边有未分配的空间或者格式化D盘，把它删除卷设置为未分配空间。通常Ｄ盘都有一些数据，并且不好格式化。
+这时候使用DiskGenius分区，http://www.diskgenius.cn/download.php
+ 
+格式化D盘后，把它删除卷设置为未分配空间。
+ 
+右键“计算机” -&gt; 选择“管理” 
+点击“存储”下的“磁盘管理” -&gt; 右键选择“扩展卷” 
+像我这样电脑明显不需要，操作的道理就是这样了。
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-10-29 14:53</li>
+      <li>浏览 538</li>
+      <li><a href='/blog/2432900#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/os">操作系统</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2432749'>Win2008 出现身份验证错误，要求的函数不受支持</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/344778">境-站长</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/%E5%87%BA%E7%8E%B0%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E9%94%99%E8%AF%AF">出现身份验证错误</a><a href="http://www.iteye.com/blogs/tag/win2008">win2008</a><a href="http://www.iteye.com/blogs/tag/%E8%BF%9E%E6%8E%A5%E4%B8%8D%E4%B8%8A">连接不上</a><a href="http://www.iteye.com/blogs/tag/%E8%A6%81%E6%B1%82%E7%9A%84%E5%87%BD%E6%95%B0%E4%B8%8D%E5%8F%97%E6%94%AF%E6%8C%81">要求的函数不受支持</a></div>
+  </div>
+  <div class="blog_content">
+    
+这是本地Windows更新补丁所引起的
+1、运行 -&gt; regedit
+2、定位到 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters 键。如果 CredSSP 和 Parameters 键不存在则新建。
+3、在 Parameters 键下新建 DWORD(32-位)值 AllowEncryptionOracle，并设置数据为 2。
+ 
+效果图：
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-10-25 15:32</li>
+      <li>浏览 487</li>
+      <li><a href='/blog/2432749#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/os">操作系统</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2432415'>BAT 批处理拷贝整个文件夹到别的文件夹下</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/344778">境-站长</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/bat">bat</a><a href="http://www.iteye.com/blogs/tag/%E6%89%B9%E5%A4%84%E7%90%86">批处理</a><a href="http://www.iteye.com/blogs/tag/xcopy%E5%91%BD%E4%BB%A4">xcopy命令</a><a href="http://www.iteye.com/blogs/tag/copy%E5%91%BD%E4%BB%A4">copy命令</a></div>
+  </div>
+  <div class="blog_content">
+    
+如何做一个批处理文件，将文件夹里的文件及文件夹复制到另一个文件夹
+答案：使用bat的xcopy命令和copy命令
+ 
+echo &quot;begin&quot;
+xcopy /y J:\battest\aaa\*.* J:\battest\bbb\ /s /e
+copy /y J:\battest\111\onestopweb.txt J:\battest\222\onestopweb.txt
+echo &quot;end&quot;
+pause
+ 
+ 
+ 
+ 
+ 
+
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-10-19 10:30</li>
+      <li>浏览 19</li>
+      <li><a href='/blog/2432415#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/language">编程语言</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2432413'>Win2008 仅允许指定的IP访问</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/344778">境-站长</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/%E6%8C%87%E5%AE%9A%E7%9A%84IP">指定的IP</a><a href="http://www.iteye.com/blogs/tag/%E4%BB%85%E5%85%81%E8%AE%B8">仅允许</a><a href="http://www.iteye.com/blogs/tag/Win2008">Win2008</a></div>
+  </div>
+  <div class="blog_content">
+    
+在“IIS管理器” -&gt; 选中指定站点的“IP域名和域限制”-&gt; 选择“添加拒绝条目” -&gt; 选中“拒绝”
+ 
+拿自己的客户端IP来测试，在百度上输入IP可以获取了
+ 
+这时候测试结果，无法正常打开网站
+ 
+ 特定IP地址是指定IP，IP地址范围是指定IP段
+ 
+例如153.184.0.1~153.184.255.255，在指定后两段都可以访问要使用掩码，255.255.0.0
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-10-19 10:25</li>
+      <li>浏览 558</li>
+      <li><a href='/blog/2432413#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/language">编程语言</a></li>    </ul>
+  </div>
+</div>
+
+  <div class="blog_main">
+    <!-- Ads ID 260 -->
+    
+    
+      <div id="kp_box_614" data-pid="260" data-track-view='{"mod":"kp_popu_614","con":",,"}'><div style="width:560px;height:90px;margin:0 auto;position:relative;overflow:hidden;"> <a href="https://edu.csdn.net/topic/python115?utm_source=iteye" target="_blank"><img src="http://img-ads.csdn.net/2018/201811022354168954.jpg"width="560" height="90"></a><span style="position:absolute;right:0;bottom:0;background:url(https://img-ads.csdn.net/2016/201608021757063065.png) no-repeat;width:33px;height:18px;display:block;z-index: 9999;"></span></div></div>
+    
+  </div>
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2432412'>CSS 初始化样式</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/352138">择-整理</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/CSS%E5%88%9D%E5%A7%8B%E5%8C%96">CSS初始化</a><a href="http://www.iteye.com/blogs/tag/CSS%E6%A0%B7%E5%BC%8F">CSS样式</a><a href="http://www.iteye.com/blogs/tag/CSS">CSS</a></div>
+  </div>
+  <div class="blog_content">
+    
+/*
+* -- 样式说明 --
+* 最大优先实现法，全局能实现不用区域，区域能实现不用模板，
+* 模板能实现不用界面，界面能实现不用标签
+* g - 全局
+* t - 区域
+* m - 模板
+* ui - 界面
+* lb - 标签
+* 特殊标签
+* j - 脚本
+* fix - 浮窗
+* is - 正则
+* f - 一切浮窗
+*/
+ 
+手机（mb）的公共样式：
+/*base style*/
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, ab ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-10-19 10:15</li>
+      <li>浏览 336</li>
+      <li><a href='/blog/2432412#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/web">Web前端</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2427698'>PHP 上传图片精简版</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/337881">境-PHP</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/PHP%E4%B8%8A%E4%BC%A0">PHP上传</a><a href="http://www.iteye.com/blogs/tag/%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87">上传图片</a><a href="http://www.iteye.com/blogs/tag/PHP%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87">PHP上传图片</a></div>
+  </div>
+  <div class="blog_content">
+    
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;  
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;  
+&lt;head&gt;   
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta http-equiv=&quot;Con ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-07-29 14:36</li>
+      <li>浏览 203</li>
+      <li><a href='/blog/2427698#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/language">编程语言</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2427091'>JS 堆排序</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/338832">境-JS</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/%E6%8E%92%E5%BA%8F">排序</a><a href="http://www.iteye.com/blogs/tag/%E5%A0%86%E6%8E%92%E5%BA%8F">堆排序</a><a href="http://www.iteye.com/blogs/tag/JS%20%E5%A0%86%E6%8E%92%E5%BA%8F">JS 堆排序</a></div>
+  </div>
+  <div class="blog_content">
+    
+function heapSort(arr) {
+  var len = arr.length;
+  function swap(arr, rootIndex, maxIndex) {
+      var temp = arr[rootIndex];
+      arr[rootIndex] = arr[maxIndex];
+      arr[maxIndex] = temp;
+  }
+  function diff(arr, index) {
+      var leftIndex = 2 * index + 1;
+      var rightIndex = 2 * i ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-07-18 16:06</li>
+      <li>浏览 429</li>
+      <li><a href='/blog/2427091#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/web">Web前端</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2418305'>PHP URL重定向</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/337881">境-PHP</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/PHP%E5%88%A4%E6%96%ADGET%E5%80%BC">PHP判断GET值</a><a href="http://www.iteye.com/blogs/tag/PHP%E9%87%8D%E5%AE%9A%E5%90%91">PHP重定向</a><a href="http://www.iteye.com/blogs/tag/HTML%E9%87%8D%E5%AE%9A%E5%90%91">HTML重定向</a><a href="http://www.iteye.com/blogs/tag/JS%E9%87%8D%E5%AE%9A%E5%90%91">JS重定向</a></div>
+  </div>
+  <div class="blog_content">
+    
+&lt;?php 
+$url = 'http://onestopweb.iteye.com/#onestopweb';
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;a href=&quot;http://demo.com/bridge.php?url=&lt;?php echo  ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-04-11 16:36</li>
+      <li>浏览 474</li>
+      <li><a href='/blog/2418305#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/language">编程语言</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2415120'>站长 添加右键Notepad的打开方式</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/344778">境-站长</a></li> </ul>
+    <div class='news_tag'></div>
+  </div>
+  <div class="blog_content">
+    
+左下角点击“开始”-&gt;运行-&gt;regedit，打开注册表编辑器在HKEY_CLASSSES_ROOT→ * → Shell 下，在Shell下，新建项命名为Open With Notepad++（注意*也是一个项）在该新建项的右边窗口新建字符串值（右键--新建--字符串值）。名称：Icon；值：C:\Program Files (x86)\Notepad++\notepad++.exe （PS：安装目录） 
+在新建的项Open With Notepad++下面新建项Command（必须这个名称）将刚新建的Command项右侧窗口的默认值，修改为：C:\Program Files ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-03-31 21:11</li>
+      <li>浏览 468</li>
+      <li><a href='/blog/2415120#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/os">操作系统</a></li>    </ul>
+  </div>
+</div>
+
+
+  <div class="blog_main">
+    <!-- Ads ID 261 -->
+    
+    
+      <div id="kp_box_617" data-pid="261" data-track-view='{"mod":"kp_popu_617","con":",,"}'><div style="width:560px;height:90px;margin:0 auto;position:relative;overflow:hidden;"> <a href="https://edu.csdn.net/topic/ai30?utm_source=iteye" target="_blank"><img src="http://img-ads.csdn.net/2018/201811022357379556.jpg"width="560" height="90"></a><span style="position:absolute;right:0;bottom:0;background:url(https://img-ads.csdn.net/2016/201608021757063065.png) no-repeat;width:33px;height:18px;display:block;z-index: 9999;"></span></div></div>
+    
+  </div>
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2415052'>JS 获取iframe高度的静动态方法</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/338832">境-JS</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/iframe">iframe</a><a href="http://www.iteye.com/blogs/tag/%E8%8E%B7%E5%8F%96%E9%AB%98%E5%BA%A6">获取高度</a><a href="http://www.iteye.com/blogs/tag/%E8%8E%B7%E5%8F%96%E9%AB%98%E5%BA%A6%E6%96%B9%E6%B3%95">获取高度方法</a><a href="http://www.iteye.com/blogs/tag/iframe%E9%AB%98%E5%BA%A6">iframe高度</a></div>
+  </div>
+  <div class="blog_content">
+    
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;JS 获取iframe高度的静动态方法&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;base.css&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h3&gt;iframe 演示&lt;/h3&gt;
+&lt;!--默认的- ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-03-30 21:50</li>
+      <li>浏览 281</li>
+      <li><a href='/blog/2415052#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/web">Web前端</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2410190'>艺术 深处的那片宁静</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/346249">择-艺术</a></li> </ul>
+    <div class='news_tag'></div>
+  </div>
+  <div class="blog_content">
+    
+最近的天气总是变幻无常，
+唯有深处的那片宁静在心中徜徉，
+像诗一样的感觉优美悠远。
+ 
+生命轻轻地在指尖穿梭，
+一个一个字在屏幕中涌现，
+轻轻译著着神义的声音。
+ 
+在黄昏的道路上，
+那降下的夜色，
+
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-02-04 15:13</li>
+      <li>浏览 274</li>
+      <li><a href='/blog/2410190#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/other">非技术</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2409726'>JQ 获取图片真实宽高</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/338832">境-JS</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%94%9F%E7%9C%9F%E5%AE%9E%E5%AE%BD%E9%AB%98">获取图生真实宽高</a><a href="http://www.iteye.com/blogs/tag/%E7%9C%9F%E5%AE%9E%E5%AE%BD%E9%AB%98">真实宽高</a><a href="http://www.iteye.com/blogs/tag/%E5%9B%BE%E7%89%87%E7%9C%9F%E5%AE%9E%E5%AE%BD%E9%AB%98">图片真实宽高</a></div>
+  </div>
+  <div class="blog_content">
+    
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;JQ 获取图片真实宽高&lt;/title&gt;
+&lt;script&gt;window.jQuery || document.write(unescape(&quot;%3Cscript src='http://libs.baidu.com/jquery/1.10.1/jquery.min.js' type='text/javascript' ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-01-30 10:04</li>
+      <li>浏览 334</li>
+      <li><a href='/blog/2409726#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/web">Web前端</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2409537'>PHP 判断请求来源</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/337881">境-PHP</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/%E8%AF%B7%E6%B1%82%E6%9D%A5%E6%BA%90">请求来源</a><a href="http://www.iteye.com/blogs/tag/%E5%88%A4%E6%96%AD%E6%9D%A5%E6%BA%90">判断来源</a><a href="http://www.iteye.com/blogs/tag/PHP%E8%AF%B7%E6%B1%82%E6%9D%A5%E6%BA%90%E5%88%A4%E6%96%AD">PHP请求来源判断</a><a href="http://www.iteye.com/blogs/tag/%E8%AF%B7%E6%B1%82%E6%9D%A5%E6%BA%90%E5%88%A4%E6%96%AD">请求来源判断</a></div>
+  </div>
+  <div class="blog_content">
+    
+&lt;?php
+header('Content-Type: text/html; charset=utf-8');
+define(&quot;WEBSITE&quot;, &quot;http://onestopweb.iteye.com&quot;);
+
+if($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot; &amp;&amp; isset($_POST['fdata'])){
+    sourceJudgment();
+    echo $_POST[&quot;website&quot;];
+    ex ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-01-28 11:01</li>
+      <li>浏览 470</li>
+      <li><a href='/blog/2409537#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/language">编程语言</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+      <div class="blog_main">
+  <div class="blog_title">
+    <h3><a href='/blog/2409199'>PHP 直接静态化和触发静态化</a></h3>
+    <ul class='blog_categories'><strong>博客分类：</strong> <li><a href="/category/365392">境-PHP2</a></li> </ul>
+    <div class='news_tag'><a href="http://www.iteye.com/blogs/tag/PHP%E9%9D%99%E6%80%81%E5%8C%96">PHP静态化</a><a href="http://www.iteye.com/blogs/tag/%E7%9B%B4%E6%8E%A5%E9%9D%99%E6%80%81%E5%8C%96">直接静态化</a><a href="http://www.iteye.com/blogs/tag/%E8%A7%A6%E5%8F%91%E9%9D%99%E6%80%81%E5%8C%96">触发静态化</a>&nbsp;</div>
+  </div>
+  <div class="blog_content">
+    
+&lt;?php
+header('Content-Type: text/html; charset=utf-8');
+ob_start();//开启缓存 
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;直接纯静态化&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;阅谁问君诵，水落清香浮&lt;/p&gt;
+&lt; ...
+  </div>
+  <div class="blog_bottom">
+    <ul>
+            <li class='date'>2018-01-26 17:23</li>
+      <li>浏览 297</li>
+      <li><a href='/blog/2409199#comments'>评论(0)</a></li>
+      
+      
+      <li class="last">分类:<a href="http://www.iteye.com/blogs/category/language">编程语言</a></li>    </ul>
+  </div>
+</div>
+
+
+
+
+  
+
+
+<div class="pagination"><span class="disabled prev_page">&laquo; 上一页</span> <span class="current">1</span> <a href="/?page=2" rel="next">2</a> <a href="/?page=3">3</a> <span class="gap">&hellip;</span> <a href="/?page=65">65</a> <a href="/?page=66">66</a> <a href="/?page=2" class="next_page" rel="next">下一页 &raquo;</a></div>
+
+      </div>
+            <div id="">
+        <div>
+          <!-- 广告位：PC端-iteye博客详情页左侧Button1-200*200 -->
+          
+          <!-- Ads ID 423 -->
+          
+            <div style="text-align: center">
+              <div id="kp_box_411" data-pid="423" data-track-view='{"mod":"kp_popu_411","con":",,"}'><script type="text/javascript" src="//rabc1.iteye.com/common/jwn7zn.js?jewbbn=wmb"></script></div>
+            </div>
+          
+        </div>
+        <div>
+          <!-- 广告位：PC端-iteye博客详情页左侧Button2-200*200 -->
+          
+          <!-- Ads ID 424 -->
+          
+            <div style="text-align: center">
+              <div id="kp_box_411" data-pid="424" data-track-view='{"mod":"kp_popu_411","con":",,"}'><script type="text/javascript" src="//rabc1.iteye.com/common/jwn7zn.js?jewbbn=wmb"></script></div>
+            </div>
+          
+        </div>
+      </div>
+      <script>
+        setTimeout(function () {
+          var naviga_offsetTop = 0;
+
+          function onload_function() {
+            naviga_offsetTop = jQuery("#nav_show_top_stop").position().top;
+            jQuery(window).bind("scroll", naviga_stay_top);
+            jQuery(window).bind("mousewheel", naviga_stay_top);
+            jQuery(document).bind("scroll", naviga_stay_top);
+            jQuery(document).bind("mousewheel", naviga_stay_top);
+          }
+
+          function naviga_stay_top() {
+
+            var scrollTop = jQuery(document).scrollTop();
+            if (scrollTop > (naviga_offsetTop + 250)) {
+              jQuery("#nav_show_top_stop").css({
+                "position": "fixed"
+              });
+              jQuery("#nav_show_top_stop").css({
+                "top": "0px"
+              });
+            } else {
+              jQuery("#nav_show_top_stop").css({
+                "position": "fixed"
+              });
+              jQuery("#nav_show_top_stop").css({
+                "top": naviga_offsetTop + 250 - scrollTop + "px"
+              });
+            }
+          }
+          jQuery(document).ready(onload_function());
+        }, 200);
+      </script>
+    </div>
+    
+    <div id="footer" class="clearfix">
+      <!-- <div id="copyright">
+        <hr />
+        声明：ITeye文章版权属于作者，受法律保护。没有作者书面许可不得转载。若作者同意转载，必须以超链接形式标明文章原始出处和作者。<br />
+        &copy; 2003-
+        2018 ITeye.com. All rights reserved. [ 京ICP证110151号 京公网安备110105010620 ]
+      </div> -->
+      <div id="ad_pop">
+        <div class="J_adv" data-view="true" data-mod="ad_popu_64" data-mtp="62" data-order="21" data-con="ad_content_2070">
+          <script id="popuLayer_js_q" src="http://ads.csdn.net/js/popuLayer.js" defer="" type="text/javascript"></script>
+          <div id="layerd" style="position: fixed; bottom: 0px; right: 0px; line-height: 0px; z-index: 1000; width: 300px; height: 278px;">
+            <div onclick="jQuery('#ad_abc').hide();jQuery('.J_close').hide();" class="J_close layer_close" style="display:block;background-color:#efefef;padding:0px;color:#333;font:12px/24px Helvetica,Tahoma,Arial,sans-serif;text-align:right;">
+              关闭
+            </div>
+            <div id="ad_abc">
+              <!-- 广告位：PC端-iteye博客详情右侧弹窗-300*250 -->
+              
+              <!-- Ads ID 425 -->
+              
+                <div style="text-align: center">
+                  <div id="kp_box_59" data-pid="425" data-track-view='{"mod":"kp_popu_59","con":",,"}'><script type="text/javascript" src="//rabc1.iteye.com/common/static/20jv.js?kfxc=xnccu"></script></div>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script type="text/javascript">
+  document.write("<img src='http://stat.iteye.com/?url="+ encodeURIComponent(document.location.href) + "&referrer=" + encodeURIComponent(document.referrer) + "&user_id=' width='0' height='0' />");
+</script>
+
+
+
+   Global site tag (gtag.js) - Google Analytics
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127895514-6"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-127895514-6');
+  </script>
+
+  
+  
+  <link href="//csdnimg.cn/public/common/toolbar/content_toolbar_css/content_toolbar.css" rel="stylesheet" >
+<script src="http://c.csdnimg.cn/public/common/libs/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="https://csdnimg.cn/pubfooter/js/publib_footer-1.0.3.js" data-isfootertrack="false" type="text/javascript"></script>
+<script id="csdn-toolbar-id" btnId="header_notice_num" wrapId="note1" count="5" subCount="5" type="text/javascript" src="//csdnimg.cn/public/common/toolbar/js/content_toolbar.js"></script>
+<script src="http://csdnimg.cn/asdf/tracking-1.0.1.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src="http://csdnimg.cn/asdf/async-1.0.1.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://g.csdnimg.cn/track/1.2.2/track.js"></script>
+<style>
+  .userinfo {display: none !important;}
+  .persion_article h3{
+    background: none !important;
+    border-bottom: none!important;
+    padding: 0!important;
+    margin-bottom: 0!important;
+    line-height: 1!important;
+  }
+  .persion_article .right_box{
+    margin-top: 0!important;
+  }
+  .persion_article .footer_box .feed_new_tit span{
+    padding-left: 0!important;
+  }
+</style>
+<script>
+(function($){
+  var windowHeight = $(window).height(),
+      contentHeight = $(".hide-main-content").height()
+      windowHeight = windowHeight * 1.5 - 100 //获得可视区域高度
+      if(contentHeight > windowHeight){
+        $(".hide-article-box").show()
+        $(".hide-main-content").css({'height': windowHeight,'overflow':'hidden'})
+        $(".hide-article-box").find("#btn-readmore").click(function(){
+          $(this).parents('.hide-main-content').removeAttr('style')
+          $(this).parent().hide()
+        })
+      }
+})(jQuery)
+</script>
+<script type="text/javascript">var $csdn_iteye_jq = jQuery.noConflict();// 解决jq与prototype.js命名空间冲突的问题</script>
+  
+
+</body>
+<script>
+  var jQuery = jQuery.noConflict();
+  setTimeout(function($){
+    window.csdn.fixedSidebar({
+        targetBox: $('.persion_article'), //判断到达底部的div,公共footer可选 $('.persion_article'),$('.public_pc_right_footer2018')
+        mainBox: $("#main"), //侧边栏旁边的主体div,默认 $("main")
+        sidebar: $(".blog-sidebar-fixed"), //侧边栏,默认 $("aside")
+        direction: 'right', //侧边栏浮动方向,可选'right','left',
+        position: 'fixed',//定位方式
+        bottom: 0,
+        zIndex: 99,
+        sidebarRightMargin: 8,//direction为left,侧边栏距离mainbox的右边距
+        sidebarLeftMargin: 15,//direction为right,侧边栏距离mainbox的左边距
+    })
+  },200,jQuery)
+  </script>
+</html>

@@ -3,6 +3,20 @@ namespace app\reptile\controller;
 
 class Index extends Base
 {
+	public function caipiao()
+	{
+		$url = "http://caipiao.163.com/order/jczq-hunhe/";
+		//file_get_contents() 把整个文件读入一个字符串中。
+		$contents = file_get_contents($url);
+		 
+		//对 $contents 进行操作
+		 
+		//file_put_contents() 函数把一个字符串写入文件中。
+		//该函数将返回写入到文件内数据的字节数。
+		echo file_put_contents("E:\\demo.html",$contents);
+
+	}
+
     public function download($pages="")
     {
     	set_time_limit(0);
@@ -13,7 +27,7 @@ class Index extends Base
 		ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30; GreenBrowser)');
 		ini_set('max_execution_time', '0');
 		 
-		$base = 'https://www.bqg5.cc/13_13981/';
+		$base = 'http://caipiao.163.com/order/jczq-hunhe/';
 		if(empty($pages)){
 			$start = '6857533.html';
 		}else{
