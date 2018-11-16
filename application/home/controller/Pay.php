@@ -31,8 +31,8 @@ class Pay extends Base
         $pay_bankcode = "904";   //银行编码(支付宝)
 
         $pay_applydate = date("Y-m-d H:i:s");  //订单时间
-        $pay_notifyurl = "http://www.202252.com:8080/game/home/pay/paynotify";   //服务端返回地址
-        $pay_callbackurl = "http://www.202252.com:8080/game/home/pay/payreturn/";  //页面跳转返回地址
+        $pay_notifyurl = "https://www.202252.com/home/pay/paynotify";   //服务端返回地址
+        $pay_callbackurl = "https://www.202252.com/home/pay/payreturn/";  //页面跳转返回地址
         $Md5key = "qnsvs9zqg1po05x8hval5bop18u52cot";   //密钥
         $tjurl = "http://pay.liweiqiguan.com/Pay_Index.html";   //提交地址
 
