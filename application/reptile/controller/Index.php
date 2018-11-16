@@ -5,15 +5,10 @@ class Index extends Base
 {
 	public function caipiao()
 	{
-		$url = "http://caipiao.163.com/order/jczq-hunhe/";
-		//file_get_contents() 把整个文件读入一个字符串中。
-		$contents = file_get_contents($url);
-		 
-		//对 $contents 进行操作
-		 
-		//file_put_contents() 函数把一个字符串写入文件中。
-		//该函数将返回写入到文件内数据的字节数。
-		echo file_put_contents("E:\\demo.html",$contents);
+		$data = file_get_contents('php://input');
+		$file = fopen('E:\\caipiao', 'a');
+		fwrite($file, $data);
+		dump($data);
 
 	}
 
