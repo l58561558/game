@@ -217,7 +217,7 @@ class User extends Base
         $nba_order_money = db('nba_order')->where('user_id='.$yh['id'].' and add_time > '.$yh['last_pay_time'])->sum('order_money');
         $tz_momey = $order_money+$fb_order_money+$lol_order_money+$nba_order_money;
         if($last_pay_money*0.2 > $tz_momey){
-            echo json_encode(['msg'=>'提现申请失败','code'=>0,'success'=>false]);
+            echo json_encode(['msg'=>'为防止恶意套现洗钱行为,提现需投注20%钻石','code'=>0,'success'=>false]);
             exit;
         }
 
