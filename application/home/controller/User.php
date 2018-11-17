@@ -208,6 +208,18 @@ class User extends Base
             exit;
         }
 
+        // 如果充值之后投注金额不超过充值金额的百分之40 不允许提现
+        $tz_money = 0;
+        $last_pay_money = $yh['last_pay_money'];
+        $order_money = db('order')->where('yhid="'.$yhid.'" and Tzzfsj>'.$yh['last_pay_time'])->sum('order_money');
+        $fb_order_money = db('fb_order')->where('user_id='.$yh['id'].' and add_time > '.$yh['last_pay_time'])->sum('order_money');
+        $lol_order_money = db('lol_order')->where('user_id='.$yh['id'].' and add_time > '.$yh['last_pay_time'])->sum('tz_money');
+        $nba_order_money = db('nba_order')->where('user_id='.$yh['id'].' and add_time > '.$yh['last_pay_time'])->sum('order_money');
+        $tz_momey = $order_money+$fb_order_money+$lol_order_money+$nba_order_money;
+        if($last_pay_money*0.4 > $tz_momey){
+            echo json_encode(['msg'=>'提现申请失败','code'=>0,'success'=>false]);
+            exit;
+        }
 
         db('yh')->where('yhid="'.$yhid.'"')->setInc('freezing_amount',$data['money']);
         db('yh')->where('yhid="'.$yhid.'"')->setDec('balance',$data['money']);

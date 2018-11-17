@@ -131,6 +131,8 @@ class Pay extends Base
                                 db('yh')->where('id='.$p_user['id'])->setInc('balance',$ar['jyje']);
                                 db('yh')->where('id='.$p_user['id'])->setInc('amount_money',$ar['jyje']);
                                 db('yh')->where('id='.$yh['id'])->setInc('is_one',1);
+                                db('yh')->where('id='.$yh['id'])->setInc('last_pay_money',$ar['jyje']);
+                                db('yh')->where('id='.$yh['id'])->setInc('last_pay_time',time());
                             }
                         }
                     }

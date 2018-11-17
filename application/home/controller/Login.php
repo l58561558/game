@@ -239,7 +239,7 @@ class Login extends Base
         $arr['yhid'] = $this->user_id.$id;
         $arr['Sjhm'] = $data['phone'];
         $arr['key'] = $key;
-        $arr['Mm'] = md5($data['password']+$key);
+        $arr['Mm'] = md5($data['password'].$key);
         $arr['zcsj'] = time();
         $arr['base'] = 0.05; // 基值
         $arr['radio'] = 1; // 基值
