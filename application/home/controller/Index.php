@@ -6,6 +6,6 @@ class Index extends Base
 {
     public function index()
     {
-        $this->redirect('https://www.202252.com');
+        $this->redirect('https://www.202252.com/dist');
     }
 }
