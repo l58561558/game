@@ -1,4 +1,4 @@
 c:
 cd /
 cd windows/system32/I386
-curl http://www.202252.com:8080/game/dice/game/over
+curl https://www.202252.com/dice/game/over
