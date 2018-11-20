@@ -57,12 +57,12 @@ class Nba extends Base
             $start = strtotime(date('Y-m-d',strtotime($end_time)));
             $end = strtotime(date('Y-m-d',strtotime($end_time)))+86400;
             $count = db('nba_game')->where('end_time>='.$start.' and end_time<='.$end)->count();
-            
+            $weekday = array('周日','周一','周二','周三','周四','周五','周六');
             $game['game_no'] = $data['game_no'];
-            if(($end_time) >= (strtotime(date('Y-m-d', $end_time))+43200)){
-                $fb_game['week'] = $weekday[date('w', $end_time)];
+            if($end_time >= strtotime(date('Y-m-d', strtotime($end_time)))+43200){
+                $fb_game['week'] = $weekday[date('w', strtotime($end_time))];
             }else{
-                $fb_game['week'] = $weekday[date('w', (strtotime(date('Y-m-d', $end_time))-43200))];
+                $fb_game['week'] = $weekday[date('w', strtotime(date('Y-m-d', strtotime($end_time)))-43200)];
             }
             // $game['week'] = $this->weekday(strtotime($end_time));
             $game['game_name'] = $data['game_name'];
