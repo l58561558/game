@@ -94,17 +94,14 @@ class Index extends Base
 			// $fb_game_res = db('fb_game')->insertAll($fb_game);
 			// $fb_game_cate_res = db('fb_game_cate')->insertAll($fb_game_cate);
 			if($fb_game_cate_res > 0){
-				echo '添加成功';
-				// echo json_encode(['msg'=>'添加成功','data'=>$msg,'code'=>1,'success'=>true]);
-            	// exit;
+				echo json_encode(['msg'=>'添加成功','data'=>$msg,'code'=>1,'success'=>true]);
+            	exit;
 			}else{
-				echo '添加失败';
-				// echo json_encode(['msg'=>'添加失败','code'=>200,'success'=>false]);
+				echo json_encode(['msg'=>'添加失败','code'=>200,'success'=>false]);
             	exit;
 			}
 		}else{
-			echo '请填写数据';
-			// echo json_encode(['msg'=>'请填写数据','code'=>201,'success'=>false]);
+			echo json_encode(['msg'=>'请填写数据','code'=>201,'success'=>false]);
             exit;
 		}
 
