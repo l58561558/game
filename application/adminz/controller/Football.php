@@ -18,8 +18,8 @@ class Football extends Base
      */
     public function get_fb_list()
     {
-        $count = db("fb_game")->where('status>0')->order('end_time desc')->count();
-        $list = db("fb_game")->where('status>0')->order('end_time desc')->paginate(20,$count);
+        $count = db("fb_game")->where('status>0')->order('end_time asc')->count();
+        $list = db("fb_game")->where('status>0')->order('end_time asc')->paginate(20,$count);
 
         //获取分页
         $page = $list->render();
