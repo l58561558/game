@@ -20,7 +20,12 @@ class Index extends Base
 				$fb_game['road_team']                = $fb_game_data->guestTeam;
 				$fb_game['let_score']                = $fb_game_data->concede;
 				$fb_game['add_time']                 = time();
-				$fb_game['week']                     = $weekday[date('w', ($fb_game_data->deadLine)/1000)];
+				if((($fb_game_data->deadLine)/1000) >= (strtotime(date('Y-m-d', ($fb_game_data->deadLine)/1000))+43200)){
+					$fb_game['week']                 = $weekday[date('w', ($fb_game_data->deadLine)/1000)];
+				}else{
+					$fb_game['week']                 = $weekday[date('w', (strtotime(date('Y-m-d', ($fb_game_data->deadLine)/1000))-43200))];
+				}
+				
 				$game_id = db('fb_game')->insertGetId($fb_game);
 
 				$fb_game_cate['home_win']            = $fb_game_data->hostWin;

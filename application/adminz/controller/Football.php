@@ -61,7 +61,12 @@ class Football extends Base
             //     $game['game_no'] = '0'.$game_no;
             // }
             $game['game_no'] = $data['game_no'];
-            $game['week'] = $this->weekday($end_time);
+            if(($end_time) >= (strtotime(date('Y-m-d', $end_time))+43200)){
+                $fb_game['week'] = $weekday[date('w', $end_time)];
+            }else{
+                $fb_game['week'] = $weekday[date('w', (strtotime(date('Y-m-d', $end_time))-43200))];
+            }
+            // $game['week'] = $this->weekday($end_time);
             $game['game_name'] = $data['game_name'];
             $game['end_time'] = $end_time;
             $game['home_team'] = $data['home_team'];
