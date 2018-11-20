@@ -148,7 +148,7 @@ class User extends Base
     // 个人中心--钱包
     public function purse(){
         $yh = db('yh')
-                ->field('yhid,balance,freezing_amount,amount_money')
+                ->field('yhid,no_balance,balance,freezing_amount,amount_money')
                 ->where('id='.USER_ID)
                 ->find();
         // if(empty($yh['mbquestion1']) || empty($yh['mbquestion2']) || empty($yh['mbanswer1']) || empty($yh['mbanswer2'])){
@@ -156,6 +156,7 @@ class User extends Base
         //     exit;
         // }else{
             $list['yh']['yhid'] = $yh['yhid'];
+            $list['yh']['no_balance'] = $yh['no_balance'];
             $list['yh']['balance'] = $yh['balance'];
             $list['yh']['freezing_amount'] = $yh['freezing_amount'];
             $list['yh']['amount_money'] = $yh['amount_money'];
