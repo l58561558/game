@@ -10,7 +10,7 @@ class Index extends Base
 		if(!empty($data)){
 			$data = json_decode($data);
 			
-			$weekday = array('星期日','星期一','星期二','星期三','星期四','星期五','星期六');
+			$weekday = array('周日','周一','周二','周三','周四','周五','周六');
 			foreach ($data as $key => $value) {
 				$fb_game_data = $data[$key];
 				$fb_game['game_no']                  = $fb_game_data->gameNo;
@@ -110,7 +110,7 @@ class Index extends Base
     { 
         if(is_numeric($time)) 
         { 
-            $weekday = array('星期日','星期一','星期二','星期三','星期四','星期五','星期六'); 
+            $weekday = array('周日','周一','周二','周三','周四','周五','周六');
             return $weekday[date('w', $time)]; 
         } 
         return false; 
