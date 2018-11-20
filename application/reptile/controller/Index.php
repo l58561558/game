@@ -91,8 +91,8 @@ class Index extends Base
 			// dump($fb_game_cate_res);
 			die;
 			// dump($fb_game_cate);die;
-			// $fb_game_res = db('fb_game')->insertAll($fb_game);
-			// $fb_game_cate_res = db('fb_game_cate')->insertAll($fb_game_cate);
+			$fb_game_res = db('fb_game')->insertAll($fb_game);
+			$fb_game_cate_res = db('fb_game_cate')->insertAll($fb_game_cate);
 			if($fb_game_cate_res > 0){
 				echo json_encode(['msg'=>'添加成功','data'=>$msg,'code'=>1,'success'=>true]);
             	exit;
