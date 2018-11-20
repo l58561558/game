@@ -53,17 +53,20 @@ class Nba extends Base
     {
         if(IS_POST){
             $data = $_REQUEST;
-            // echo strtotime($data['end_time']);echo "<br>";
-            $start = strtotime(date('Y-m-d',strtotime($data['end_time'])));
-            $end = strtotime(date('Y-m-d',strtotime($data['end_time'])))+86400;
+            $end_time = $data['end_time'];
+            $start = strtotime(date('Y-m-d',strtotime($end_time)));
+            $end = strtotime(date('Y-m-d',strtotime($end_time)))+86400;
             $count = db('nba_game')->where('end_time>='.$start.' and end_time<='.$end)->count();
             
-            // $game['game_no'] = 301+$count;
             $game['game_no'] = $data['game_no'];
-            $game['week'] = $this->weekday(strtotime($data['end_time']));
-            // $game['week'] = (int)date('w',strtotime($data['end_time']));
+            if(($end_time) >= (strtotime(date('Y-m-d', $end_time))+43200)){
+                $fb_game['week'] = $weekday[date('w', $end_time)];
+            }else{
+                $fb_game['week'] = $weekday[date('w', (strtotime(date('Y-m-d', $end_time))-43200))];
+            }
+            // $game['week'] = $this->weekday(strtotime($end_time));
             $game['game_name'] = $data['game_name'];
-            $game['end_time'] = strtotime($data['end_time']);
+            $game['end_time'] = strtotime($end_time);
             $game['game_cate'] = 1;
             $game['home_team'] = $data['home_team'];
             $game['road_team'] = $data['road_team'];
