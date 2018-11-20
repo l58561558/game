@@ -57,12 +57,13 @@ class Nba extends Base
             $start = strtotime(date('Y-m-d',strtotime($end_time)));
             $end = strtotime(date('Y-m-d',strtotime($end_time)))+86400;
             $count = db('nba_game')->where('end_time>='.$start.' and end_time<='.$end)->count();
-            $weekday = array('周日','周一','周二','周三','周四','周五','周六');
+            
             $game['game_no'] = $data['game_no'];
+            $weekday = array('周日','周一','周二','周三','周四','周五','周六');
             if($end_time >= strtotime(date('Y-m-d', strtotime($end_time)))+43200){
-                $fb_game['week'] = $weekday[date('w', strtotime($end_time))];
+                $game['week'] = $weekday[date('w', strtotime($end_time))];
             }else{
-                $fb_game['week'] = $weekday[date('w', strtotime(date('Y-m-d', strtotime($end_time)))-43200)];
+                $game['week'] = $weekday[date('w', strtotime(date('Y-m-d', strtotime($end_time)))-43200)];
             }
             // $game['week'] = $this->weekday(strtotime($end_time));
             $game['game_name'] = $data['game_name'];
@@ -133,15 +134,12 @@ class Nba extends Base
         if(IS_POST){
             $data = $_REQUEST;
             $end_time = strtotime($data['end_time']);
-
-            $start = strtotime(date('Y-m-d',$end_time));
-            $end = strtotime(date('Y-m-d',$end_time))+86400;
-            $count = db('nba_game')->where('end_time>='.$start.' and end_time<='.$end)->count();
-
-            // $data['game_no'] = date('d',$end_time)*100+$count+1;
-            $game['game_no'] = $data['game_no'];
-            $data['week'] = $this->weekday($end_time);
-
+            $weekday = array('周日','周一','周二','周三','周四','周五','周六');
+            if($end_time >= strtotime(date('Y-m-d', $end_time))+43200){
+                $data['week'] = $weekday[date('w', $end_time)];
+            }else{
+                $data['week'] = $weekday[date('w', strtotime(date('Y-m-d', $end_time))-43200)];
+            }
             if($data['home_score'] > $data['road_score']){
                 $data['win_team_id'] = $data['home_team'];
             }
