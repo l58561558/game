@@ -89,7 +89,7 @@ class Nba extends Base
                     $cate['game_id'] = $game_id;
                     $cate['cate_name'] = db('nba_code')->where('code="'.$key.'"')->value('code_name');
                     $cate['cate_code'] = $key;
-                    $cate['cate_odds'] = in_array($key, $array)?floor($value*1.085*100)/100:$value;
+                    $cate['cate_odds'] = $value==0?0:(in_array($key, $array)?floor($value*1.085*100)/100:$value);
                     $game_cate[] = $cate;
                 }
                 $res = db('nba_game_cate')->insertAll($game_cate);

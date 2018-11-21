@@ -88,7 +88,7 @@ class Football extends Base
                     $cate['game_id'] = $game_id;
                     $cate['cate_name'] = $fb_code_date['code_name'];
                     $cate['cate_code'] = $key;
-                    $cate['cate_odds'] = in_array($key, $array)?floor($value*1.085*100)/100:$value;
+                    $cate['cate_odds'] = $value==0?0:(in_array($key, $array)?floor($value*1.085*100)/100:$value);
                     $game_cate[] = $cate;
                 }
                 $res = db('fb_game_cate')->insertAll($game_cate);
