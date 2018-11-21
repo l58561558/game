@@ -108,7 +108,12 @@ class Nba extends Base
         return view();
     }
 
-
+    public function drop($id)
+    {
+        db('nba_game')->where('id='.$id)->delete();
+        db('nba_game_cate')->where('game_id='.$id)->delete();
+        $this->success('删除成功');
+    }
 
     public function look($id)
     {
