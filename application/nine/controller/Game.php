@@ -586,15 +586,15 @@ class Game extends Base
                 $arr['Tzcgbz'] = 1;
                 $res = db("order")->insert($arr);
                 if($res>0){
-                    if($order_money >= $yh['no_balance']){
+                    if($data['order_money'] >= $yh['no_balance']){
                         db('yh')->where('id='.$yh['id'])->setField('no_balance',0);
-                        $residue = $order_money - $yh['no_balance'];
+                        $residue = $data['order_money'] - $yh['no_balance'];
                     }else{
-                        db('yh')->where('id='.$yh['id'])->setDec('no_balance',$order_money);
+                        db('yh')->where('id='.$yh['id'])->setDec('no_balance',$data['order_money']);
                         $residue = 0;
                     }
                     db('yh')->where('id='.$yh['id'])->setDec('balance',$residue);
-                    db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money);
+                    db('yh')->where('id='.$yh['id'])->setDec('amount_money',$data['order_money']);
                     $balance = db('yh')->where('id='.$yh['id'])->value('balance');
 
                     // 创建订单明细
