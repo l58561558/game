@@ -111,8 +111,11 @@ class Pay extends Base
                     exit("交易已完成，请勿重复操作！");
                 }else{
                     $yhid = $account_details['yhid'];
-                    db('yh')->where('yhid="'.$yhid.'"')->setInc('balance',$price);
+                    $balance = $price*0.8;
+                    $no_balance = $price*0.2;
+                    db('yh')->where('yhid="'.$yhid.'"')->setInc('balance',$balance );
                     db('yh')->where('yhid="'.$yhid.'"')->setInc('amount_money',$price);
+                    db('yh')->where('yhid="'.$yhid.'"')->setInc('no_balance',$no_balance);
                     $res = db('account_details')->where('orderid="'.$orderid.'"')->setField('Zfywc',1);
 
                     $yh = db('yh')->where('yhid="'.$yhid.'"')->find();
@@ -131,8 +134,6 @@ class Pay extends Base
                                 db('yh')->where('id='.$p_user['id'])->setInc('balance',$ar['jyje']);
                                 db('yh')->where('id='.$p_user['id'])->setInc('amount_money',$ar['jyje']);
                                 db('yh')->where('id='.$yh['id'])->setInc('is_one',1);
-                                db('yh')->where('id='.$yh['id'])->setField('last_pay_money',$ar['jyje']);
-                                db('yh')->where('id='.$yh['id'])->setField('last_pay_time',time());
                             }
                         }
                     }
@@ -161,7 +162,7 @@ class Pay extends Base
         if($account_details['Zfywc'] == 1){
             $this->redirect('https://www.202252.com/#/chomine');
         }else{
-            exit("交易失败");
+            exit("交易失败<a href='https://www.202252.com/#/chomine'>请点击此处回到个人中心页面重新充值</>");
         }
     }
 }

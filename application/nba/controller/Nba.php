@@ -2,7 +2,7 @@
 namespace app\nba\controller;
 use app\nba\model\Group;
 use think\Db;
-
+use app\home\controller\Base; 
 // NBA比赛竞猜
 class Nba extends Base
 {
@@ -166,7 +166,7 @@ class Nba extends Base
 
         $order_money = $tz_num*$data['multiple']*2;
 
-        if($order_money > $yh['balance']){
+        if($order_money > $yh['balance']+$yh['no_balance']){
             echo json_encode(['msg'=>'投注金额超出可用金额','code'=>204,'success'=>false]);
             exit;  
         } 
@@ -201,18 +201,28 @@ class Nba extends Base
         $res = db('nba_order')->where('order_id='.$order_id)->update(array('tz_num'=>$tz_num,'order_money'=>$order_money,'order_no'=>$order_no));
 
         if($res) {
+            if($order_money >= $yh['no_balance']){
+                db('yh')->where('id='.$yh['id'])->setField('no_balance',0);
+                $residue = $order_money - $yh['no_balance'];
+            }else{
+                db('yh')->where('id='.$yh['id'])->setDec('no_balance',$order_money);
+                $residue = 0;
+            }
+            db('yh')->where('id='.$yh['id'])->setDec('balance',$residue);
+            db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money);
+            $balance = db('yh')->where('id='.$yh['id'])->value('balance');
             /**添加账单明细**/
             $detail['yhid'] = $yh['yhid'];
             $detail['Jylx'] = 3;
             $detail['jyje'] = $order_money;
-            $detail['new_money'] = $yh['balance']-$order_money;
+            $detail['new_money'] = $balance;
             $detail['Jysj'] = time();
             $detail['Srhzc'] = 2;
             $detail['game_id'] = 6;
             $detail_res = db('account_details')->insert($detail,false,true);
             /**添加账单明细end**/
-            db('yh')->where('id='.$yh['id'])->setDec('balance',$order_money);
-            db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money); 
+            // db('yh')->where('id='.$yh['id'])->setDec('balance',$order_money);
+            // db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money); 
 
             echo json_encode(['msg'=>'投注成功','code'=>1,'success'=>true]);
             exit;

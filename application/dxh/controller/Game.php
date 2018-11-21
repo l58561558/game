@@ -1,6 +1,6 @@
 <?php
 namespace app\dxh\controller;
-
+use app\home\controller\Base; 
 class Game extends Base
 {
     private $kjid = 18000001;
@@ -220,7 +220,7 @@ class Game extends Base
                 echo json_encode(['msg'=>'投注金额不能小于0','code'=>4,'success'=>false]);
                 exit;  
             }
-            if($order_money > $yh['balance']){
+            if($order_money > $yh['balance']+$yh['no_balance']){
                 echo json_encode(['msg'=>'投注金额超出可用金额','code'=>2,'success'=>false]);
                 exit;  
             }
@@ -260,6 +260,16 @@ class Game extends Base
                 $arr['Tzcgbz'] = 1;
                 $res = db("order")->insert($arr);
                 if($res>0){
+                    if($order_money >= $yh['no_balance']){
+                        db('yh')->where('id='.$yh['id'])->setField('no_balance',0);
+                        $residue = $order_money - $yh['no_balance'];
+                    }else{
+                        db('yh')->where('id='.$yh['id'])->setDec('no_balance',$order_money);
+                        $residue = 0;
+                    }
+                    db('yh')->where('id='.$yh['id'])->setDec('balance',$residue);
+                    db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money);
+                    $balance = db('yh')->where('id='.$yh['id'])->value('balance');
                     // 创建订单明细
                     foreach ($tz_result as $key => $value) {
                         $arr1[$key]['order_id'] = $tzid;
@@ -279,7 +289,7 @@ class Game extends Base
                         $detail['yhid'] = db('yh')->where('id='.$id)->value('yhid');
                         $detail['Jylx'] = 3;
                         $detail['jyje'] = $order_money;
-                        $detail['new_money'] = $yh['balance']-$order_money;
+                        $detail['new_money'] = $balance;
                         $detail['Jysj'] = time();
                         $detail['Srhzc'] = 2;
                         $detail['game_id'] = $this->game_id;
@@ -297,9 +307,9 @@ class Game extends Base
                         /* 投注金额分销分红end */
 
                         // 投注成功减去用户余额
-                        db('yh')->where('id='.$id)->setDec('balance',$order_money);
-                        db('yh')->where('id='.$id)->setDec('amount_money',$order_money);
-                        $ye['balance'] = db('yh')->where('id='.$id)->value('balance');
+                        // db('yh')->where('id='.$id)->setDec('balance',$order_money);
+                        // db('yh')->where('id='.$id)->setDec('amount_money',$order_money);
+                        // $ye['balance'] = db('yh')->where('id='.$id)->value('balance');
 
                         /** 下注流水奖励 **/
                         reward($yhid);

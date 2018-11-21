@@ -1,7 +1,7 @@
 <?php
 namespace app\nine\controller;
 use app\nine\model\Card;
-
+use app\home\controller\Base; 
 class Game extends Base
 {
     private $kjid = 18000001;
@@ -539,7 +539,7 @@ class Game extends Base
                 echo json_encode(['msg'=>'投注金额不能小于1000','code'=>202,'success'=>false]);
                 exit;  
             }
-            if($data['order_money'] > $yh['balance']){
+            if($data['order_money'] > $yh['balance']+$yh['no_balance']){
                 echo json_encode(['msg'=>'投注金额超出可用金额','code'=>203,'success'=>false]);
                 exit;  
             }
@@ -585,8 +585,16 @@ class Game extends Base
                 $arr['Tzcgbz'] = 1;
                 $res = db("order")->insert($arr);
                 if($res>0){
-                    db('yh')->where('id='.USER_ID)->setDec('balance',$data['order_money']);
-                    db('yh')->where('id='.USER_ID)->setDec('amount_money',$data['order_money']);
+                    if($order_money >= $yh['no_balance']){
+                        db('yh')->where('id='.$yh['id'])->setField('no_balance',0);
+                        $residue = $order_money - $yh['no_balance'];
+                    }else{
+                        db('yh')->where('id='.$yh['id'])->setDec('no_balance',$order_money);
+                        $residue = 0;
+                    }
+                    db('yh')->where('id='.$yh['id'])->setDec('balance',$residue);
+                    db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money);
+                    $balance = db('yh')->where('id='.$yh['id'])->value('balance');
 
                     // 创建订单明细
                     $tz_result = explode(',', $data['tz_result']);
@@ -603,7 +611,7 @@ class Game extends Base
                         $detail['yhid'] = $yhid;
                         $detail['Jylx'] = 3;
                         $detail['jyje'] = $data['order_money'];
-                        $detail['new_money'] = $yh['balance']-$data['order_money'];
+                        $detail['new_money'] = $balance;
                         $detail['Jysj'] = time();
                         $detail['Srhzc'] = 2;
                         $detail['game_id'] = $this->game_id;

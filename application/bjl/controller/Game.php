@@ -370,7 +370,7 @@ class Game extends Base
                 echo json_encode(['msg'=>'请选择投注选项','code'=>207,'success'=>false]);
                 exit;  
             }
-            if($data['tz_money'] > $yh['balance']){
+            if($data['tz_money'] > $yh['balance']+$yh['no_balance']){
                 echo json_encode(['msg'=>'投注金额超出可用金额','code'=>203,'success'=>false]);
                 exit;  
             }
@@ -411,9 +411,16 @@ class Game extends Base
                 $arr['Tzcgbz'] = 1;
                 $res = db("order")->insert($arr);
                 if($res>0){
-                    db('yh')->where('id='.USER_ID)->setDec('balance',$data['tz_money']);
-                    db('yh')->where('id='.USER_ID)->setDec('amount_money',$data['tz_money']);
-                    $balance = db('yh')->where('id='.USER_ID)->value('balance');
+                    if($data['tz_money'] >= $yh['no_balance']){
+                        db('yh')->where('id='.$yh['id'])->setField('no_balance',0);
+                        $residue = $data['tz_money'] - $yh['no_balance'];
+                    }else{
+                        db('yh')->where('id='.$yh['id'])->setDec('no_balance',$data['tz_money']);
+                        $residue = 0;
+                    }
+                    db('yh')->where('id='.$yh['id'])->setDec('balance',$residue);
+                    db('yh')->where('id='.$yh['id'])->setDec('amount_money',$data['tz_money']);
+                    $balance = db('yh')->where('id='.$yh['id'])->value('balance');
                     // 创建订单明细
                     $arr1['order_id'] = $tzid;
                     $arr1['tz_result'] = $data['tz_result'];
