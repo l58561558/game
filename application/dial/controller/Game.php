@@ -66,7 +66,8 @@ class Game extends Base
      */
     public function balance()
     {
-        $data['ye'] = db('yh')->where('id='.USER_ID)->value('balance');
+        $yh = db('yh')->where('id='.USER_ID)->find();
+        $data['ye'] = $yh['balance']+$yh['no_balance'];
         $data['kjid'] = db('dial_kj')->where('game_id='.$this->game_id.' and kjsjzt=1')->value('kjid');
         echo json_encode(['msg'=>'请求成功','data'=>$data,'code'=>1]);
         exit; 

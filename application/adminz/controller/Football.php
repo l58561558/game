@@ -113,7 +113,12 @@ class Football extends Base
         return view();
     }
 
-
+    public function drop($id = 0)
+    {
+        db('fb_game')->where('id='.$id)->delete();
+        db('fb_game_cate')->where('game_id='.$id)->delete();
+        $this->success('删除成功');
+    }
 
     public function look($id)
     {

@@ -34,7 +34,7 @@ $(function(){
         var pathName=window.document.location.pathname;
         var pos=curWwwPath.indexOf(pathName);
         var localhostPaht=curWwwPath.substring(0,pos); 
-        $.post(localhostPaht+'/game/adminz/base/clear_temp',{flag:true},function(res){
+        $.post(localhostPaht+'/adminz/base/clear_temp',{flag:true},function(res){
            layer.msg('清除成功!');
         },'json');
     });

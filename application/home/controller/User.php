@@ -157,7 +157,8 @@ class User extends Base
         // }else{
             $list['yh']['yhid'] = $yh['yhid'];
             $list['yh']['no_balance'] = $yh['no_balance'];
-            $list['yh']['balance'] = $yh['balance'];
+            $list['yh']['balance'] = $yh['balance']+$yh['no_balance'];
+            $list['yh']['usable'] = $yh['balance']; // 可用金额
             $list['yh']['freezing_amount'] = $yh['freezing_amount'];
             $list['yh']['amount_money'] = $yh['amount_money'];
         // }
@@ -177,9 +178,11 @@ class User extends Base
 
         $yhk = db('yhk')->where('yhid="'.$yhid.'"')->find();
 
-
         if(empty($yhk)){
             echo json_encode(['msg'=>'该用户未实名认证','code'=>0,'success'=>false]);
+            exit;
+        }else{
+            echo json_encode(['msg'=>'可以提现','code'=>1,'success'=>true]);
             exit;
         }
     } 

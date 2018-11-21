@@ -302,7 +302,8 @@ class Game extends Base
      */
     public function balance()
     {
-        $data['ye'] = db('yh')->where('id='.USER_ID)->value('balance');
+        $yh = db('yh')->where('id='.USER_ID)->find();
+        $data['ye'] = $yh['balance']+$yh['no_balance'];
         $data['kjid'] = db('bjl_kj')->where('win_status=1')->value('kjid');
         echo json_encode(['msg'=>'请求成功','data'=>$data,'code'=>1]);
         exit; 

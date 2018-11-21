@@ -151,7 +151,8 @@ class Game extends Base
      */
     public function balance()
     {
-        $data['ye'] = db('yh')->where('id='.USER_ID)->value('balance');
+        $yh = db('yh')->where('id='.USER_ID)->find();
+        $data['ye'] = $yh['balance']+$yh['no_balance'];
         $data['kjid'] = db('dxh_kj')->where('game_id='.$this->game_id.' and kjsjzt=1')->value('kjid');
         echo json_encode(['msg'=>'请求成功','data'=>$data,'code'=>1]);
         exit; 
@@ -315,7 +316,7 @@ class Game extends Base
                         reward($yhid);
                         /** 下注流水奖励 END **/
 
-                        echo json_encode(['msg'=>'投注成功','data'=>$ye,'code'=>1,'success'=>true]);
+                        echo json_encode(['msg'=>'投注成功','data'=>$balance,'code'=>1,'success'=>true]);
                         exit; 
                     }else{
                         echo json_encode(['msg'=>'投注失败,本轮已停止投注','code'=>0,'success'=>false]);

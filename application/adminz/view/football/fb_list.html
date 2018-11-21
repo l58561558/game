@@ -50,7 +50,8 @@
 				{/if}
 				{/if}
 				<a href="{:url('football/edit')}?id={$info.id}">编辑</a>&nbsp;&nbsp;&nbsp;
-				<a href="{:url('football/look')}?id={$info.id}">查看</a>
+				<a href="{:url('football/look')}?id={$info.id}">查看</a>&nbsp;&nbsp;&nbsp;
+				<a style="color: red" href="{:url('football/drop')}?id={$info.id}">删除</a>
 			</td>
 		</tr>
 		{/volist}
