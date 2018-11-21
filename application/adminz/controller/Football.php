@@ -61,6 +61,7 @@ class Football extends Base
             //     $game['game_no'] = '0'.$game_no;
             // }
             $game['game_no'] = $data['game_no'];
+            $weekday = array('周日','周一','周二','周三','周四','周五','周六'); 
             if(($end_time) >= (strtotime(date('Y-m-d', $end_time))+43200)){
                 $fb_game['week'] = $weekday[date('w', $end_time)];
             }else{
