@@ -218,7 +218,7 @@ class Login extends Base
             exit;
         }
 
-        if($data['yqm'] != 999999){
+        if($data['yqm'] != 999999 || $data['yqm'] == '123462'){
             $yh_yqm = db('yh')->where('yhid like "%'.$data['yqm'].'"')->value('id');
             if(empty($yh_yqm)){
                 // 校验失败
