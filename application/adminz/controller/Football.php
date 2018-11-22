@@ -310,6 +310,7 @@ class Football extends Base
     // 通过比赛ID查其所有的投注选项ID -> 在通过投注选项ID查询所有的订单 -> 结算
     public function fb_over($id)
     {
+        set_time_limit(0);
         $game = db('fb_game')->where('id='.$id)->find();
         if(empty($game['top_score']) && empty($game['down_score'])){
             $this->error("请输入分数比!");
