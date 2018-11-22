@@ -26,12 +26,15 @@ class Nba extends Base
         //遍历数据
         if(!empty($list)){
             $list->each(function($item,$key){
-                if(is_numeric ($item['home_team']) && is_numeric ($item['road_team'])){
+                if(is_numeric($item['home_team']) && is_numeric($item['road_team'])){
                     $item['home_team'] = db('nba_team')->where('team_id='.$item['home_team'])->value('team_name');
                     $item['road_team'] = db('nba_team')->where('team_id='.$item['road_team'])->value('team_name');
                     if(!empty($item['win_team_id'])){
                         $item['win_team'] = db('nba_team')->where('team_id='.$item['win_team_id'])->value('team_name');
-                    }    
+                    }
+                    if(is_numeric($item['win_team'])){
+                        $item['win_team'] = db('nba_team')->where('team_id='.$item['win_team'])->value('team_name');
+                    }
                 }
                 
                 if($item['status'] == 0){
