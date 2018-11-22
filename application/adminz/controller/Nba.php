@@ -225,10 +225,6 @@ class Nba extends Base
             $data = $_REQUEST;
             $end_time = strtotime($data['end_time']);
             $weekday = array('周日','周一','周二','周三','周四','周五','周六');
-            if(is_numeric($data['home_team']) && is_numeric($data['road_team'])){
-                $data['home_team'] = db('nba_team')->where('team_id='.$data['home_team'])->value('team_name');
-                $data['road_team'] = db('nba_team')->where('team_id='.$data['road_team'])->value('team_name');
-            }
             if($end_time >= strtotime(date('Y-m-d', $end_time))+43200){
                 $data['week'] = $weekday[date('w', $end_time)];
             }else{
@@ -255,6 +251,10 @@ class Nba extends Base
         $this->assign('code',$code);
 
         $data = db('nba_game')->where("id=".$id)->find();
+        if(is_numeric($data['home_team']) && is_numeric($data['road_team'])){
+            $data['home_team'] = db('nba_team')->where('team_id='.$data['home_team'])->value('team_name');
+            $data['road_team'] = db('nba_team')->where('team_id='.$data['road_team'])->value('team_name');
+        }
         $this->assign("data",$data);
 
         return view();
