@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\model;
-class Nba extends base {
+use think\Model;
+class Getnba extends Model {
 	
     public function getMacthlist($url='')
     {	
