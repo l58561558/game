@@ -16,8 +16,10 @@ class Nba extends Base
                 $data[$key]['day'] = (int)date('w',$data[$key]['end_time']);
                 $data[$key]['date'] = date('Y-m-d',$data[$key]['end_time']);
                 $data[$key]['end_time'] = date('Y-m-d H:i:s',$data[$key]['end_time']);
-                // $data[$key]['home_team'] = db('nba_team')->where('team_id='.$data[$key]['home_team'])->value('team_name');
-                // $data[$key]['road_team'] = db('nba_team')->where('team_id='.$data[$key]['road_team'])->value('team_name');
+                if(is_numeric($data[$key]['home_team']) && is_numeric($data[$key]['road_team'])){
+                    $data[$key]['home_team'] = db('nba_team')->where('team_id='.$data[$key]['home_team'])->value('team_name');
+                    $data[$key]['road_team'] = db('nba_team')->where('team_id='.$data[$key]['road_team'])->value('team_name');    
+                }
                 $data[$key]['game_cate'] = $data[$key]['game_cate']==1?'NBA':'欧冠';
                 $tz = db('nba_game_cate')->where('game_id='.$data[$key]['id'])->select();
                 foreach ($tz as $ke => $val) {

@@ -1,7 +1,7 @@
 <?php
 namespace app\adminz\controller;
 use think\Db;
-use app\adminz\model\Nba;
+// use app\adminz\model\Nba;
 class Nba extends Base
 {
     /**
@@ -27,11 +27,14 @@ class Nba extends Base
         //遍历数据
         if(!empty($list)){
             $list->each(function($item,$key){
-                // $item['home_team'] = db('nba_team')->where('team_id='.$item['home_team'])->value('team_name');
-                // $item['road_team'] = db('nba_team')->where('team_id='.$item['road_team'])->value('team_name');
-                // if(!empty($item['win_team_id'])){
-                //     $item['win_team'] = db('nba_team')->where('team_id='.$item['win_team_id'])->value('team_name');
-                // }
+                if(is_numeric ($item['home_team']) && is_numeric ($item['road_team'])){
+                    $item['home_team'] = db('nba_team')->where('team_id='.$item['home_team'])->value('team_name');
+                    $item['road_team'] = db('nba_team')->where('team_id='.$item['road_team'])->value('team_name');
+                    if(!empty($item['win_team_id'])){
+                        $item['win_team'] = db('nba_team')->where('team_id='.$item['win_team_id'])->value('team_name');
+                    }    
+                }
+                
                 if($item['status'] == 0){
                     $item['tz_status'] = '已结算';
                 }else{
@@ -288,6 +291,7 @@ class Nba extends Base
     // 通过比赛ID查其所有的投注选项ID -> 在通过投注选项ID查询所有的订单 -> 结算
     public function nba_over($id)
     {
+        set_time_limit(0);
         $game = db('nba_game')->where('id='.$id)->find();
         if(empty($game['home_score']) && empty($game['road_score']) && empty($game['win_team'])){
             $this->error("请输入分数比和获胜队伍!");
