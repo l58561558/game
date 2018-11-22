@@ -1,6 +1,7 @@
 <?php
 namespace app\adminz\controller;
 use think\Db;
+use app\adminz\model\Nba;
 class Nba extends Base
 {
     /**
@@ -18,19 +19,19 @@ class Nba extends Base
      */
     public function get_nba_list()
     {
-        $count = db("nba_game")->where('status>0')->order('end_time desc')->count();
-        $list = db("nba_game")->where('status>0')->order('end_time desc')->paginate(20,$count);
+        $count = db("nba_game")->where('status>0')->order('end_time asc')->count();
+        $list = db("nba_game")->where('status>0')->order('end_time asc')->paginate(20,$count);
 
         //获取分页
         $page = $list->render();
         //遍历数据
         if(!empty($list)){
             $list->each(function($item,$key){
-                $item['home_team'] = db('nba_team')->where('team_id='.$item['home_team'])->value('team_name');
-                $item['road_team'] = db('nba_team')->where('team_id='.$item['road_team'])->value('team_name');
-                if(!empty($item['win_team_id'])){
-                    $item['win_team'] = db('nba_team')->where('team_id='.$item['win_team_id'])->value('team_name');
-                }
+                // $item['home_team'] = db('nba_team')->where('team_id='.$item['home_team'])->value('team_name');
+                // $item['road_team'] = db('nba_team')->where('team_id='.$item['road_team'])->value('team_name');
+                // if(!empty($item['win_team_id'])){
+                //     $item['win_team'] = db('nba_team')->where('team_id='.$item['win_team_id'])->value('team_name');
+                // }
                 if($item['status'] == 0){
                     $item['tz_status'] = '已结算';
                 }else{
@@ -47,6 +48,17 @@ class Nba extends Base
         $this->assign("_list",$list);
         $html = $this->fetch("nba/nba_list");
         $this->ajaxReturn(['data'=>$html,'code'=>1]);
+    }
+
+    public function add_game()
+    {
+        $Nba = new Nba();
+        $res = $Nba->getMacthlist();
+        if($res > 0){
+            $this->success('成功',1);
+        }else{
+            $this->error('NULL');
+        }
     }
 
     public function add()
@@ -118,11 +130,6 @@ class Nba extends Base
     public function look($id)
     {
         $data = db('nba_game')->where("id=".$id)->find();
-        $data['home_team_logo'] = db('nba_team')->where('team_id='.$data['home_team'])->value('logo');
-        $data['road_team_logo'] = db('nba_team')->where('team_id='.$data['road_team'])->value('logo');
-        $data['home_team'] = db('nba_team')->where('team_id='.$data['home_team'])->value('team_name');
-        $data['road_team'] = db('nba_team')->where('team_id='.$data['road_team'])->value('team_name');
-        $data['win_team'] = empty($data['win_team_id'])?$data['win_team_id']:db('nba_team')->where('team_id='.$data['win_team_id'])->value('team_name');
         $game_cate = db('nba_game_cate')->where('game_id='.$id)->select();
         $data['cate'] = $game_cate;
 
@@ -145,12 +152,15 @@ class Nba extends Base
             }else{
                 $data['week'] = $weekday[date('w', strtotime(date('Y-m-d', $end_time))-43200)];
             }
-            if($data['home_score'] > $data['road_score']){
-                $data['win_team_id'] = $data['home_team'];
+            if(!empty($data['home_score']) && !empty($data['road_score'])){
+                if($data['home_score'] > $data['road_score']){
+                    $data['win_team'] = $data['home_team'];
+                }
+                if($data['home_score'] < $data['road_score']){
+                    $data['win_team'] = $data['road_team'];
+                }    
             }
-            if($data['home_score'] < $data['road_score']){
-                $data['win_team_id'] = $data['road_team'];
-            }
+            
             $data['end_time'] = $end_time;
             $flag = db("nba_game")->update($data);
             if($flag || $flag === 0){
@@ -164,8 +174,6 @@ class Nba extends Base
 
         $data = db('nba_game')->where("id=".$id)->find();
         $this->assign("data",$data);
-        $team = db('nba_team')->where('team_id in ('.$data['home_team'].','.$data['road_team'].')')->select();
-        $this->assign("team",$team);
 
         return view();
     }
@@ -191,8 +199,8 @@ class Nba extends Base
             $game[$key] = db('nba_game')->where('id='.$order_info[$key]['game_id'])->find();
             $data['order_info'][$key]['week'] = $game[$key]['week'];
             $data['order_info'][$key]['game_no'] = $game[$key]['game_no'];
-            $data['order_info'][$key]['home_team'] = db('nba_team')->where('team_id='.$game[$key]['home_team'])->value('team_name');
-            $data['order_info'][$key]['road_team'] = db('nba_team')->where('team_id='.$game[$key]['road_team'])->value('team_name');
+            $data['order_info'][$key]['home_team'] = $game[$key]['home_team'];
+            $data['order_info'][$key]['road_team'] = $game[$key]['road_team'];
             $data['order_info'][$key]['home_score'] = $game[$key]['home_score']==0?'':$game[$key]['home_score'];
             $data['order_info'][$key]['road_score'] = $game[$key]['road_score']==0?'':$game[$key]['road_score'];
             $data['order_info'][$key]['win_result'] = '';
@@ -281,7 +289,7 @@ class Nba extends Base
     public function nba_over($id)
     {
         $game = db('nba_game')->where('id='.$id)->find();
-        if(empty($game['home_score']) && empty($game['road_score']) && empty($game['win_team_id'])){
+        if(empty($game['home_score']) && empty($game['road_score']) && empty($game['win_team'])){
             $this->error("请输入分数比和获胜队伍!");
         }
         //主场分数
@@ -441,80 +449,80 @@ class Nba extends Base
 
       */
 
-    public function weekday($time) 
-    { 
-        if(is_numeric($time)) 
-        { 
-            $weekday = array('周日','周一','周二','周三','周四','周五','周六');
-            return $weekday[date('w', $time)]; 
-        } 
-        return false; 
-    } 
+    // public function weekday($time) 
+    // { 
+    //     if(is_numeric($time)) 
+    //     { 
+    //         $weekday = array('周日','周一','周二','周三','周四','周五','周六');
+    //         return $weekday[date('w', $time)]; 
+    //     } 
+    //     return false; 
+    // } 
 
-    public function team()
-    {
-        $team = db('nba_team')->select();
+    // public function team()
+    // {
+    //     $team = db('nba_team')->select();
 
-        $this->assign('data',$team);
-        return view();
-    }
+    //     $this->assign('data',$team);
+    //     return view();
+    // }
 
-    public function add_team()
-    {
-        if(IS_POST){
-            $data = $_REQUEST;
-            $file = request()->file('logo');
-            unset($data['logo']);
-            if($file){
-                $info = $file->move(config('uploads_path.team'));
-                if($info){
-                    $data['logo'] = $info->getSaveName();
-                }else{
-                    $this->error($file->getError());
-                }
-            }
-            $res = db('nba_team')->insert($data);
-            if($res > 0){
-                $this->success('添加成功');
-            }
-            $this->error('添加失败');
-        }
+    // public function add_team()
+    // {
+    //     if(IS_POST){
+    //         $data = $_REQUEST;
+    //         $file = request()->file('logo');
+    //         unset($data['logo']);
+    //         if($file){
+    //             $info = $file->move(config('uploads_path.team'));
+    //             if($info){
+    //                 $data['logo'] = $info->getSaveName();
+    //             }else{
+    //                 $this->error($file->getError());
+    //             }
+    //         }
+    //         $res = db('nba_team')->insert($data);
+    //         if($res > 0){
+    //             $this->success('添加成功');
+    //         }
+    //         $this->error('添加失败');
+    //     }
 
-        return view();
-    }
+    //     return view();
+    // }
 
-    public function edit_team($team_id)
-    {
-        if(IS_POST){
-            $data = $_REQUEST;
-            $file = request()->file('logo');
-            unset($data['logo']);
-            if($file){
-                $info = $file->move(config('uploads_path.path').DS.'team',false);
-                if($info){
-                    $data['logo'] = '__UPLOADS__/team/'.$info->getSaveName();
-                }else{
-                    $this->error($file->getError());
-                }
-            }
-            $res = db('nba_team')->where('team_id',$team_id)->update($data);
-            if($res > 0){
-                $this->success('添加成功');
-            }
-            $this->error('添加失败');
-        }
+    // public function edit_team($team_id)
+    // {
+    //     if(IS_POST){
+    //         $data = $_REQUEST;
+    //         $file = request()->file('logo');
+    //         unset($data['logo']);
+    //         if($file){
+    //             $info = $file->move(config('uploads_path.path').DS.'team',false);
+    //             if($info){
+    //                 $data['logo'] = '__UPLOADS__/team/'.$info->getSaveName();
+    //             }else{
+    //                 $this->error($file->getError());
+    //             }
+    //         }
+    //         $res = db('nba_team')->where('team_id',$team_id)->update($data);
+    //         if($res > 0){
+    //             $this->success('添加成功');
+    //         }
+    //         $this->error('添加失败');
+    //     }
 
-        $list = db('nba_team')->where('team_id',$team_id)->find();
-        $this->assign('data',$list);
-        return view();
-    }
+    //     $list = db('nba_team')->where('team_id',$team_id)->find();
+    //     $this->assign('data',$list);
+    //     return view();
+    // }
 
-    public function drop_team($team_id)
-    {
-        $res = db('nba_team')->where('team_id',$team_id)->delete();
-        if($res > 0){
-            $this->success("操作成功");
-        }
-        $this->error("操作失败");
-    }
+    // public function drop_team($team_id)
+    // {
+    //     $res = db('nba_team')->where('team_id',$team_id)->delete();
+    //     if($res > 0){
+    //         $this->success("操作成功");
+    //     }
+    //     $this->error("操作失败");
+    // }
 }

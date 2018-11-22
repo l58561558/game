@@ -7,6 +7,7 @@
 	<thead>
 		<tr >
 			<th style="text-align: center;" style="width: 10px">#</th>
+			<th style="text-align: center;">赛事编号</th>
 			<th style="text-align: center;">赛事名称</th>
 			<th style="text-align: center;">客队</th>
 			<th style="text-align: center;">客队分数</th>
@@ -22,6 +23,7 @@
 		{volist name="_list" id="info" key='key'}
 		<tr>
 			<td style="text-align: center;">{$key}</td>
+			<td style="text-align: center;">{$info.game_no|default='-'}</td>
 			<td style="text-align: center;">{$info.game_name|default='-'}</td>
 			<td style="text-align: center;">{$info.road_team|default='-'}</td>
 			<td style="text-align: center;">{$info.road_score|default='-'}</td>
