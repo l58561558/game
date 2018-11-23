@@ -13,54 +13,58 @@ class Football extends Base
         $data = db('fb_game')->where('end_time>='.time())->order('end_time')->select();
 
         if(!empty($data)){
-            $array = array('home_win','home_eq','home_lose','let_score_home_win','let_score_home_eq','let_score_home_lose');
             foreach ($data as $key => $value) {
                 $id = $data[$key]['id'];
-                $data[$key]['day'] = (int)date('w',$data[$key]['end_time']);
-                $data[$key]['date'] = date('Y-m-d',$data[$key]['end_time']);
+                $data[$key]['date'] = date('Y-m-d',$data[$key]['add_time']);
                 $data[$key]['end_time'] = date('Y-m-d H:i:s',$data[$key]['end_time']);
 
-                $code = db("fb_code")->where('code_pid=0')->select();
-                foreach ($code as $k => $v) {
-                    $tz_data[] = db("fb_code")->where('code_pid='.$code[$k]['id'])->select();
-                }
-                if(isset($tz_data[1])){
-                    $tz_data[0] = array_merge($tz_data[0],$tz_data[1]);
-                    unset($tz_data[1]);
-                }
-                
-                $fb_code = array_values($tz_data);
+                $data[$key]['tz'] = db('fb_game_cate')->where('game_id='.$id)->limit(6)->select();
+                $data[$key]['tz_result'][] = $data[$key]['tz'];
+                $data[$key]['tz_result'][] = db('fb_game_cate')->where('game_id='.$id)->limit(6,31)->select();
+                $data[$key]['tz_result'][] = db('fb_game_cate')->where('game_id='.$id)->limit(37,8)->select();
+                $data[$key]['tz_result'][] = db('fb_game_cate')->where('game_id='.$id)->limit(45,9)->select();
 
-                for ($i=0; $i < count($fb_code); $i++) { 
-                    for ($j=0; $j < count($fb_code[$i]); $j++) { 
+                // $code = db("fb_code")->where('code_pid=0')->select();
+                // foreach ($code as $k => $v) {
+                //     $tz_data[] = db("fb_code")->where('code_pid='.$code[$k]['id'])->select();
+                // }
+                // if(isset($tz_data[1])){
+                //     $tz_data[0] = array_merge($tz_data[0],$tz_data[1]);
+                //     unset($tz_data[1]);
+                // }
 
-                        if(isset($fb_code[$i][$j]['code'])){
-                            $fb_cate[$i][$j] = db("fb_game_cate")->where('game_id='.$id.' and cate_code="'.$fb_code[$i][$j]['code'].'"')->find();
-                        }else{
-                            $fb_cate[$i][$j] = $fb_code[$i][$j];
-                        }
-                    }
-                }
-                $data[$key]['tz'] = $fb_cate[0];
-                $data[$key]['tz_result'] = $fb_cate;
-                unset($tz_data);
+                // $fb_code = array_values($tz_data);
+
+                // for ($i=0; $i < count($fb_code); $i++) {
+                //     for ($j=0; $j < count($fb_code[$i]); $j++) {
+
+                //         if(isset($fb_code[$i][$j]['code'])){
+                //             $fb_cate[$i][$j] = db("fb_game_cate")->where('game_id='.$id.' and cate_code="'.$fb_code[$i][$j]['code'].'"')->find();
+                //         }else{
+                //             $fb_cate[$i][$j] = $fb_code[$i][$j];
+                //         }
+                //     }
+                // }
+                // $data[$key]['tz'] = $fb_cate[0];
+                // $data[$key]['tz_result'] = $fb_cate;
+                // unset($tz_data);
             }
             $count = count($data);
             $game_data = array();
-            for ($i=0; $i < $count; $i++) { 
+            for ($i=0; $i < $count; $i++) {
                 if(isset($data[$i]) && empty($game_data[$i])){
                     $game_data[$i][] = $data[$i];
                 }
-                for ($j=$i+1; $j < $count; $j++) { 
+                for ($j=$i+1; $j < $count; $j++) {
                     if(isset($data[$i])){
                         if(isset($data[$j])){
-                            if($data[$i]['date'] == $data[$j]['date']){ 
-                                $game_data[$i][] = $data[$j]; 
+                            if($data[$i]['date'] == $data[$j]['date']){
+                                $game_data[$i][] = $data[$j];
                                 unset($data[$j]);
                             }else{
                                 continue;
-                            }    
-                        }   
+                            }
+                        }
                     }else{
                         continue;
                     }
