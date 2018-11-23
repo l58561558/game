@@ -13,8 +13,7 @@ class Nba extends Base
         if(!empty($data)){
             $array = array('win_road','win_home','let_score_win_road','let_score_win_home','total_small','total_big');
             foreach ($data as $key => $value) {
-                $data[$key]['day'] = (int)date('w',$data[$key]['end_time']);
-                $data[$key]['date'] = date('Y-m-d',$data[$key]['end_time']);
+                $data[$key]['date'] = date('Y-m-d',$data[$key]['add_time']);
                 $data[$key]['end_time'] = date('Y-m-d H:i:s',$data[$key]['end_time']);
                 if(is_numeric($data[$key]['home_team']) && is_numeric($data[$key]['road_team'])){
                     $data[$key]['home_team'] = db('nba_team')->where('team_id='.$data[$key]['home_team'])->value('team_name');
@@ -23,6 +22,10 @@ class Nba extends Base
                 $data[$key]['game_cate'] = $data[$key]['game_cate']==1?'NBA':'欧冠';
                 $tz = db('nba_game_cate')->where('game_id='.$data[$key]['id'])->select();
                 foreach ($tz as $ke => $val) {
+//                    if($tz[$ke]['cate_odds'] == 0){
+//                        $tz[$ke]['cate_name'] = '未出售';
+//                        $tz[$ke]['cate_odds'] = '';
+//                    }
                     if(!in_array($tz[$ke]['cate_code'], $array)){
                         $data[$key]['differ'][] = $tz[$ke];
                         unset($tz[$ke]);
@@ -365,8 +368,13 @@ class Nba extends Base
             $game[$key] = db('nba_game')->where('id='.$order_info[$key]['game_id'])->find();
             $data['order_info'][$key]['week'] = $game[$key]['week'];
             $data['order_info'][$key]['game_no'] = $game[$key]['game_no'];
-            // $data['order_info'][$key]['home_team'] = db('nba_team')->where('team_id='.$game[$key]['home_team'])->value('team_name');
-            // $data['order_info'][$key]['road_team'] = db('nba_team')->where('team_id='.$game[$key]['road_team'])->value('team_name');
+            if(is_numeric($game[$key]['home_team']) && is_numeric($game[$key]['road_team'])){
+                $data['order_info'][$key]['home_team'] = db('nba_team')->where('team_id='.$game[$key]['home_team'])->value('team_name');
+                $data['order_info'][$key]['road_team'] = db('nba_team')->where('team_id='.$game[$key]['road_team'])->value('team_name');
+            }else{
+                $data['order_info'][$key]['home_team'] = $game[$key]['home_team'];
+                $data['order_info'][$key]['road_team'] = $game[$key]['road_team'];
+            }
             $data['order_info'][$key]['home_score'] = $game[$key]['home_score']==0?'':$game[$key]['home_score'];
             $data['order_info'][$key]['road_score'] = $game[$key]['road_score']==0?'':$game[$key]['road_score'];
             $data['order_info'][$key]['win_result'] = '';

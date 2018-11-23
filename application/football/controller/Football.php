@@ -392,9 +392,13 @@ class Football extends Base
                 $data['order_info'][$key]['home_score'] = explode(':', $game[$key]['down_score'])[0];
                 $data['order_info'][$key]['road_score'] = explode(':', $game[$key]['down_score'])[1];
             }
-            
-            $data['order_info'][$key]['home_team'] = $game[$key]['home_team'];
-            $data['order_info'][$key]['road_team'] = $game[$key]['road_team'];
+            if(is_numeric($game[$key]['home_team']) && is_numeric($game[$key]['road_team'])){
+                $data['order_info'][$key]['home_team'] = db('nba_team')->where('team_id='.$game[$key]['home_team'])->value('team_name');
+                $data['order_info'][$key]['road_team'] = db('nba_team')->where('team_id='.$game[$key]['road_team'])->value('team_name');
+            }else{
+                $data['order_info'][$key]['home_team'] = $game[$key]['home_team'];
+                $data['order_info'][$key]['road_team'] = $game[$key]['road_team'];
+            }
             $data['order_info'][$key]['win_result'] = [];
 
             if(strpos($order_info[$key]['tz_result'] , ',') === false){
