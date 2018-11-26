@@ -427,17 +427,54 @@ class Nba extends Base
         $order_info_all = db('nba_order_info')->where('game_id='.$id)->select();
         foreach ($order_info_all as $key => $value) {
             if(strpos($order_info_all[$key]['tz_result'], ',') === false){
-                $win_result = '';
                 if(in_array($order_info_all[$key]['tz_result'], $cate_id_arr)){
                     $win_result = $order_info_all[$key]['tz_result']; 
+                }else{
+                    $cate_code = db('nba_game_cate')->where('cate_id='.$order_info_all[$key]['tz_result'])->value('cate_code');
+                    $pid = db('nba_code')->where('code="'.$cate_code.'"')->value('code_pid');
+                    $code_arr = db('nba_code')->where('code_pid='.$pid)->column('code');
+                    foreach ($code_arr as $ke => $val) {
+                        $cid = db('nba_game_cate')->where('game_id='.$id.' and is_win=1 and cate_code ="'.$val.'"')->value('cate_id');
+                        if(!empty($cid)){
+                            $cate_id[] = $cid;
+                        }
+                    }
+                    $cate_id = array_unique($cate_id);
+                    $cate_id = array_values($cate_id);
+                    if(count($cate_id) > 1){
+                        $win_result = implode(',', $cate_id);
+                    }else{
+                        $win_result = $cate_id[0];
+                    }
+                    unset($cate_id);
                 }
             }else{
                 $tz_result = explode(',', $order_info_all[$key]['tz_result']);
                 foreach ($tz_result as $ke => $val) {
                     if(in_array($tz_result[$ke], $cate_id_arr)){
                         $win_result[] = $tz_result[$ke];
+                    }else{
+                        $cate_code = db('nba_game_cate')->where('cate_id='.$tz_result[$ke])->value('cate_code');
+                        $pid = db('nba_code')->where('code="'.$cate_code.'"')->value('code_pid');
+                        $code_arr = db('nba_code')->where('code_pid='.$pid)->column('code');
+
+                        foreach ($code_arr as $k => $v) {
+                            $cid = db('nba_game_cate')->where('game_id='.$id.' and is_win=1 and cate_code ="'.$v.'"')->value('cate_id');
+                            if(!empty($cid)){
+                                $cate_id[] = $cid;
+                            }
+                        }
+                        
+                        if(count($cate_id) > 1){
+                            $win_result[] = implode(',', $cate_id);
+                        }else{
+                            $win_result[] = $cate_id[0];
+                        }
+                        unset($cate_id);
                     }
                 }
+                $win_result = array_unique($win_result);
+                $win_result = array_values($win_result);
                 $win_result = implode(',', $win_result);                
             }
             db('nba_order_info')->where('order_info_id='.$order_info_all[$key]['order_info_id'])->update(array('win_result'=>$win_result,'game_status'=>1));

@@ -395,11 +395,10 @@ class Football extends Base
                     }else{
                         $win_result = $cate_id[0];
                     }
+                    unset($cate_id);
                 }
             }else{
                 $tz_result = explode(',', $order_info_all[$key]['tz_result']);
-                // dump($tz_result);
-                // dump($cate_id_arr);
                 foreach ($tz_result as $ke => $val) {
                     if(in_array($tz_result[$ke], $cate_id_arr)){
                         if(!empty($tz_result[$ke])){
@@ -423,67 +422,62 @@ class Football extends Base
                             $win_result[] = $cate_id[0];
                         }
                         unset($cate_id);
-                        // dump($cate_id);
-                        // dump($cate_id);
-                        // dump($win_result);
                     }
                 }
-                
-                
-                $win_result = implode(',', $win_result);   
-                // dump($win_result);             
+                $win_result = implode(',', $win_result);           
             }
             db('fb_order_info')->where('order_info_id='.$order_info_all[$key]['order_info_id'])->update(array('win_result'=>$win_result,'game_status'=>1));
         }
         // die;
         $order_ids = db('fb_order_info')->where('game_id='.$id)->column('order_id');
         foreach ($order_ids as $key => $value) {
-            $fb_order_info = db('fb_order_info')->where('order_id='.$order_ids[$key])->select();
             $fb_order = db('fb_order')->where('order_id='.$order_ids[$key])->find();
-            foreach ($fb_order_info as $ke => $val) {
-                $game_status[] = $fb_order_info[$ke]['game_status'];
-                if(!in_array('0', $game_status)){
-                    $fb_order_group = db('fb_order_group')->where('order_id='.$order_ids[$key])->select();
-                    foreach ($fb_order_group as $k => $v) {
-                        if(strpos($fb_order_group[$k]['group_res'], ',') === false){
-                            $cate = db('fb_game_cate')->where('cate_id='.$fb_order_group[$k]['group_res'])->find();
-                            if($cate['is_win'] == 1){
-                                db('fb_order_group')
-                                ->where('group_id='.$fb_order_group[$k]['group_id'])
-                                ->update(array('status'=>1,'win_money'=>$fb_order['multiple']*$cate['cate_odds']*2,'win_status'=>1));
-                            }else if($cate['is_win'] == 2){
-                                db('fb_order_group')
-                                ->where('group_id='.$fb_order_group[$k]['group_id'])
-                                ->update(array('status'=>1,'win_status'=>0));
-                            } 
-                        }else{
-                            $group_res = explode(',', $fb_order_group[$k]['group_res']);
-                            $cate = db('fb_game_cate')->where('cate_id in ('.$fb_order_group[$k]['group_res'].')')->column('is_win');
-                            if(!in_array('0', $cate) && !in_array('2', $cate)){
-                                $odds = 1;
-                                for ($i=0; $i < count($group_res); $i++) { 
-                                    $odds = $odds*db('fb_game_cate')->where('cate_id='.$group_res[$i])->value('cate_odds');
-                                }
-                                db('fb_order_group')
-                                ->where('group_id='.$fb_order_group[$k]['group_id'])
-                                ->update(array('status'=>1,'win_money'=>$fb_order['multiple']*$odds*2,'win_status'=>1));
-                            }else if(in_array('2', $cate)){
-                                db('fb_order_group')
-                                ->where('group_id='.$fb_order_group[$k]['group_id'])
-                                ->update(array('status'=>1,'win_status'=>0));
-                            }
-                        }
-                    } 
-                }
-            }
+            // 判断该笔订单先所有比赛的比赛状态(0:未结束|1:已结算)
             $game_status = db('fb_order_info')->where('order_id='.$order_ids[$key])->column('game_status');
             if(!in_array('0', $game_status)){
-                $win_money = db('fb_order_group')->where('order_id='.$order_ids[$key])->sum('win_money');
-                if($win_money > 0){
+                // 如果所有比赛全部为 已结算 结算该笔订单
+                // 获取该笔订单的所有 注
+                $fb_order_group = db('fb_order_group')->where('order_id='.$order_ids[$key])->select();
+                foreach ($fb_order_group as $k => $v) {
+                    //判断该注里面有几个投注选项
+                    if(strpos($fb_order_group[$k]['group_res'], ',') === false){
+                        //如果为一个的话
+                        $cate = db('fb_game_cate')->where('cate_id='.$fb_order_group[$k]['group_res'])->find();
+                        if($cate['is_win'] == 1){
+                            db('fb_order_group')
+                            ->where('group_id='.$fb_order_group[$k]['group_id'])
+                            ->update(array('status'=>1,'win_money'=>$fb_order['multiple']*$cate['cate_odds']*2,'win_status'=>1));
+                        }else if($cate['is_win'] == 2){
+                            db('fb_order_group')
+                            ->where('group_id='.$fb_order_group[$k]['group_id'])
+                            ->update(array('status'=>1,'win_status'=>0));
+                        } 
+                    }else{
+                        // 如果为多个的话
+                        $group_res = explode(',', $fb_order_group[$k]['group_res']);
+                        $cate = db('fb_game_cate')->where('cate_id in ('.$fb_order_group[$k]['group_res'].')')->column('is_win');
+                        if(!in_array('0', $cate) && !in_array('2', $cate)){
+                            $odds = 1;
+                            for ($i=0; $i < count($group_res); $i++) { 
+                                $odds = $odds*db('fb_game_cate')->where('cate_id='.$group_res[$i])->value('cate_odds');
+                            }
+                            db('fb_order_group')
+                            ->where('group_id='.$fb_order_group[$k]['group_id'])
+                            ->update(array('status'=>1,'win_money'=>$fb_order['multiple']*$odds*2,'win_status'=>1));
+                        }else if(in_array('2', $cate)){
+                            db('fb_order_group')
+                            ->where('group_id='.$fb_order_group[$k]['group_id'])
+                            ->update(array('status'=>1,'win_status'=>0));
+                        }
+                    }
+                } 
+                $win_status = db('fb_order_group')->where('order_id='.$order_ids[$key])->column('win_status');
+                if(in_array('1', $win_status)){
+                    $win_money = db('fb_order_group')->where('order_id='.$order_ids[$key])->sum('win_money');
                     db('fb_order')->where('order_id='.$order_ids[$key])->update(array('win_money'=>$win_money,'is_win'=>1));
                 }else{
                     db('fb_order')->where('order_id='.$order_ids[$key])->update(array('is_win'=>2));
-                }                        
+                } 
             }
         }
         $fb_order_data = db('fb_order no')
@@ -491,15 +485,14 @@ class Football extends Base
         ->join('fb_order_info noi','no.order_id=noi.order_id')
         ->where('noi.game_id='.$id.' and noi.game_status=1 and no.is_win=1')
         ->select();
-        // dump($fb_order_data);die;
         if(!empty($fb_order_data)){
             foreach ($fb_order_data as $key => $value) {
-                $win_money = db('fb_order')->where('order_id='.$fb_order_data[$key]['order_id'])->value('win_money');
-
-                $arr['yhid'] = db('yh')->where('id='.$fb_order_data[$key]['user_id'])->value('yhid');
+                $win_money = $fb_order_data[$key]['win_money'];
+                $yh = db('yh')->where('id='.$fb_order_data[$key]['user_id'])->find();
+                $arr['yhid'] = $yh['yhid'];
                 $arr['Jylx'] = 4;
                 $arr['jyje'] = $win_money;
-                $arr['new_money'] = $win_money+db('yh')->where('id="'.$fb_order_data[$key]['user_id'].'"')->value('balance');
+                $arr['new_money'] = $win_money+$yh['balance'];
                 $arr['Jysj'] = time();
                 $arr['Srhzc'] = 1;
                 $res = db('account_details')->insert($arr);
