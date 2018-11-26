@@ -53,7 +53,10 @@
                                 <td style="text-align: center;">{$item.home_score} : {$item.road_score}</td>
                                 <td style="text-align: center;">
                                     {volist name='item.tz_result' id='info'}
-                                        {$info.cate_name}{$info.cate_odds}
+                                        {$info.cate_name}
+                                        {if condition="$info.cate_code eq 'let_score_win_road' or $info.cate_code eq 'let_score_win_home'"}({$item.let_score}){/if}
+                                        {if condition="$info.cate_code eq 'total_big' or $info.cate_code eq 'total_small'"}({$item.total_score}){/if}
+                                        {$info.cate_odds}
                                         {if condition="$info.is_win eq 0"}<span style="color: #ce6a14">(未开奖)</span>{/if}
                                         {if condition="$info.is_win eq 1"}<span style="color: green">(正确)</span>{/if}
                                         {if condition="$info.is_win eq 2"}<span style="color: red">(不正确)</span>{/if}
@@ -61,7 +64,10 @@
                                 </td>
                                 <td style="text-align: center;">
                                     {volist name='item.win_game_result' id='cate'}
-                                        ({$cate.cate_name}{$cate.cate_odds})
+                                        {$cate.cate_name}
+                                        {if condition="$cate.cate_code eq 'let_score_win_road' or $cate.cate_code eq 'let_score_win_home'"}({$item.let_score}){/if}
+                                        {if condition="$cate.cate_code eq 'total_big' or $cate.cate_code eq 'total_small'"}({$item.total_score}){/if}
+                                        {$cate.cate_odds}|
                                     {/volist}
                                 </td>
                                 <td style="text-align: center;">
@@ -100,6 +106,7 @@ layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
     laydate.render({
         elem: '#cate_id'
     });
+})
 </script>
 {/block}
 

@@ -53,3 +53,21 @@
 <div class="box-footer clearfix">
     <ul class="pagination pull-right">{$page}</ul>
 </div> 
+<script type="text/javascript">
+	$(".over").click(function(){
+		var id = $(this).attr('data');
+		$.ajax({
+			url:"{:url('nba/nba_over')}",
+			type:'get',
+			data:{id:id},
+			success:function(res){
+				if(res.code == 1){
+					layer.msg(res.msg);
+					window.location.reload();
+				}else{
+					layer.msg(res.msg);
+				}
+			}
+		})
+	})
+</script>

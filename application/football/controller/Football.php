@@ -393,8 +393,8 @@ class Football extends Base
                 $data['order_info'][$key]['road_score'] = explode(':', $game[$key]['down_score'])[1];
             }
             if(is_numeric($game[$key]['home_team']) && is_numeric($game[$key]['road_team'])){
-                $data['order_info'][$key]['home_team'] = db('nba_team')->where('team_id='.$game[$key]['home_team'])->value('team_name');
-                $data['order_info'][$key]['road_team'] = db('nba_team')->where('team_id='.$game[$key]['road_team'])->value('team_name');
+                $data['order_info'][$key]['home_team'] = db('fb_team')->where('team_id='.$game[$key]['home_team'])->value('team_name');
+                $data['order_info'][$key]['road_team'] = db('fb_team')->where('team_id='.$game[$key]['road_team'])->value('team_name');
             }else{
                 $data['order_info'][$key]['home_team'] = $game[$key]['home_team'];
                 $data['order_info'][$key]['road_team'] = $game[$key]['road_team'];
@@ -402,18 +402,23 @@ class Football extends Base
             $data['order_info'][$key]['win_result'] = [];
 
             if(strpos($order_info[$key]['tz_result'] , ',') === false){
-                $data['order_info'][$key]['tz_result'][0] = db('fb_game_cate')->field('cate_name,cate_code,cate_odds,is_win')->where('cate_id='.$order_info[$key]['tz_result'])->find();
-                if(in_array($data['order_info'][$key]['tz_result'][0]['cate_code'], $arr)){
-                    $data['order_info'][$key]['tz_result'][0]['cate_name'] = '('.$game[$key]['let_score'].')让分'.$data['order_info'][$key]['tz_result'][0]['cate_name'];
+                $ngc = db('fb_game_cate')->where('cate_id='.$order_info[$key]['tz_result'])->find();
+                $ngc['attr'] = '';
+                if($ngc['cate_code'] == 'let_score_home_win' || $ngc['cate_code'] == 'let_score_home_eq' || $ngc['cate_code'] == 'let_score_home_lose'){
+                    $ngc['attr'] = db('fb_game')->where('id='.$ngc['game_id'])->value('let_score');
                 }
+
+                $data['order_info'][$key]['tz_result'][0] = $ngc;
             }else{
                 if(!empty($order_info[$key]['tz_result'])){
                     $tz_result = explode(',', $order_info[$key]['tz_result']);
                     foreach ($tz_result as $ke => $val) {
-                        $tz_result[$ke] = db('fb_game_cate')->field('cate_name,cate_code,cate_odds,is_win')->where('cate_id='.$tz_result[$ke])->find();
-                        if(in_array($tz_result[$ke]['cate_code'], $arr)){
-                            $tz_result[$ke]['cate_name'] = '('.$game[$key]['let_score'].')让分'.$tz_result[$ke]['cate_name'];
+                        $ngc = db('fb_game_cate')->where('cate_id='.$tz_result[$ke])->find();
+                        $ngc['attr'] = '';
+                        if($ngc['cate_code'] == 'let_score_win_home' || $ngc['cate_code'] == 'let_score_win_road'){
+                            $ngc['attr'] = db('fb_game')->where('id='.$ngc['game_id'])->value('let_score');
                         }
+                        $tz_result[$ke] = $ngc;
                     }
                     $data['order_info'][$key]['tz_result'] = $tz_result;
                 }
@@ -425,7 +430,12 @@ class Football extends Base
                 }else{
                     $win_result = explode(',', $order_info[$key]['win_result']);
                     foreach ($win_result as $ke => $val) {
-                        $win_result[$ke] = db('fb_game_cate')->field('cate_name,cate_odds')->where('cate_id='.$win_result[$ke])->find();
+                        $ngc = db('fb_game_cate')->where('cate_id='.$win_result[$ke])->find();
+                        $ngc['attr'] = '';
+                        if($ngc['cate_code'] == 'let_score_win_home' || $ngc['cate_code'] == 'let_score_win_road'){
+                            $ngc['attr'] = db('fb_game')->where('id='.$ngc['game_id'])->value('let_score');
+                        }
+                        $win_result[$ke] = $ngc;
                     }
                     $data['order_info'][$key]['win_result'] = $win_result;                      
                 }  

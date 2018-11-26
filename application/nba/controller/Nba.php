@@ -379,12 +379,28 @@ class Nba extends Base
             $data['order_info'][$key]['road_score'] = $game[$key]['road_score']==0?'':$game[$key]['road_score'];
             $data['order_info'][$key]['win_result'] = '';
             if(strpos($order_info[$key]['tz_result'] , ',') === false){
-                $data['order_info'][$key]['tz_result'][0] = db('nba_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$order_info[$key]['tz_result'])->find();
+                $ngc = db('nba_game_cate')->where('cate_id='.$order_info[$key]['tz_result'])->find();
+                $ngc['attr'] = '';
+                if($ngc['cate_code'] == 'let_score_win_home' || $ngc['cate_code'] == 'let_score_win_road'){
+                    $ngc['attr'] = db('nba_game')->where('id='.$ngc['game_id'])->value('let_score');
+                }
+                if($ngc['cate_code'] == 'total_big' || $ngc['cate_code'] == 'total_small'){
+                    $ngc['attr'] = db('nba_game')->where('id='.$ngc['game_id'])->value('total_score');
+                }
+                $data['order_info'][$key]['tz_result'][0] = $ngc;
             }else{
                 if(!empty($order_info[$key]['tz_result'])){
                     $tz_result = explode(',', $order_info[$key]['tz_result']);
                     foreach ($tz_result as $ke => $val) {
-                        $tz_result[$ke] = db('nba_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$tz_result[$ke])->find();
+                        $ngc = db('nba_game_cate')->where('cate_id='.$tz_result[$ke])->find();
+                        $ngc['attr'] = '';
+                        if($ngc['cate_code'] == 'let_score_win_home' || $ngc['cate_code'] == 'let_score_win_road'){
+                            $ngc['attr'] = db('nba_game')->where('id='.$ngc['game_id'])->value('let_score');
+                        }
+                        if($ngc['cate_code'] == 'total_big' || $ngc['cate_code'] == 'total_small'){
+                            $ngc['attr'] = db('nba_game')->where('id='.$ngc['game_id'])->value('total_score');
+                        }
+                        $tz_result[$ke] = $ngc;
                     }
                     $data['order_info'][$key]['tz_result'] = $tz_result;
                 }
@@ -404,7 +420,15 @@ class Nba extends Base
             if(!empty($order_info[$key]['win_game_result'])){
                 $win_game_result = explode(',', $order_info[$key]['win_game_result']);
                 foreach ($win_game_result as $ke => $val) {
-                    $win_game_result[$ke] = db('nba_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$win_game_result[$ke])->find();
+                    $ngc = db('nba_game_cate')->where('cate_id='.$win_game_result[$ke])->find();
+                    $ngc['attr'] = '';
+                    if($ngc['cate_code'] == 'let_score_win_home' || $ngc['cate_code'] == 'let_score_win_road'){
+                        $ngc['attr'] = db('nba_game')->where('id='.$ngc['game_id'])->value('let_score');
+                    }
+                    if($ngc['cate_code'] == 'total_big' || $ngc['cate_code'] == 'total_small'){
+                        $ngc['attr'] = db('nba_game')->where('id='.$ngc['game_id'])->value('total_score');
+                    }
+                    $win_game_result[$ke] = $ngc;
                 }
                 $data['order_info'][$key]['win_result'] = $win_game_result;  
             }

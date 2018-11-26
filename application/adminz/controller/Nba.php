@@ -285,27 +285,29 @@ class Nba extends Base
             $data['order_info'][$key]['road_team'] = $game[$key]['road_team'];
             $data['order_info'][$key]['home_score'] = $game[$key]['home_score']==0?'':$game[$key]['home_score'];
             $data['order_info'][$key]['road_score'] = $game[$key]['road_score']==0?'':$game[$key]['road_score'];
+            $data['order_info'][$key]['let_score'] = $game[$key]['let_score']==0?'':$game[$key]['let_score'];
+            $data['order_info'][$key]['total_score'] = $game[$key]['total_score']==0?'':$game[$key]['total_score'];
             $data['order_info'][$key]['win_result'] = '';
             $data['order_info'][$key]['win_game_result'] = '';
             $data['order_info'][$key]['status'] = $game[$key]['status'];
             if(strpos($order_info[$key]['tz_result'] , ',') === false){
-                $data['order_info'][$key]['tz_result'][0] = db('nba_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$order_info[$key]['tz_result'])->find();
+                $data['order_info'][$key]['tz_result'][0] = db('nba_game_cate')->where('cate_id='.$order_info[$key]['tz_result'])->find();
             }else{
                 if(!empty($order_info[$key]['tz_result'])){
                     $tz_result = explode(',', $order_info[$key]['tz_result']);
                     foreach ($tz_result as $ke => $val) {
-                        $tz_result[$ke] = db('nba_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$tz_result[$ke])->find();
+                        $tz_result[$ke] = db('nba_game_cate')->where('cate_id='.$tz_result[$ke])->find();
                     }
                     $data['order_info'][$key]['tz_result'] = $tz_result;
                 }  
             }  
             if(!empty($order_info[$key]['win_result'])){
                 if(strpos($order_info[$key]['win_result'] , ',') === false){
-                    $data['order_info'][$key]['win_result'][0] = db('nba_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$order_info[$key]['win_result'])->find();
+                    $data['order_info'][$key]['win_result'][0] = db('nba_game_cate')->where('cate_id='.$order_info[$key]['win_result'])->find();
                 }else{
                     $win_result = explode(',', $order_info[$key]['win_result']);
                     foreach ($win_result as $ke => $val) {
-                        $win_result[$ke] = db('nba_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$win_result[$ke])->find();
+                        $win_result[$ke] = db('nba_game_cate')->where('cate_id='.$win_result[$ke])->find();
                     }
                     $data['order_info'][$key]['win_result'] = $win_result;                      
                 }  
@@ -313,7 +315,7 @@ class Nba extends Base
             if(!empty($order_info[$key]['win_game_result'])){
                 $win_game_result = explode(',', $order_info[$key]['win_game_result']);
                 foreach ($win_game_result as $ke => $val) {
-                    $win_game_result[$ke] = db('nba_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$win_game_result[$ke])->find();
+                    $win_game_result[$ke] = db('nba_game_cate')->where('cate_id='.$win_game_result[$ke])->find();
                 }
                 $data['order_info'][$key]['win_game_result'] = $win_game_result;  
             }
@@ -386,49 +388,49 @@ class Nba extends Base
         //实际俩队总分
         $total = $home_score+$road_score;
         //根据比赛分数修改本场比赛的所有投注选项的中奖状态
-        $game_cate = db('nba_game_cate')->where('game_id='.$id)->select();
-        foreach ($game_cate as $key => $value) {
-            if($home_score > $road_score){
-                $differ = $home_score - $road_score;
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="win_home"')->setField('is_win',1);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="win_road"')->setField('is_win',2);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code like "%differ_road_%"')->setField('is_win',2);
-                $differ_score = $this->rank($differ);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="differ_home_'.$differ_score.'"')->setField('is_win',1);
-                db('nba_game_cate')->where('game_id='.$id.' and is_win=0 and cate_code like "differ_home_%"')->setField('is_win',2);
-            }else{
-                $differ = $road_score - $home_score;
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="win_home"')->setField('is_win',2);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="win_road"')->setField('is_win',1);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code like "%differ_home_%"')->setField('is_win',2);
-                $differ_score = $this->rank($differ);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="differ_road_'.$differ_score.'"')->setField('is_win',1);
-                db('nba_game_cate')->where('game_id='.$id.' and is_win=0 and cate_code like "differ_road_%"')->setField('is_win',2);
-            }
-            if($home_let_score > $road_score){
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="let_score_win_home"')->setField('is_win',1);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="let_score_win_road"')->setField('is_win',2);
-            }else{
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="let_score_win_home"')->setField('is_win',2);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="let_score_win_road"')->setField('is_win',1);
-            }
-            if($total > $total_score){
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="total_big"')->setField('is_win',1);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="total_small"')->setField('is_win',2);
-            }else{
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="total_big"')->setField('is_win',2);
-                db('nba_game_cate')->where('game_id='.$id.' and cate_code="total_small"')->setField('is_win',1);
-            }
+        if($home_score > $road_score){
+            $differ = $home_score - $road_score;
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="win_home"')->setField('is_win',1);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="win_road"')->setField('is_win',2);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code like "%differ_%"')->setField('is_win',2);
+            $differ_score = $this->rank($differ);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="differ_home_'.$differ_score.'"')->setField('is_win',1);
+            // db('nba_game_cate')->where('game_id='.$id.' and is_win=0 and cate_code like "differ_home_%"')->setField('is_win',2);
+        }else{
+            $differ = $road_score - $home_score;
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="win_home"')->setField('is_win',2);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="win_road"')->setField('is_win',1);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code like "%differ_%"')->setField('is_win',2);
+            $differ_score = $this->rank($differ);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="differ_road_'.$differ_score.'"')->setField('is_win',1);
+            // db('nba_game_cate')->where('game_id='.$id.' and is_win=0 and cate_code like "differ_road_%"')->setField('is_win',2);
+        }
+        if($home_let_score > $road_score){
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="let_score_win_home"')->setField('is_win',1);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="let_score_win_road"')->setField('is_win',2);
+        }else{
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="let_score_win_home"')->setField('is_win',2);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="let_score_win_road"')->setField('is_win',1);
+        }
+        if($total > $total_score){
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="total_big"')->setField('is_win',1);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="total_small"')->setField('is_win',2);
+        }else{
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="total_big"')->setField('is_win',2);
+            db('nba_game_cate')->where('game_id='.$id.' and cate_code="total_small"')->setField('is_win',1);
         }
         // 获取这场比赛的所有中奖选项ID::cate_ids
         $cate_id_arr = db('nba_game_cate')->where('game_id='.$id.' and is_win=1')->column('cate_id');
         $cate_ids = implode(',', $cate_id_arr);
-        db('nba_order_info')->where('game_id='.$id.' and game_status=0')->setField('win_game_result',$cate_ids);
+        db('nba_order_info')->where('game_id='.$id)->setField('win_game_result',$cate_ids);
         // 查询订单明细里所有有关于这场比赛数据 并更改他们的比赛状态和中奖彩果
-        $order_info_all = db('nba_order_info')->where('game_id='.$id.' and game_status=0')->select();
+        $order_info_all = db('nba_order_info')->where('game_id='.$id)->select();
         foreach ($order_info_all as $key => $value) {
-            if(strpos(',', $order_info_all[$key]['tz_result']) === false){
-                $win_result = $order_info_all[$key]['tz_result']; 
+            if(strpos($order_info_all[$key]['tz_result'], ',') === false){
+                $win_result = '';
+                if(in_array($order_info_all[$key]['tz_result'], $cate_id_arr)){
+                    $win_result = $order_info_all[$key]['tz_result']; 
+                }
             }else{
                 $tz_result = explode(',', $order_info_all[$key]['tz_result']);
                 foreach ($tz_result as $ke => $val) {
@@ -443,52 +445,53 @@ class Nba extends Base
 
         $order_ids = db('nba_order_info')->where('game_id='.$id)->column('order_id');
         foreach ($order_ids as $key => $value) {
-            $nba_order_info = db('nba_order_info')->where('order_id='.$order_ids[$key])->select();
             $nba_order = db('nba_order')->where('order_id='.$order_ids[$key])->find();
-            foreach ($nba_order_info as $ke => $val) {
-                $game_status[] = $nba_order_info[$ke]['game_status'];
-                if(!in_array('0', $game_status)){
-                    $nba_order_group = db('nba_order_group')->where('order_id='.$order_ids[$key])->select();
-                    foreach ($nba_order_group as $k => $v) {
-                        if(strpos($nba_order_group[$k]['group_res'], ',') === false){
-                            $cate = db('nba_game_cate')->where('cate_id='.$nba_order_group[$k]['group_res'])->find();
-                            if($cate['is_win'] == 1){
-                                db('nba_order_group')
-                                ->where('group_id='.$nba_order_group[$k]['group_id'])
-                                ->update(array('status'=>1,'win_money'=>$nba_order['multiple']*$cate['cate_odds']*2,'win_status'=>1));
-                            }else if($cate['is_win'] == 2){
-                                db('nba_order_group')
-                                ->where('group_id='.$nba_order_group[$k]['group_id'])
-                                ->update(array('status'=>1,'win_status'=>0));
-                            } 
-                        }else{
-                            $group_res = explode(',', $nba_order_group[$k]['group_res']);
-                            $cate = db('nba_game_cate')->where('cate_id in ('.$nba_order_group[$k]['group_res'].')')->column('is_win');
-                            if(!in_array('0', $cate) && !in_array('2', $cate)){
-                                $odds = 1;
-                                for ($i=0; $i < count($group_res); $i++) { 
-                                    $odds = $odds*db('nba_game_cate')->where('cate_id='.$group_res[$i])->value('cate_odds');
-                                }
-                                db('nba_order_group')
-                                ->where('group_id='.$nba_order_group[$k]['group_id'])
-                                ->update(array('status'=>1,'win_money'=>$nba_order['multiple']*$odds*2,'win_status'=>1));
-                            }else if(in_array('2', $cate)){
-                                db('nba_order_group')
-                                ->where('group_id='.$nba_order_group[$k]['group_id'])
-                                ->update(array('status'=>1,'win_status'=>0));
-                            }
-                        }
-                    } 
-                }
-            }
+            // 判断该笔订单先所有比赛的比赛状态(0:未结束|1:已结算)
             $game_status = db('nba_order_info')->where('order_id='.$order_ids[$key])->column('game_status');
             if(!in_array('0', $game_status)){
-                $win_money = db('nba_order_group')->where('order_id='.$order_ids[$key])->sum('win_money');
-                if($win_money > 0){
+                // 如果所有比赛全部为 已结算 结算该笔订单
+                // 获取该笔订单的所有 注
+                $nba_order_group = db('nba_order_group')->where('order_id='.$order_ids[$key])->select();
+                foreach ($nba_order_group as $k => $v) {
+                    //判断该注里面有几个投注选项
+                    if(strpos($nba_order_group[$k]['group_res'], ',') === false){
+                        //  -- 如果为一个的话
+                        $cate = db('nba_game_cate')->where('cate_id='.$nba_order_group[$k]['group_res'])->find();
+                        if($cate['is_win'] == 1){
+                            db('nba_order_group')
+                            ->where('group_id='.$nba_order_group[$k]['group_id'])
+                            ->update(array('status'=>1,'win_money'=>$nba_order['multiple']*$cate['cate_odds']*2,'win_status'=>1));
+                        }else if($cate['is_win'] == 2){
+                            db('nba_order_group')
+                            ->where('group_id='.$nba_order_group[$k]['group_id'])
+                            ->update(array('status'=>1,'win_status'=>0));
+                        } 
+                    }else{
+                        // 如果为多个的话
+                        $group_res = explode(',', $nba_order_group[$k]['group_res']);
+                        $cate = db('nba_game_cate')->where('cate_id in ('.$nba_order_group[$k]['group_res'].')')->column('is_win');
+                        if(!in_array('0', $cate) && !in_array('2', $cate)){
+                            $odds = 1;
+                            for ($i=0; $i < count($group_res); $i++) { 
+                                $odds = $odds*db('nba_game_cate')->where('cate_id='.$group_res[$i])->value('cate_odds');
+                            }
+                            db('nba_order_group')
+                            ->where('group_id='.$nba_order_group[$k]['group_id'])
+                            ->update(array('status'=>1,'win_money'=>$nba_order['multiple']*$odds*2,'win_status'=>1));
+                        }else if(in_array('2', $cate)){
+                            db('nba_order_group')
+                            ->where('group_id='.$nba_order_group[$k]['group_id'])
+                            ->update(array('status'=>1,'win_status'=>0));
+                        }
+                    }
+                } 
+                $win_status = db('nba_order_group')->where('order_id='.$order_ids[$key])->column('win_status');
+                if(in_array('1', $win_status)){
+                    $win_money = db('nba_order_group')->where('order_id='.$order_ids[$key])->sum('win_money');
                     db('nba_order')->where('order_id='.$order_ids[$key])->update(array('win_money'=>$win_money,'is_win'=>1));
                 }else{
                     db('nba_order')->where('order_id='.$order_ids[$key])->update(array('is_win'=>2));
-                }                        
+                } 
             }
         }
         $nba_order_data = db('nba_order no')
@@ -496,15 +499,14 @@ class Nba extends Base
         ->join('nba_order_info noi','no.order_id=noi.order_id')
         ->where('noi.game_id='.$id.' and noi.game_status=1 and no.is_win=1')
         ->select();
-        // dump($nba_order_data);die;
         if(!empty($nba_order_data)){
             foreach ($nba_order_data as $key => $value) {
-                $win_money = db('nba_order')->where('order_id='.$nba_order_data[$key]['order_id'])->value('win_money');
-
-                $arr['yhid'] = db('yh')->where('id='.$nba_order_data[$key]['user_id'])->value('yhid');
+                $win_money = $nba_order_data[$key]['win_money'];
+                $yh = db('yh')->where('id='.$nba_order_data[$key]['user_id'])->find();
+                $arr['yhid'] = $yh['yhid'];
                 $arr['Jylx'] = 4;
                 $arr['jyje'] = $win_money;
-                $arr['new_money'] = $win_money+db('yh')->where('id="'.$nba_order_data[$key]['user_id'].'"')->value('balance');
+                $arr['new_money'] = $win_money+$yh['balance'];
                 $arr['Jysj'] = time();
                 $arr['Srhzc'] = 1;
                 $res = db('account_details')->insert($arr);
@@ -522,90 +524,4 @@ class Nba extends Base
             $this->success("操作成功");
         }
     }
-     /** 
-
-      * 根据时间戳返回星期几 
-
-      * @param string $time 时间戳 
-
-      * @return 星期几 
-
-      */
-
-    // public function weekday($time) 
-    // { 
-    //     if(is_numeric($time)) 
-    //     { 
-    //         $weekday = array('周日','周一','周二','周三','周四','周五','周六');
-    //         return $weekday[date('w', $time)]; 
-    //     } 
-    //     return false; 
-    // } 
-
-    // public function team()
-    // {
-    //     $team = db('nba_team')->select();
-
-    //     $this->assign('data',$team);
-    //     return view();
-    // }
-
-    // public function add_team()
-    // {
-    //     if(IS_POST){
-    //         $data = $_REQUEST;
-    //         $file = request()->file('logo');
-    //         unset($data['logo']);
-    //         if($file){
-    //             $info = $file->move(config('uploads_path.team'));
-    //             if($info){
-    //                 $data['logo'] = $info->getSaveName();
-    //             }else{
-    //                 $this->error($file->getError());
-    //             }
-    //         }
-    //         $res = db('nba_team')->insert($data);
-    //         if($res > 0){
-    //             $this->success('添加成功');
-    //         }
-    //         $this->error('添加失败');
-    //     }
-
-    //     return view();
-    // }
-
-    // public function edit_team($team_id)
-    // {
-    //     if(IS_POST){
-    //         $data = $_REQUEST;
-    //         $file = request()->file('logo');
-    //         unset($data['logo']);
-    //         if($file){
-    //             $info = $file->move(config('uploads_path.path').DS.'team',false);
-    //             if($info){
-    //                 $data['logo'] = '__UPLOADS__/team/'.$info->getSaveName();
-    //             }else{
-    //                 $this->error($file->getError());
-    //             }
-    //         }
-    //         $res = db('nba_team')->where('team_id',$team_id)->update($data);
-    //         if($res > 0){
-    //             $this->success('添加成功');
-    //         }
-    //         $this->error('添加失败');
-    //     }
-
-    //     $list = db('nba_team')->where('team_id',$team_id)->find();
-    //     $this->assign('data',$list);
-    //     return view();
-    // }
-
-    // public function drop_team($team_id)
-    // {
-    //     $res = db('nba_team')->where('team_id',$team_id)->delete();
-    //     if($res > 0){
-    //         $this->success("操作成功");
-    //     }
-    //     $this->error("操作失败");
-    // }
 }

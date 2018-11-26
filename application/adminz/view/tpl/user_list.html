@@ -6,6 +6,7 @@
 				<th>用户编号</th>
 				<th>手机号</th>
 				<th>上级用户编号</th>
+				<th>不可提现金额</th>
 				<th>可用金额</th>
 				<th>冻结金额</th>
 				<th>总金额</th>
@@ -22,6 +23,7 @@
 					<td>{$info.yhid|default='-'}</td>
 					<td>{$info.Sjhm|default=' - '}</td>
 					<td>{$info.Sfby|default=' - '}</td>
+					<td>{$info.no_balance|default=' - '}</td>
 					<td>{$info.balance|default=' - '}</td>
 					<td>{$info.freezing_amount|default=' - '}</td>
 					<td>{$info.amount_money|default=' - '}</td>

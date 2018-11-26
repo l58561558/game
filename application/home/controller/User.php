@@ -203,8 +203,8 @@ class User extends Base
             echo json_encode(['msg'=>'申请失败,余额不足','code'=>4,'success'=>false]);
             exit;
         }
-        if($data['money'] < 0){
-            echo json_encode(['msg'=>'申请失败,投注金额必须大于0','code'=>2,'success'=>false]);
+        if($data['money'] < 10){
+            echo json_encode(['msg'=>'申请失败,提现金额必须大于10','code'=>2,'success'=>false]);
             exit;
         }
         if(empty($yhk)){
