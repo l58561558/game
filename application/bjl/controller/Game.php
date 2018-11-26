@@ -363,7 +363,7 @@ class Game extends Base
 
             $id = $yh['id'];
 
-            if($data['tz_money'] <= 10){
+            if($data['tz_money'] < 10){
                 echo json_encode(['msg'=>'投注金额不能小于10','code'=>202,'success'=>false]);
                 exit;  
             }
