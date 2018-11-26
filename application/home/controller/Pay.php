@@ -134,7 +134,7 @@ class Pay extends Base
                             $ar['Zfywc'] = 1; // 1.已完成|2.未完成，Yjlx=1的情况
                             $id = db("account_details")->insert($ar,false,true); // 返回新的明细ID
                             if($id > 0){
-                                db('yh')->where('id='.$p_user['id'])->setInc('balance',$ar['jyje']);
+                                db('yh')->where('id='.$p_user['id'])->setInc('no_balance',$ar['jyje']);
                                 db('yh')->where('id='.$p_user['id'])->setInc('amount_money',$ar['jyje']);
                                 db('yh')->where('id='.$yh['id'])->setInc('is_one',1);
                             }
