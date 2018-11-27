@@ -89,7 +89,8 @@ class Football extends Base
                     $cate['game_id'] = $game_id;
                     $cate['cate_name'] = $fb_code_date['code_name'];
                     $cate['cate_code'] = $key;
-                    $cate['cate_odds'] = $value==0?0:(in_array($key, $array)?floor($value*1.085*100)/100:$value);
+                    // $cate['cate_odds'] = $value==0?0:(in_array($key, $array)?floor($value*1.085*100)/100:$value);
+                    $cate['cate_odds'] = $value;
                     $game_cate[] = $cate;
                 }
                 $res = db('fb_game_cate')->insertAll($game_cate);
@@ -463,7 +464,8 @@ class Football extends Base
                             }
                             db('fb_order_group')
                             ->where('group_id='.$fb_order_group[$k]['group_id'])
-                            ->update(array('status'=>1,'win_money'=>$fb_order['multiple']*$odds*2,'win_status'=>1));
+                            // ->update(array('status'=>1,'win_money'=>$fb_order['multiple']*$odds*2,'win_status'=>1));
+                            ->update(array('status'=>1,'win_money'=>$fb_order['multiple']*$odds*1.06*2,'win_status'=>1));
                         }else if(in_array('2', $cate)){
                             db('fb_order_group')
                             ->where('group_id='.$fb_order_group[$k]['group_id'])

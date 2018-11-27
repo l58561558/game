@@ -88,15 +88,13 @@ class Index extends Base
 					$fb_game_cate_data['game_id'] = $game_id;
 					$fb_game_cate_data['cate_name'] = db('fb_code')->where('code="'.$k.'"')->value('code_name');
 					$fb_game_cate_data['cate_code'] = $k;
-					$fb_game_cate_data['cate_odds'] = $v;$v==0?0:(in_array($k, $array)?floor($v*1.085*100)/100:$v);
+					// $fb_game_cate_data['cate_odds'] = $v==0?0:(in_array($k, $array)?floor($v*1.085*100)/100:$v);
+					$fb_game_cate_data['cate_odds'] = $v;
 					$fb_game_cate_data['status'] = 1;
 					$fb_game_cate_data['is_win'] = 0;
 					$fb_game_cate_res = db('fb_game_cate')->insertGetId($fb_game_cate_data);
 				}
 			}
-			// dump($fb_game_cate_res);
-			die;
-			// dump($fb_game_cate);die;
 			$fb_game_res = db('fb_game')->insertAll($fb_game);
 			$fb_game_cate_res = db('fb_game_cate')->insertAll($fb_game_cate);
 			if($fb_game_cate_res > 0){
