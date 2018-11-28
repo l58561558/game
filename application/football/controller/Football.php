@@ -255,7 +255,7 @@ class Football extends Base
         } catch (\Exception $e) {
             // 更新失败 回滚事务
             Db::rollback();
-            return json_encode(['msg'=>'投注失败,数据保存时出错1','code'=>205,'success'=>true]);
+            return json_encode(['msg'=>'投注失败,服务器异常','code'=>205,'success'=>true]);
         }
 
 
