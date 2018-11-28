@@ -539,9 +539,6 @@ class Football extends Base
      */
     public function edit_field(){
         $data = $_REQUEST;
-        if(strpos($data['down_score'],":") === false){
-            $this->error("请输入英文符号如':'");
-        }
         $flag = db("fb_game")->update($data);
         $fb_game = db('fb_game')->where('id='.$data['id'])->find();
         if(!empty($fb_game['top_score']) && !empty($fb_game['down_score'])){
