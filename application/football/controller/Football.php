@@ -113,144 +113,151 @@ class Football extends Base
     */
     public function add_order()
     {
-        $data = $_REQUEST;
-        if(empty($data['chuan'])){
-            echo json_encode(['msg'=>'请选择串法','code'=>203,'success'=>false]);
-            exit;
-        }
-
-        $chaun_data = explode(',', $data['chuan']);
-        $tz_data = json_decode($data['tz'],true);
-
-        $token = session('fb_token');
-        session('fb_token',null);
-
-        $yh = db('yh')->where('id='.USER_ID)->find();
-
-        if(USER_ID <= 0){
-            echo json_encode(['msg'=>'请登录','code'=>201,'success'=>false]);
-            exit;
-        }
-        if($data['token'] != $token){
-            echo json_encode(['msg'=>'数据错误,请勿重复提交','code'=>202,'success'=>false]);
-            exit; 
-        }
-              
-
-        foreach ($tz_data as $ke => $val) {
-            $fb_game = db('fb_game')->where('id='.$tz_data[$ke]['game_id'])->find();
-            if($fb_game['end_time'] <= time()){
-                echo json_encode(['msg'=>'投注失败','code'=>206,'success'=>false]);
+        Db::startTrans();
+        try{
+            $data = $_REQUEST;
+            if(empty($data['chuan'])){
+                echo json_encode(['msg'=>'请选择串法','code'=>203,'success'=>false]);
                 exit;
             }
-        }
 
-        $count = count($tz_data);
-        $touz = array();
-        for ($i=0; $i < $count; $i++) { 
-            if(isset($tz_data[$i]) && empty($touz[$i])){
-                $touz[$i][] = $tz_data[$i]['tz_result'];
-                $tz[$i]['game_id'] = $tz_data[$i]['game_id'];
-                $tz[$i]['tz_result'][] = $tz_data[$i]['tz_result'];
+            $chaun_data = explode(',', $data['chuan']);
+            $tz_data = json_decode($data['tz'],true);
+
+            $token = session('fb_token');
+            session('fb_token',null);
+
+            $yh = db('yh')->where('id='.USER_ID)->find();
+
+            if(USER_ID <= 0){
+                echo json_encode(['msg'=>'请登录','code'=>201,'success'=>false]);
+                exit;
             }
-            for ($j=$i+1; $j < $count; $j++) { 
-                if(isset($tz_data[$i])){
-                    if(isset($tz_data[$j])){
-                        if($tz_data[$i]['game_id'] == $tz_data[$j]['game_id']){ 
-                            $touz[$i][] = $tz_data[$j]['tz_result']; 
-                            $tz[$i]['game_id'] = $tz_data[$j]['game_id'];
-                            $tz[$i]['tz_result'][] = $tz_data[$j]['tz_result'];
-                            unset($tz_data[$j]);
-                        }else{
-                            continue;
-                        }    
-                    }   
-                }else{
-                    continue;
+            if($data['token'] != $token){
+                echo json_encode(['msg'=>'数据错误,请勿重复提交','code'=>202,'success'=>false]);
+                exit;
+            }
+
+
+            foreach ($tz_data as $ke => $val) {
+                $fb_game = db('fb_game')->where('id='.$tz_data[$ke]['game_id'])->find();
+                if($fb_game['end_time'] <= time()){
+                    echo json_encode(['msg'=>'投注失败','code'=>206,'success'=>false]);
+                    exit;
                 }
             }
-        }
 
-        $touz = array_merge($touz);
-        $tz = array_merge($tz);
-
-        $Group = new Group();
-        foreach ($chaun_data as $key => $value) {
-            $group[] = $Group->order_group($chaun_data[$key],$touz,1);  
-        }
-        foreach ($group as $key => $value) {
-            foreach ($group[$key] as $k => $v) {
-                $group_data[] = $group[$key][$k];
+            $count = count($tz_data);
+            $touz = array();
+            for ($i=0; $i < $count; $i++) {
+                if(isset($tz_data[$i]) && empty($touz[$i])){
+                    $touz[$i][] = $tz_data[$i]['tz_result'];
+                    $tz[$i]['game_id'] = $tz_data[$i]['game_id'];
+                    $tz[$i]['tz_result'][] = $tz_data[$i]['tz_result'];
+                }
+                for ($j=$i+1; $j < $count; $j++) {
+                    if(isset($tz_data[$i])){
+                        if(isset($tz_data[$j])){
+                            if($tz_data[$i]['game_id'] == $tz_data[$j]['game_id']){
+                                $touz[$i][] = $tz_data[$j]['tz_result'];
+                                $tz[$i]['game_id'] = $tz_data[$j]['game_id'];
+                                $tz[$i]['tz_result'][] = $tz_data[$j]['tz_result'];
+                                unset($tz_data[$j]);
+                            }else{
+                                continue;
+                            }
+                        }
+                    }else{
+                        continue;
+                    }
+                }
             }
-        }
-        $tz_num = count($group_data);
 
-        $order_money = $tz_num*$data['multiple']*2;
+            $touz = array_merge($touz);
+            $tz = array_merge($tz);
 
-        if($order_money > $yh['balance']+$yh['no_balance']){
-            echo json_encode(['msg'=>'投注金额超出可用金额','code'=>204,'success'=>false]);
-            exit;  
-        } 
+            $Group = new Group();
+            foreach ($chaun_data as $key => $value) {
+                $group[] = $Group->order_group($chaun_data[$key],$touz,1);
+            }
+            foreach ($group as $key => $value) {
+                foreach ($group[$key] as $k => $v) {
+                    $group_data[] = $group[$key][$k];
+                }
+            }
+            $tz_num = count($group_data);
 
-        $order['user_id'] = $yh['id'];
-        $order['add_time'] = time();
-        $order['multiple'] = $data['multiple'];
-        $order['chuan'] = $data['chuan'];
-        $order['is_win'] = 0;
-        $order_id = db('fb_order')->insert($order,false,true);
-        foreach ($tz as $key => $value) {
-            $order_info[$key]['order_id'] = $order_id;
-            $order_info[$key]['game_id'] = $tz[$key]['game_id'];
-            $order_info[$key]['tz_result'] = is_array($tz[$key]['tz_result'])?implode(',', $tz[$key]['tz_result']):$tz[$key]['tz_result'];
-            $order_info[$key]['game_status'] = 0;
-            $order_info[$key]['add_time'] = time();
-        }
-        $fb_order_info = db('fb_order_info')->insertAll($order_info);
+            $order_money = $tz_num*$data['multiple']*2;
 
-        $order_group = array();
+            if($order_money > $yh['balance']+$yh['no_balance']){
+                echo json_encode(['msg'=>'投注金额超出可用金额','code'=>204,'success'=>false]);
+                exit;
+            }
 
-        foreach ($group_data as $key => $value) {
-            $order_group[$key]['order_id'] = $order_id;
-            $order_group[$key]['group_res'] = $group_data[$key];
-            $order_group[$key]['status'] = 0;
-        }
-        $fb_order_group = db('fb_order_group')->insertAll($order_group);
+            $order['user_id'] = $yh['id'];
+            $order['add_time'] = time();
+            $order['multiple'] = $data['multiple'];
+            $order['chuan'] = $data['chuan'];
+            $order['is_win'] = 0;
+            $order_id = db('fb_order')->insert($order,false,true);
+            foreach ($tz as $key => $value) {
+                $order_info[$key]['order_id'] = $order_id;
+                $order_info[$key]['game_id'] = $tz[$key]['game_id'];
+                $order_info[$key]['tz_result'] = is_array($tz[$key]['tz_result'])?implode(',', $tz[$key]['tz_result']):$tz[$key]['tz_result'];
+                $order_info[$key]['game_status'] = 0;
+                $order_info[$key]['add_time'] = time();
+            }
+            $fb_order_info = db('fb_order_info')->insertAll($order_info);
 
-        
+            $order_group = array();
 
-        $order_no = date('YmdHis',time()).'FB'.$order_id;
-        $res = db('fb_order')->where('order_id='.$order_id)->update(array('tz_num'=>$tz_num,'order_money'=>$order_money,'order_no'=>$order_no));
+            foreach ($group_data as $key => $value) {
+                $order_group[$key]['order_id'] = $order_id;
+                $order_group[$key]['group_res'] = $group_data[$key];
+                $order_group[$key]['status'] = 0;
+            }
+            $fb_order_group = db('fb_order_group')->insertAll($order_group);
 
-        if($res) {
-            if($order_money >= $yh['no_balance']){
-                db('yh')->where('id='.$yh['id'])->setField('no_balance',0);
-                $residue = $order_money - $yh['no_balance'];
+
+            $order_no = date('YmdHis',time()).'FB'.$order_id;
+            $res = db('fb_order')->where('order_id='.$order_id)->update(array('tz_num'=>$tz_num,'order_money'=>$order_money,'order_no'=>$order_no));
+
+            if($res) {
+                if($order_money >= $yh['no_balance']){
+                    db('yh')->where('id='.$yh['id'])->setField('no_balance',0);
+                    $residue = $order_money - $yh['no_balance'];
+                }else{
+                    db('yh')->where('id='.$yh['id'])->setDec('no_balance',$order_money);
+                    $residue = 0;
+                }
+                db('yh')->where('id='.$yh['id'])->setDec('balance',$residue);
+                db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money);
+                $balance = db('yh')->where('id='.$yh['id'])->value('balance');
+                /**添加账单明细**/
+                $detail['yhid'] = $yh['yhid'];
+                $detail['Jylx'] = 3;
+                $detail['jyje'] = $order_money;
+                $detail['new_money'] = $balance;
+                $detail['Jysj'] = time();
+                $detail['Srhzc'] = 2;
+                $detail['game_id'] = 6;
+                $detail_res = db('account_details')->insert($detail,false,true);
+                /**添加账单明细end**/
+
             }else{
-                db('yh')->where('id='.$yh['id'])->setDec('no_balance',$order_money);
-                $residue = 0;
+                Db::rollback();
+                echo json_encode(['msg'=>'投注失败','code'=>205,'success'=>true]);
+                exit;
             }
-            db('yh')->where('id='.$yh['id'])->setDec('balance',$residue);
-            db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money);
-            $balance = db('yh')->where('id='.$yh['id'])->value('balance');
-            /**添加账单明细**/
-            $detail['yhid'] = $yh['yhid'];
-            $detail['Jylx'] = 3;
-            $detail['jyje'] = $order_money;
-            $detail['new_money'] = $balance;
-            $detail['Jysj'] = time();
-            $detail['Srhzc'] = 2;
-            $detail['game_id'] = 6;
-            $detail_res = db('account_details')->insert($detail,false,true);
-            /**添加账单明细end**/
-            // db('yh')->where('id='.$yh['id'])->setDec('balance',$order_money);
-            // db('yh')->where('id='.$yh['id'])->setDec('amount_money',$order_money); 
-
+            Db::commit();
             echo json_encode(['msg'=>'投注成功','code'=>1,'success'=>true]);
             exit;
-        }else{
-            echo json_encode(['msg'=>'投注失败','code'=>205,'success'=>true]);
-            exit;
+        } catch (\Exception $e) {
+            // 更新失败 回滚事务
+            Db::rollback();
+            return json_encode(['msg'=>'投注失败,数据保存时出错1','code'=>205,'success'=>true]);
         }
+
 
     }
     /*
