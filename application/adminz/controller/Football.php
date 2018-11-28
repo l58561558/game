@@ -26,15 +26,20 @@ class Football extends Base
         //遍历数据
         if(!empty($list)){
             $list->each(function($item,$key){
-                if($item['status'] == 0){
-                    $item['tz_status'] = '已结算';
+                if($item['is_postpone'] == 1){
+                    $item['tz_status'] = '已延期';
                 }else{
-                    if($item['end_time'] <= time()){
-                        $item['tz_status'] = '停止投注';
+                    if($item['status'] == 0){
+                        $item['tz_status'] = '已结算';
                     }else{
-                        $item['tz_status'] = '可以投注';
-                    }    
+                        if($item['end_time'] <= time()){
+                            $item['tz_status'] = '停止投注';
+                        }else{
+                            $item['tz_status'] = '可以投注';
+                        }    
+                    }   
                 }
+                
                 return $item;
             });
         }
@@ -313,64 +318,67 @@ class Football extends Base
     {
         set_time_limit(0);
         $game = db('fb_game')->where('id='.$id)->find();
-        if(empty($game['top_score']) && empty($game['down_score'])){
-            $this->error("请输入分数比!");
-        }
-        $home_score = explode(':', $game['down_score'])[0];
-        $road_score = explode(':', $game['down_score'])[1];
-        $top_home_score = explode(':', $game['top_score'])[0];
-        $top_road_score = explode(':', $game['top_score'])[1];
-        //让分分数
-        $home_let_score = $home_score+$game['let_score'];
-        //俩队总进球数
-        $total_score = $game['total_score'];
-        //获取比分所有选项
-        $score = db('fb_code')->where('code_pid=3')->column('code_name');
-        //根据比赛分数修改本场比赛的所有投注选项的中奖状态
-        $game_cate = db('fb_game_cate')->where('game_id='.$id)->select();
-        foreach ($game_cate as $key => $value) {
-            db('fb_game_cate')->where('game_id='.$id)->setField('is_win',2);
-            if($top_home_score > $top_road_score){
-                $half_full = 'win_';
-            }else if($top_home_score < $top_road_score){
-                $half_full = 'lose_';
-            }else{
-                $half_full = 'eq_';
+        if($game['is_postpone'] == 1){
+            db('fb_game_cate')->where('game_id='.$id)->update(array('is_win'=>1,'cate_odds'=>1));
+        }else{
+            if(empty($game['top_score']) && empty($game['down_score'])){
+                $this->error("请输入分数比!");
             }
-            if($home_score > $road_score){
-                $half_full .= 'win';
-                db('fb_game_cate')->where('game_id='.$id.' and cate_code="home_win"')->setField('is_win',1);
-            }else if($home_score < $road_score){
-                $half_full .= 'lose';
-                db('fb_game_cate')->where('game_id='.$id.' and cate_code="home_lose"')->setField('is_win',1);
-            }else{
-                $half_full .= 'eq';
-                db('fb_game_cate')->where('game_id='.$id.' and cate_code="home_eq"')->setField('is_win',1);
-            }
-            db('fb_game_cate')->where('game_id='.$id.' and cate_code="'.$half_full.'"')->setField('is_win',1);
-
-            if($home_let_score > $road_score){
-                db('fb_game_cate')->where('game_id='.$id.' and cate_code="let_score_home_win"')->setField('is_win',1);
-            }else if($home_let_score < $road_score){
-                db('fb_game_cate')->where('game_id='.$id.' and cate_code="let_score_home_lose"')->setField('is_win',1);
-            }else{
-                db('fb_game_cate')->where('game_id='.$id.' and cate_code="let_score_home_eq"')->setField('is_win',1);
-            }
-            if(in_array($game['down_score'], $score)){
-                db('fb_game_cate')->where('game_id='.$id.' and cate_name="'.$game['down_score'].'"')->setField('is_win',1);
-            }else{
-                if($home_score > $road_score){
-                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="win_other"')->setField('is_win',1);
-                }else if($home_score < $road_score){
-                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="lose_other"')->setField('is_win',1);
+            $home_score = explode(':', $game['down_score'])[0];
+            $road_score = explode(':', $game['down_score'])[1];
+            $top_home_score = explode(':', $game['top_score'])[0];
+            $top_road_score = explode(':', $game['top_score'])[1];
+            //让分分数
+            $home_let_score = $home_score+$game['let_score'];
+            //俩队总进球数
+            $total_score = $game['total_score'];
+            //获取比分所有选项
+            $score = db('fb_code')->where('code_pid=3')->column('code_name');
+            //根据比赛分数修改本场比赛的所有投注选项的中奖状态
+            $game_cate = db('fb_game_cate')->where('game_id='.$id)->select();
+            foreach ($game_cate as $key => $value) {
+                db('fb_game_cate')->where('game_id='.$id)->setField('is_win',2);
+                if($top_home_score > $top_road_score){
+                    $half_full = 'win_';
+                }else if($top_home_score < $top_road_score){
+                    $half_full = 'lose_';
                 }else{
-                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="eq_other"')->setField('is_win',1);
+                    $half_full = 'eq_';
                 }
-            }
-            db('fb_game_cate')->where('game_id='.$id.' and cate_code="'.$this->rank($total_score).'"')->setField('is_win',1);
-            
-            
+                if($home_score > $road_score){
+                    $half_full .= 'win';
+                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="home_win"')->setField('is_win',1);
+                }else if($home_score < $road_score){
+                    $half_full .= 'lose';
+                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="home_lose"')->setField('is_win',1);
+                }else{
+                    $half_full .= 'eq';
+                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="home_eq"')->setField('is_win',1);
+                }
+                db('fb_game_cate')->where('game_id='.$id.' and cate_code="'.$half_full.'"')->setField('is_win',1);
+
+                if($home_let_score > $road_score){
+                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="let_score_home_win"')->setField('is_win',1);
+                }else if($home_let_score < $road_score){
+                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="let_score_home_lose"')->setField('is_win',1);
+                }else{
+                    db('fb_game_cate')->where('game_id='.$id.' and cate_code="let_score_home_eq"')->setField('is_win',1);
+                }
+                if(in_array($game['down_score'], $score)){
+                    db('fb_game_cate')->where('game_id='.$id.' and cate_name="'.$game['down_score'].'"')->setField('is_win',1);
+                }else{
+                    if($home_score > $road_score){
+                        db('fb_game_cate')->where('game_id='.$id.' and cate_code="win_other"')->setField('is_win',1);
+                    }else if($home_score < $road_score){
+                        db('fb_game_cate')->where('game_id='.$id.' and cate_code="lose_other"')->setField('is_win',1);
+                    }else{
+                        db('fb_game_cate')->where('game_id='.$id.' and cate_code="eq_other"')->setField('is_win',1);
+                    }
+                }
+                db('fb_game_cate')->where('game_id='.$id.' and cate_code="'.$this->rank($total_score).'"')->setField('is_win',1);
+            }   
         }
+        
         // 获取这场比赛的所有中奖选项ID::cate_ids
         $cate_id_arr = db('fb_game_cate')->where('game_id='.$id.' and is_win=1')->column('cate_id');
         $cate_ids = implode(',', $cate_id_arr);
@@ -402,9 +410,9 @@ class Football extends Base
                 $tz_result = explode(',', $order_info_all[$key]['tz_result']);
                 foreach ($tz_result as $ke => $val) {
                     if(in_array($tz_result[$ke], $cate_id_arr)){
-                        if(!empty($tz_result[$ke])){
+                        // if(!empty($tz_result[$ke])){
                             $win_result[] = $tz_result[$ke];
-                        }
+                        // }
                     }else{
                         $cate_code = db('fb_game_cate')->where('cate_id='.$tz_result[$ke])->value('cate_code');
                         $pid = db('fb_code')->where('code="'.$cate_code.'"')->value('code_pid');

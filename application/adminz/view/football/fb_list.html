@@ -30,11 +30,11 @@
 			<td style="text-align: center;">{$info.road_team|default='-'}</td>
 			<td style="text-align: center;">
 				<!-- {$info.top_score|default='-'} -->
-				<input style="text-align: center;" class="inputs" data-id="{$info.id}" data-url="{:url('football/edit_field')}" name="top_score" type="text" value="{$info.top_score}" >
+				<input style="text-align: center;" {if condition="$info.is_postpone eq 1"}disabled{/if} class="inputs" data-id="{$info.id}" data-url="{:url('football/edit_field')}" name="top_score" type="text" value="{$info.top_score}" >
 			</td>
 			<td style="text-align: center;">
 				<!-- {$info.down_score|default='-'} -->
-				<input style="text-align: center;" class="inputs" data-id="{$info.id}" data-url="{:url('football/edit_field')}" name="down_score" type="text" value="{$info.down_score}" >
+				<input style="text-align: center;" {if condition="$info.is_postpone eq 1"}disabled{/if} class="inputs" data-id="{$info.id}" data-url="{:url('football/edit_field')}" name="down_score" type="text" value="{$info.down_score}" >
 			</td>
 			<td style="text-align: center;">{$info.total_score|default='-'}</td>
 			<td style="text-align: center;">{$info.end_time|date='Y-m-d H:i:s',###|default='-'}</td>
@@ -52,6 +52,9 @@
 				<a href="{:url('football/edit')}?id={$info.id}">编辑</a>&nbsp;&nbsp;&nbsp;
 				<a href="{:url('football/look')}?id={$info.id}">查看</a>&nbsp;&nbsp;&nbsp;
 				<a style="color: red" href="{:url('football/drop')}?id={$info.id}">删除</a>
+				{if condition="$info.is_postpone eq 0"}
+				<a data-id="{$info.id}" data-url="{:url('football/edit_field')}" class="is_postpone" value="1" href="javascript:void(0)">延期</a>
+				{/if}
 			</td>
 		</tr>
 		{/volist}
@@ -65,3 +68,17 @@
 <div class="box-footer clearfix">
     <ul class="pagination pull-right">{$page}</ul>
 </div> 
+<script type="text/javascript">
+	$(".is_postpone").click(function(){
+		var id = $(this).attr('data-id');
+		$.ajax({
+			url:"{:url('football/edit_field')}",
+			type:'post',
+			data:{is_postpone:1,id:id},
+			success:function(res){
+				alert(res.msg);
+				window.location.reload();
+			}
+		})
+	})
+</script>
