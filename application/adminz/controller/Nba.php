@@ -452,7 +452,7 @@ class Nba extends Base
                 $tz_result = explode(',', $order_info_all[$key]['tz_result']);
                 foreach ($tz_result as $ke => $val) {
                     if(in_array($tz_result[$ke], $cate_id_arr)){
-                        $win_result[] = $tz_result[$ke];
+                        $result[] = $tz_result[$ke];
                     }else{
                         $cate_code = db('nba_game_cate')->where('cate_id='.$tz_result[$ke])->value('cate_code');
                         $pid = db('nba_code')->where('code="'.$cate_code.'"')->value('code_pid');
@@ -465,17 +465,13 @@ class Nba extends Base
                             }
                         }
                         
-                        if(count($cate_id) > 1){
-                            $win_result[] = implode(',', $cate_id);
-                        }else{
-                            $win_result[] = $cate_id[0];
-                        }
+                        $result[] = implode(',', $cate_id);
                         unset($cate_id);
                     }
                 }
-                $win_result = array_unique($win_result);
-                $win_result = array_values($win_result);
-                $win_result = implode(',', $win_result);                
+                $result = array_unique($result);
+                $result = array_values($result);
+                $win_result = implode(',', $result);                
             }
             db('nba_order_info')->where('order_info_id='.$order_info_all[$key]['order_info_id'])->update(array('win_result'=>$win_result,'game_status'=>1));
         }

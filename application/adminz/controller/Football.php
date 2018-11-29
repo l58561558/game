@@ -411,7 +411,7 @@ class Football extends Base
                 foreach ($tz_result as $ke => $val) {
                     if(in_array($tz_result[$ke], $cate_id_arr)){
                         // if(!empty($tz_result[$ke])){
-                            $win_result[] = $tz_result[$ke];
+                            $result[] = $tz_result[$ke];
                         // }
                     }else{
                         $cate_code = db('fb_game_cate')->where('cate_id='.$tz_result[$ke])->value('cate_code');
@@ -425,19 +425,15 @@ class Football extends Base
                             }
                         }
                         
-                        if(count($cate_id) > 1){
-                            $win_result[] = implode(',', $cate_id);
-                        }else{
-                            $win_result[] = $cate_id[0];
-                        }
+                        $result[] = implode(',', $cate_id);
                         unset($cate_id);
                     }
                 }
-                $win_result = implode(',', $win_result);           
+                $win_result = implode(',', $result);           
             }
             db('fb_order_info')->where('order_info_id='.$order_info_all[$key]['order_info_id'])->update(array('win_result'=>$win_result,'game_status'=>1));
         }
-        // die;
+
         $order_ids = db('fb_order_info')->where('game_id='.$id)->column('order_id');
         foreach ($order_ids as $key => $value) {
             $fb_order = db('fb_order')->where('order_id='.$order_ids[$key])->find();
