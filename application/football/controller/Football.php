@@ -415,7 +415,7 @@ class Football extends Base
                     foreach ($tz_result as $ke => $val) {
                         $ngc = db('fb_game_cate')->where('cate_id='.$tz_result[$ke])->find();
                         $ngc['attr'] = '';
-                        if($ngc['cate_code'] == 'let_score_win_home' || $ngc['cate_code'] == 'let_score_win_road'){
+                        if($ngc['cate_code'] == 'let_score_home_win' || $ngc['cate_code'] == 'let_score_home_eq' || $ngc['cate_code'] == 'let_score_home_lose'){
                             $ngc['attr'] = db('fb_game')->where('id='.$ngc['game_id'])->value('let_score');
                         }
                         $tz_result[$ke] = $ngc;
@@ -432,7 +432,7 @@ class Football extends Base
                     foreach ($win_result as $ke => $val) {
                         $ngc = db('fb_game_cate')->where('cate_id='.$win_result[$ke])->find();
                         $ngc['attr'] = '';
-                        if($ngc['cate_code'] == 'let_score_win_home' || $ngc['cate_code'] == 'let_score_win_road'){
+                        if($ngc['cate_code'] == 'let_score_home_win' || $ngc['cate_code'] == 'let_score_home_eq' || $ngc['cate_code'] == 'let_score_home_lose'){
                             $ngc['attr'] = db('fb_game')->where('id='.$ngc['game_id'])->value('let_score');
                         }
                         $win_result[$ke] = $ngc;
