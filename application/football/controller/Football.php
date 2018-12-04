@@ -426,7 +426,14 @@ class Football extends Base
             } 
             if(!empty($order_info[$key]['win_result'])){
                 if(strpos($order_info[$key]['win_result'] , ',') === false){
-                    $data['order_info'][$key]['win_result'][0] = db('fb_game_cate')->field('cate_name,cate_odds')->where('cate_id='.$order_info[$key]['win_result'])->find();
+                    $ngc = db('fb_game_cate')->where('cate_id='.$order_info[$key]['win_result'])->find();
+                    $ngc['attr'] = '';
+                    if($ngc['cate_code'] == 'let_score_home_win' || $ngc['cate_code'] == 'let_score_home_eq' || $ngc['cate_code'] == 'let_score_home_lose'){
+                        $ngc['attr'] = db('fb_game')->where('id='.$ngc['game_id'])->value('let_score');
+                    }
+
+                    $data['order_info'][$key]['win_result'][0] = $ngc;
+                    // $data['order_info'][$key]['win_result'][0] = db('fb_game_cate')->field('cate_name,cate_odds')->where('cate_id='.$order_info[$key]['win_result'])->find();
                 }else{
                     $win_result = explode(',', $order_info[$key]['win_result']);
                     foreach ($win_result as $ke => $val) {
