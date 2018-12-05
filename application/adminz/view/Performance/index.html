@@ -1,0 +1,100 @@
+{extend name="public/base" /}
+{block name="content"}
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">绩效表</h3>
+                    <div class="pull-right">
+                        <a href="{:url('history/dxh')}" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i>&nbsp;返回列表</a>
+                    </div>
+                </div>
+                <div class="box-header with-border">
+                    <div class="pull-left">
+                        <input type="text" class="add_time" placeholder="开始时间" id="date">
+                        <input type="text" class="end_time" placeholder="结束时间" id="date1">
+                        <button class="layui-btn" style="height: 27px;padding: 0 10px;line-height: 16px;">搜索</button>
+
+                    </div>
+                </div>
+                <div id="data_list_info">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center;">用户ID</th>
+                            <th style="text-align: center;">手机号码</th>
+                            <th style="text-align: center;">邀请码</th>
+                            <th style="text-align: center;">绩效</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='_list' key='k' id='item'}
+                        <tr>
+                            <td style="text-align: center;">{$item.yhid}</td>
+                            <td style="text-align: center;">{$item.Sfby - 11}</td>
+                            <td style="text-align: center;">{$item.yqm|default='-'}</td>
+                            <td style="text-align: center;">{$item.performance|default='-'}</td>
+                        </tr>
+                        {/volist}
+                        {if condition="empty($_list)"}
+                        <tr><td colspan="7" style="text-align: center;">空空如也~</td></tr>
+                        {/if}
+                        </tbody>
+                    </table>
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pull-right">{$page}</ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script charset="utf-8" src="__PLUGINS__/KindEditor/kindeditor.js"></script>
+<script>
+    layui.use(['form', 'layedit', 'laydate','upload','table'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate
+            ,upload = layui.upload;
+
+        var table = layui.table;
+        //日期
+        laydate.render({
+            elem: '#date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#date1'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#cate_id'
+        });
+    })
+</script>
+<script type="text/javascript">
+    $(".layui-btn").click(function(){
+        getData();
+    });
+    function getData(p){
+        var add_time = $(".add_time").val();
+        var end_time = $(".end_time").val();
+        var result = {
+            add_time : add_time,
+            end_time : end_time
+        };
+        if(p==undefined || p<1)
+            p = 1;
+        var game_id = "";
+        $.post("{:url('performance/get_performance_list')}",{page:p,result:result},function(res){
+            if(res.code == 1){
+                $("#data_list_info").html('').html(res.data);
+            }
+        },'json');
+    }
+</script>
+{/block}
