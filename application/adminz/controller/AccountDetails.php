@@ -90,14 +90,11 @@ class AccountDetails extends Base
         }
 
         if(!empty($data['yhid'])){
-            $statistics['child_tz_money'] = [
-                'sports' => 0,
-                'other' => 0
-            ];            $id = db('yh')->where('yhid="'.$data['yhid'].'"')->value('id');
+            $statistics['child_tz_money'] = 0;
+            $id = db('yh')->where('yhid="'.$data['yhid'].'"')->value('id');
             $id_arr = db('yh')->where('pid='.$id)->column('yhid');
             foreach ($id_arr as $key => $value) {
-                $statistics['child_tz_money']['sports'] += db('account_details')->where('yhid = "'.$value.'" and game_id=6 and Jylx=3'.$where)->sum('jyje');
-                $statistics['child_tz_money']['other'] += db('account_details')->where('yhid = "'.$value.'" and game_id<>6 and Jylx=3'.$where)->sum('jyje');
+                $statistics['child_tz_money'] += db('account_details')->where('yhid = "'.$value.'" and Jylx=3'.$where)->sum('jyje');
             }
 
             $map .= ' and yhid like "%'.$data['yhid'].'%"';
@@ -107,17 +104,11 @@ class AccountDetails extends Base
         }
 
         if(!empty($data['id'])){
-            $statistics['child_tz_money'] = [
-                'sports' => 0,
-                'other' => 0
-            ];
+            $statistics['child_tz_money'] = 0;
             $id = db('yh')->where('yhid="'.$data['id'].'"')->value('id');
             $id_arr = db('yh')->where('pid='.$id)->column('yhid');
             foreach ($id_arr as $key => $value) {
-                $statistics['child_tz_money']['sports'] += db('account_details')->where('yhid = "'.$value.'" and game_id=6 and Jylx=3'.$where)->sum('jyje');
-                $statistics['child_tz_money']['other'] += db('account_details')->where('yhid = "'.$value.'" and game_id<>6 and Jylx=3'.$where)->sum('jyje');
-
-//                $statistics['child_tz_money'] += db('account_details')->where('yhid = "'.$value.'" and Jylx=3'.$where)->sum('jyje');
+                $statistics['child_tz_money'] += db('account_details')->where('yhid = "'.$value.'" and Jylx=3'.$where)->sum('jyje');
             }
 
             $map .= ' and yhid like "%'.$data['id'].'%"';

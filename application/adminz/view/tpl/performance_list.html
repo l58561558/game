@@ -2,44 +2,18 @@
     <thead>
     <tr>
         <th style="text-align: center;">用户ID</th>
-        <th style="text-align: center;">足/篮绩效</th>
-        <th style="text-align: center;">足/篮提成</th>
-        <th style="text-align: center;">其他绩效</th>
-        <th style="text-align: center;">其他提成</th>
-        <th style="text-align: center;">总提成</th>
+        <th style="text-align: center;">手机号码</th>
+        <th style="text-align: center;">邀请码</th>
+        <th style="text-align: center;">绩效</th>
     </tr>
     </thead>
     <tbody>
     {volist name='_list' key='k' id='item'}
     <tr>
-        <td style="text-align: center;">
-            {$item.yhid}
-        </td>
-        <td style="text-align: center;">
-            {$item.sports_sum|default='-'}
-        </td>
-        <td style="text-align: center;">
-            <?php if($item['sports_sum']) echo ($item['sports_sum']*$rate['sports_rate']/100);else echo '-';?>
-        </td>
-        <td style="text-align: center;">
-            {$item.other_sum|default='-'}
-        </td>
-        <td style="text-align: center;">
-            <?php if($item['other_sum']) echo ($item['other_sum']*$rate['other_rate']/100);else echo '-';?>
-        </td>
-        <td style="text-align: center;">
-            <?php
-                                    if($item['sports_sum'] && $item['sports_sum']) {
-                                        echo ($item['sports_sum']*$rate['sports_rate'] + $item['other_sum']*$rate['other_rate'])/100;
-                                    } elseif($item['sports_sum']) {
-                                        echo ($item['sports_sum']*$rate['sports_rate']/100);
-                                    } elseif($item['other_sum']) {
-                                        echo ($item['other_sum']*$rate['other_rate']/100);
-                                    } else {
-                                        echo '-';
-                                    }
-                                ;?>
-        </td>
+        <td style="text-align: center;">{$item.yhid}</td>
+        <td style="text-align: center;">{$item.Sfby - 11}</td>
+        <td style="text-align: center;">{$item.yqm|default='-'}</td>
+        <td style="text-align: center;">{$item.performance|default='-'}</td>
     </tr>
     {/volist}
     {if condition="empty($_list)"}
