@@ -528,12 +528,12 @@ class Game extends Base
                 $three = substr($three, 1, 1);
             }
             $result = $one.$two.$three;
-            $fp = @fopen("E:/game//timed_task/qq_people.txt", "a+");
+            $fp = @fopen("E:/game/timed_task/qq_people.txt", "a+");
             fwrite($fp, "人数:".$num."-----结果:".$result."-----\r\n");
             fclose($fp);
             db('dxh_kj')->where('game_id='.$this->game_id.' and kjsjzt=1')->setField('qq_now',$result);
         }else{
-            $fp = @fopen("E:/game//timed_task/qq_people.txt", "a+");
+            $fp = @fopen("E:/game/timed_task/qq_people.txt", "a+");
             fwrite($fp, "重新写入:".date("Y-m-d H:i:s")."-----\r\n");
             fclose($fp);
             $this->get_qq_people();
