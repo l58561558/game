@@ -1,0 +1,26 @@
+<table class="layui-table">
+    <thead>
+    <tr>
+        <th style="text-align: center;">用户ID</th>
+        <th style="text-align: center;">手机号码</th>
+        <th style="text-align: center;">邀请码</th>
+        <th style="text-align: center;">绩效</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name='_list' key='k' id='item'}
+    <tr>
+        <td style="text-align: center;">{$item.yhid}</td>
+        <td style="text-align: center;">{$item.Sfby - 11}</td>
+        <td style="text-align: center;">{$item.yqm|default='-'}</td>
+        <td style="text-align: center;">{$item.performance|default='-'}</td>
+    </tr>
+    {/volist}
+    {if condition="empty($_list)"}
+    <tr><td colspan="7" style="text-align: center;">空空如也~</td></tr>
+    {/if}
+    </tbody>
+</table>
+<div class="box-footer clearfix">
+    <ul class="pagination pull-right">{$page}</ul>
+</div>
