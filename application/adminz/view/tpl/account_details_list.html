@@ -20,7 +20,7 @@
 			<th style="text-align: center;" colspan="1">分销总金额</th>
 			<th style="text-align: center;" colspan="1">下注奖励总金额</th>
 			{if condition="isset($id)"}
-			<th style="text-align: center;" colspan="1">下级下注流水总额</th>
+			<th style="text-align: center;" colspan="1">下级下注流水总额(足/篮+其他)</th>
 			{/if}
 		</tr>
 	</thead>
@@ -33,7 +33,7 @@
 			<td colspan="1">{$statistics.fx_money}</td>
 			<td colspan="1">{$statistics.tzjl_money}</td>
 			{if condition="isset($id)"}
-			<td colspan="1">{$statistics.child_tz_money}</td>
+			<td colspan="1">{$statistics.child_tz_money.sports}+{$statistics.child_tz_money.other}={$statistics.child_tz_money.sports+$statistics.child_tz_money.other}</td>
 			{/if}
 		</tr>
 	</tbody>

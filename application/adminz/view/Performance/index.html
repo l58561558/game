@@ -14,27 +14,83 @@
                     <div class="pull-left">
                         <input type="text" class="add_time" placeholder="开始时间" id="date">
                         <input type="text" class="end_time" placeholder="结束时间" id="date1">
-                        <button class="layui-btn" style="height: 27px;padding: 0 10px;line-height: 16px;">搜索</button>
-
+                        <input type="text" class="user_id" placeholder="用户ID" >
+                        <button class="layui-btn search_btn" style="height: 27px;padding: 0 10px;line-height: 16px;">搜索</button>
                     </div>
+                </div>
+
+                <div class="box-header with-border" style="width: 470px;">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center;width: 100px">类型</th>
+                            <th style="text-align: center;width: 175px">提成点%</th>
+                            <th style="text-align: center;width: 195px">修改</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style="text-align: center;">足/篮</td>
+                            <td style="text-align: center;">{$rate.sports_rate}</td>
+                            <td>
+                                <input type="number" class="rate" placeholder="提成点" id="new_sports_rate" style="width: 75px">
+                                <button class="layui-btn edit_sports_rate_btn" style="height: 26px;line-height: 26px;">修改</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">其他</td>
+                            <td style="text-align: center;">{$rate.other_rate}</td>
+                            <td>
+                                <input type="number" class="rate" placeholder="提成点" id="new_other_rate" style="width: 75px">
+                                <button class="layui-btn edit_other_rate_btn " style="height: 26px;line-height: 26px;">修改</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div id="data_list_info">
                     <table class="layui-table">
                         <thead>
                         <tr>
                             <th style="text-align: center;">用户ID</th>
-                            <th style="text-align: center;">手机号码</th>
-                            <th style="text-align: center;">邀请码</th>
-                            <th style="text-align: center;">绩效</th>
+                            <th style="text-align: center;">足/篮绩效</th>
+                            <th style="text-align: center;">足/篮提成</th>
+                            <th style="text-align: center;">其他绩效</th>
+                            <th style="text-align: center;">其他提成</th>
+                            <th style="text-align: center;">总提成</th>
                         </tr>
                         </thead>
                         <tbody>
                         {volist name='_list' key='k' id='item'}
                         <tr>
-                            <td style="text-align: center;">{$item.yhid}</td>
-                            <td style="text-align: center;">{$item.Sfby - 11}</td>
-                            <td style="text-align: center;">{$item.yqm|default='-'}</td>
-                            <td style="text-align: center;">{$item.performance|default='-'}</td>
+                            <td style="text-align: center;">
+                                {$item.yhid}
+                            </td>
+                            <td style="text-align: center;">
+                                {$item.sports_sum|default='-'}
+                            </td>
+                            <td style="text-align: center;">
+                                <?php if($item['sports_sum']) echo ($item['sports_sum']*$rate['sports_rate']/100);else echo '-';?>
+                            </td>
+                            <td style="text-align: center;">
+                                {$item.other_sum|default='-'}
+                            </td>
+                            <td style="text-align: center;">
+                                <?php if($item['other_sum']) echo ($item['other_sum']*$rate['other_rate']/100);else echo '-';?>
+                            </td>
+                            <td style="text-align: center;">
+                                <?php
+                                    if($item['sports_sum'] && $item['sports_sum']) {
+                                        echo ($item['sports_sum']*$rate['sports_rate'] + $item['other_sum']*$rate['other_rate'])/100;
+                                    } elseif($item['sports_sum']) {
+                                        echo ($item['sports_sum']*$rate['sports_rate']/100);
+                                    } elseif($item['other_sum']) {
+                                        echo ($item['other_sum']*$rate['other_rate']/100);
+                                    } else {
+                                        echo '-';
+                                    }
+                                ;?>
+                            </td>
                         </tr>
                         {/volist}
                         {if condition="empty($_list)"}
@@ -77,15 +133,17 @@
     })
 </script>
 <script type="text/javascript">
-    $(".layui-btn").click(function(){
+    $(".search_btn").click(function(){
         getData();
     });
     function getData(p){
         var add_time = $(".add_time").val();
         var end_time = $(".end_time").val();
+        var user_id = $(".user_id").val();
         var result = {
             add_time : add_time,
-            end_time : end_time
+            end_time : end_time,
+            user_id : user_id
         };
         if(p==undefined || p<1)
             p = 1;
@@ -93,6 +151,31 @@
         $.post("{:url('performance/get_performance_list')}",{page:p,result:result},function(res){
             if(res.code == 1){
                 $("#data_list_info").html('').html(res.data);
+            }
+        },'json');
+    }
+    $(".edit_sports_rate_btn").click(function () {
+        var rate = $("#new_sports_rate").val();
+        if (rate && rate > 0 && rate < 100) {
+            edit_rate(true, rate);
+        }
+    });
+    $(".edit_other_rate_btn").click(function () {
+        var rate = $("#new_other_rate").val();
+        if (rate && rate > 0 && rate < 100) {
+            edit_rate(false, rate);
+        }
+    });
+    function edit_rate(is_sports, rate) {
+        $.post("{:url('performance/edit_rate')}",{is_sports:false,rate:rate},function(res){
+            layer.open({
+                title: ''
+                ,content: res.msg,
+            });
+            if(res.code === 200){
+                setTimeout(function () {
+                    window.location.reload();
+                },500)
             }
         },'json');
     }
