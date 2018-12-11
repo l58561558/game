@@ -229,16 +229,29 @@ class Football extends Base
             $data['order_info'][$key]['home_team'] = $game[$key]['home_team'];
             $data['order_info'][$key]['road_team'] = $game[$key]['road_team'];
             $data['order_info'][$key]['down_score'] = $game[$key]['down_score'];
+            $data['order_info'][$key]['let_score'] = $game[$key]['let_score'];
             $data['order_info'][$key]['win_result'] = '';
             $data['order_info'][$key]['win_game_result'] = '';
             $data['order_info'][$key]['status'] = $game[$key]['status'];
             if(strpos($order_info[$key]['tz_result'] , ',') === false){
-                $data['order_info'][$key]['tz_result'][0] = db('fb_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$order_info[$key]['tz_result'])->find();
+                $tz_result = db('fb_game_cate')->field('cate_name,cate_odds,is_win,cate_code')->where('cate_id='.$order_info[$key]['tz_result'])->find();
+                $data['order_info'][$key]['tz_result'][0] = $tz_result;
+                if (in_array($tz_result['cate_code'], ['let_score_home_win', 'let_score_home_eq', 'let_score_home_lose'])){
+                    $data['order_info'][$key]['tz_result'][0]['is_let_score'] = true;
+                } else {
+                    $data['order_info'][$key]['tz_result'][0]['is_let_score'] = false;
+                }
             }else{
                 if(!empty($order_info[$key]['tz_result'])){
                     $tz_result = explode(',', $order_info[$key]['tz_result']);
                     foreach ($tz_result as $ke => $val) {
-                        $tz_result[$ke] = db('fb_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$tz_result[$ke])->find();
+                        $tz_result[$ke] = db('fb_game_cate')->field('cate_name,cate_odds,is_win,cate_code')->where('cate_id='.$tz_result[$ke])->find();
+                        if (in_array($tz_result[$ke]['cate_code'], ['let_score_home_win', 'let_score_home_eq', 'let_score_home_lose'])){
+                            $tz_result[$ke]['is_let_score'] = true;
+                        } else {
+                            $tz_result[$ke]['is_let_score'] = false;
+                        }
+//                        $tz_result[$ke] = db('fb_game_cate')->field('cate_name,cate_odds,is_win')->where('cate_id='.$tz_result[$ke])->find();
                     }
                     $data['order_info'][$key]['tz_result'] = $tz_result;
                 }  
@@ -262,7 +275,7 @@ class Football extends Base
                 $data['order_info'][$key]['win_game_result'] = $win_game_result;  
             }
         }
-        // dump($data);die;
+//         dump($data);die;
         $this->assign("data",$data);
         return view();
     }
