@@ -40,7 +40,10 @@ class Lol extends Base
                 $data[$key]['add_time'] = date('Y-m-d H:i:s',$data[$key]['add_time']);
                 $data[$key]['start_time'] = date('Y-m-d H:i:s',$data[$key]['start_time']);
                     
-                $data[$key]['tz'] = db('lol_cate')->where('game_id='.$data[$key]['id'])->select();
+//                $data[$key]['tz'] = db('lol_cate')->where('game_id='.$data[$key]['id'])->select();
+                $child = $data[$key];
+                $child['tz'] = db('lol_cate')->where('game_id='.$data[$key]['id'])->select();
+                $data[$key]['child'][] = $child;
                 // if($data[$key]['status'] > 0){
                 //     foreach ($data[$key]['tz'] as $k => $v) {
                 //         if($data[$key]['tz'][$k]['status'] == 0) {
