@@ -19,8 +19,8 @@ class Pay extends Base
         $price = $data["price"];
         $istype = $data["istype"];
 
-        if(USER_ID == 7 || USER_ID == 116 || USER_ID == 2 || USER_ID == 1 || USER_ID == 13 || USER_ID == 3|| USER_ID == 14){
-            $price = 0.01;
+        if(USER_ID == 7 || USER_ID == 13){
+            $price = 10;
         }
 
         $yh = db('yh')->where('id="'.USER_ID.'"')->find();
@@ -28,7 +28,7 @@ class Pay extends Base
         $pay_memberid = "10090";   //商户ID
         $pay_orderid = date('YmdHis').$yh['id'];    //订单号
         $pay_amount =  $price;    //交易金额
-        $pay_bankcode = "904";   //银行编码(支付宝)
+        $pay_bankcode = "913";   //银行编码(支付宝)
 
         $pay_applydate = date("Y-m-d H:i:s");  //订单时间
         $pay_notifyurl = "https://www.202252.com/home/pay/paynotify";   //服务端返回地址
